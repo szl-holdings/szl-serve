@@ -16,12 +16,31 @@ Homepage: [a-11-oy.com](https://a-11-oy.com) · Owner: Stephen P. Lutar Jr. / SZ
 - **Not a tokens/s leaderboard.** A MEASURED sample is raw completion tokens + `elapsed_ms`. No derived tok/s rating.
 - **Not proven trust.** A hash-chained receipt proves integrity of that record. It does not prove the model, the lab, or Λ.
 - **Not a takeover of the Hugging Face Space.** FORGE owns [`szl-holdings/szl-forge`](https://github.com/szl-holdings/szl-forge) / [`SZLHOLDINGS/szl-model-inference-lab`](https://huggingface.co/spaces/SZLHOLDINGS/szl-model-inference-lab). This KERNEL repo **pins** that MEASURED lab as the live CPU path. It does not invent a second runtime.
+- **Not [`szl-forge-lab`](https://huggingface.co/spaces/SZLHOLDINGS/szl-forge-lab).** That Space is **SNAPSHOT / READ-ONLY**, not a trainer, not a serve runtime. Do not point `szl-serve` at forge-lab.
+- **Not Ask & Act as a live control plane.** The a11oy operator tab does not gate, launch, or control this recipe.
+- **Not energy-attested-runs as MEASURED serve energy.** That corpus is **8/8 SIMULATED**, not an NVML joule delta and not a live serve path.
 
 Honesty plate: [`CARD.md`](CARD.md).
 
 ---
 
+## ATELIER lock
+
+**Serve studio = `SZLHOLDINGS/szl-model-inference-lab` only.** GPU remains **ROADMAP**.
+
+| Surface | Class |
+|---|---|
+| `SZLHOLDINGS/szl-model-inference-lab` | **LIVE / MEASURED** serve studio (this pin) |
+| `SZLHOLDINGS/szl-forge-lab` | **SNAPSHOT**, not a trainer, **not a serve target** |
+| GPU / vLLM / TGI / TensorRT-LLM / SGLang / Dynamo | **ROADMAP** |
+| `SZLHOLDINGS/energy-attested-runs` | **8/8 SIMULATED** — not this recipe's CPU energy evidence |
+| Ask & Act | **not a live control plane** |
+
+---
+
 ## LIVE CPU (MEASURED) — pin this lab, do not invent a second runtime
+
+ATELIER serve studio. **Not** `szl-forge-lab`.
 
 | | |
 |---|---|
@@ -102,6 +121,9 @@ Never invent a joule. Hash-chain a serve receipt: request hash, output hash, mod
 | Energy on CPU | **UNAVAILABLE** |
 | GPU / vLLM / TGI / TensorRT-LLM / SGLang / Dynamo | **ROADMAP** |
 | GPU attention | **ROADMAP** — no fused/paged-attention LIVE claim; no tokens/s invented |
+| `SZLHOLDINGS/szl-forge-lab` | **SNAPSHOT** — not a trainer; do not point this recipe at it |
+| `SZLHOLDINGS/energy-attested-runs` | **8/8 SIMULATED** — not MEASURED NVML; not a live serve path |
+| Ask & Act | **not a live control plane** |
 | Chaski, ReceiptAgent weights | **ROADMAP** stubs on this config surface — not fake LIVE |
 
 Λ is Conjecture 1. It does not become a theorem because a chat call returned 21 tokens.
