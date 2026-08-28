@@ -7,6 +7,12 @@ invented in this repo. FORGE owns that Space (szl-holdings/szl-forge).
 This KERNEL repo pins it, validates plans outside the weights, and wraps
 an honest energy receipt.
 
+ATELIER lock: serve studio = SZLHOLDINGS/szl-model-inference-lab only.
+SZLHOLDINGS/szl-forge-lab is SNAPSHOT, not a trainer, not a serve target.
+Do not point this recipe at forge-lab. GPU remains ROADMAP.
+energy-attested-runs is 8/8 SIMULATED (not MEASURED serve energy).
+Ask & Act is not a live control plane.
+
 llama.cpp / Ollama are the airgap twin of that Space, not a vLLM clone.
 GPU / vLLM / TGI / TensorRT-LLM / SGLang / Dynamo remain ROADMAP until
 MEASURED on named hardware. GPU attention is ROADMAP. Do not invent tokens/s.
@@ -14,7 +20,7 @@ MEASURED on named hardware. GPU attention is ROADMAP. Do not invent tokens/s.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict, Mapping, Optional
+from typing import Any, Dict, Optional
 import json
 
 # ---------------------------------------------------------------------------
@@ -29,7 +35,9 @@ KHIPU_QUANT = "Q4_K_M"
 KHIPU_OPENAI_MODEL_ID = f"{KHIPU_REPO}@{KHIPU_REVISION}"
 
 # MEASURED live CPU surface. FORGE-owned. This repo does not take it over.
-LIVE_SPACE_ID = "SZLHOLDINGS/szl-model-inference-lab"
+# ATELIER lock: this Space is the only serve studio. Do not substitute forge-lab.
+ATELIER_SERVE_STUDIO = "SZLHOLDINGS/szl-model-inference-lab"
+LIVE_SPACE_ID = ATELIER_SERVE_STUDIO
 LIVE_SPACE_URL = "https://huggingface.co/spaces/SZLHOLDINGS/szl-model-inference-lab"
 LIVE_SPACE_BASE = "https://szlholdings-szl-model-inference-lab.hf.space"
 LIVE_CHAT_URL = f"{LIVE_SPACE_BASE}/v1/chat/completions"
@@ -40,6 +48,64 @@ FORGE_SPACE_SOURCE = (
     "https://github.com/szl-holdings/szl-forge/tree/main/spaces/szl-model-inference-lab"
 )
 FORGE_SOURCE_REVISION = "952e99834c106797254f92a1a46e1627c2847791"
+
+# SNAPSHOT / READ-ONLY evidence console. Not a trainer. Not a serve runtime.
+# REACHABLE = transport only. Curriculum BLUEPRINT_NOT_TRAINED.
+# Do not point szl-serve at this Space as LIVE, curl, or model pin.
+FORGE_LAB_SPACE = "SZLHOLDINGS/szl-forge-lab"
+FORGE_LAB_URL = "https://huggingface.co/spaces/SZLHOLDINGS/szl-forge-lab"
+FORGE_LAB_PIN: Dict[str, Any] = {
+    "id": FORGE_LAB_SPACE,
+    "url": FORGE_LAB_URL,
+    "class": "SNAPSHOT",
+    "presentation": "SNAPSHOT/READ-ONLY evidence console",
+    "not_a_trainer": True,
+    "not_a_serve_target": True,
+    "reachable_means": "transport only",
+    "curriculum": "BLUEPRINT_NOT_TRAINED",
+    "note": (
+        "Do not point szl-serve at forge-lab. No LIVE URL, curl, or model pin. "
+        "No endpoint trains, publishes, promotes, or deploys."
+    ),
+}
+
+# Honesty pin: corpus exists; result is SIMULATED, not MEASURED NVML joules,
+# and not a live serve path. CPU serve energy stays UNAVAILABLE unless a real
+# NVML delta exists.
+ENERGY_ATTESTED_RUNS: Dict[str, Any] = {
+    "id": "SZLHOLDINGS/energy-attested-runs",
+    "space": "https://huggingface.co/spaces/SZLHOLDINGS/energy-attested-runs",
+    "dataset": "https://huggingface.co/datasets/SZLHOLDINGS/energy-attested-runs",
+    "result": "8/8",
+    "label": "SIMULATED",
+    "not_measured_nvml": True,
+    "not_a_live_serve_path": True,
+    "note": (
+        "8/8 SIMULATED. Not MEASURED NVML joules. Not a live serve path. "
+        "Do not treat this corpus as this repo's CPU energy evidence."
+    ),
+}
+
+# a11oy operator tab (Operate / ask). Does not gate, launch, or control this recipe.
+ASK_AND_ACT: Dict[str, Any] = {
+    "status": "NOT_A_LIVE_CONTROL_PLANE",
+    "surface": "a11oy operator tab (Operate / ask)",
+    "note": (
+        "Ask & Act is not a live control plane. It does not gate, launch, "
+        "or control this serve recipe."
+    ),
+}
+
+ATELIER_LOCK: Dict[str, Any] = {
+    "serve_studio": ATELIER_SERVE_STUDIO,
+    "serve_studio_only": True,
+    "live_cpu": LIVE_SPACE_BASE,
+    "model": KHIPU_OPENAI_MODEL_ID,
+    "forge_lab": FORGE_LAB_PIN,
+    "energy_attested_runs": ENERGY_ATTESTED_RUNS,
+    "ask_and_act": ASK_AND_ACT,
+    "gpu": "ROADMAP",
+}
 
 # MEASURED sample (2026-08-28). Raw counts + elapsed. Not a tokens/s claim.
 MEASURED_CPU_SAMPLE: Dict[str, Any] = {
@@ -154,6 +220,31 @@ GPU_PATH: Dict[str, Any] = {
 }
 
 
+def live_serve_targets() -> tuple[str, ...]:
+    """The only public serve studio. forge-lab is never in this tuple."""
+    return (ATELIER_SERVE_STUDIO, LIVE_SPACE_BASE, LIVE_SPACE_URL, LIVE_CHAT_URL)
+
+
+def is_forbidden_serve_target(value: str) -> bool:
+    """True if a URL/id would point szl-serve at SNAPSHOT forge-lab."""
+    return "szl-forge-lab" in value.lower()
+
+
+def atelier_lock() -> Dict[str, Any]:
+    """Machine-readable ATELIER lock. Serve studio is inference-lab only."""
+    return {
+        "schema": "szl_serve/atelier_lock@1",
+        "serve_studio": ATELIER_SERVE_STUDIO,
+        "serve_studio_only": True,
+        "live_cpu": LIVE_SPACE_BASE,
+        "model": KHIPU_OPENAI_MODEL_ID,
+        "forge_lab": dict(FORGE_LAB_PIN),
+        "energy_attested_runs": dict(ENERGY_ATTESTED_RUNS),
+        "ask_and_act": dict(ASK_AND_ACT),
+        "gpu": dict(GPU_PATH),
+    }
+
+
 def weight_pin(weight_id: str = DEFAULT_WEIGHT_ID) -> WeightPin:
     try:
         return WEIGHTS[weight_id]
@@ -196,15 +287,20 @@ def ollama_command() -> str:
 def openai_shaped_chat() -> Dict[str, Any]:
     """Silhouette: one OpenAI-shaped chat call, one pinned weight, one receipt.
 
-    The LIVE endpoint is the existing Space. Local llama-server is the airgap
-    twin of that same pin — not a second public runtime and not vLLM.
+    The LIVE endpoint is the existing Space (ATELIER serve studio only).
+    Local llama-server is the airgap twin of that same pin — not a second
+    public runtime, not vLLM, and not szl-forge-lab.
     """
     return {
         "silhouette": "one OpenAI-shaped chat call, one pinned weight, one receipt",
+        "atelier": atelier_lock(),
         "live": {
             "status": "MEASURED",
+            "serve_studio": ATELIER_SERVE_STUDIO,
+            "serve_studio_only": True,
             "owner": "FORGE (szl-holdings/szl-forge). KERNEL (this repo) pins + validates + receipts.",
             "not_this_repo": True,
+            "not_forge_lab": True,
             "base_url": f"{LIVE_SPACE_BASE}/v1",
             "method": "POST",
             "path": "/v1/chat/completions",
@@ -230,6 +326,9 @@ def openai_shaped_chat() -> Dict[str, Any]:
         },
         "gpu": GPU_PATH,
         "weight": weight_pin().to_dict(),
+        "forge_lab": dict(FORGE_LAB_PIN),
+        "energy_attested_runs": dict(ENERGY_ATTESTED_RUNS),
+        "ask_and_act": dict(ASK_AND_ACT),
     }
 
 
@@ -241,9 +340,22 @@ def format_recipe() -> str:
         "KERNEL-owned pin + validator + energy receipt. Not a vendor engine.",
         "Λ = Conjecture 1 (advisory). Doctrine v11 LOCKED 749/14/163.",
         "",
+        "ATELIER LOCK",
+        f"  serve studio : {ATELIER_SERVE_STUDIO} ONLY",
+        f"  live CPU     : {LIVE_SPACE_BASE}",
+        f"  model        : {KHIPU_OPENAI_MODEL_ID}",
+        f"  {FORGE_LAB_SPACE} : SNAPSHOT, not a trainer, not a serve target",
+        "  do not point szl-serve at forge-lab (no LIVE URL, curl, or model pin)",
+        "  GPU           : ROADMAP",
+        "  energy-attested-runs : 8/8 SIMULATED (not MEASURED NVML; not a live serve path)",
+        "  Ask & Act     : NOT a live control plane",
+        "",
         "WHAT THIS IS NOT",
         "  not vLLM, not TGI, not TensorRT-LLM, not SGLang, not Dynamo",
         "  not a tokens/s leaderboard, not proven trust, not a takeover of the HF Space",
+        "  not szl-forge-lab (SNAPSHOT, not a trainer)",
+        "  not Ask & Act as a live control plane",
+        "  not energy-attested-runs as MEASURED serve energy",
         "",
         "LIVE CPU (MEASURED) — existing Space; do not invent a second runtime",
         f"  surface : {LIVE_SPACE_BASE}",
@@ -269,6 +381,15 @@ def format_recipe() -> str:
         "  GPU attention: ROADMAP (no fused/paged-attention LIVE claim; no tokens/s invented)",
         "  until MEASURED on named hardware. No fabricated joule. No fabricated tok/s.",
         "",
+        "ENERGY-ATTESTED-RUNS — 8/8 SIMULATED, not this recipe's CPU energy evidence",
+        f"  space   : {ENERGY_ATTESTED_RUNS['space']}",
+        f"  dataset : {ENERGY_ATTESTED_RUNS['dataset']}",
+        f"  result  : {ENERGY_ATTESTED_RUNS['result']}  label={ENERGY_ATTESTED_RUNS['label']}",
+        "  not MEASURED NVML joules; not a live serve path",
+        "",
+        "ASK & ACT — not a live control plane",
+        "  a11oy operator tab (Operate / ask). Does not gate, launch, or control this recipe.",
+        "",
         "NEXT WEIGHTS (same config surface, not fake LIVE)",
         "  chaski        ROADMAP — no pin fabricated",
         "  receiptagent  ROADMAP — no pin fabricated",
@@ -284,11 +405,16 @@ def format_recipe() -> str:
 
 
 def recipe_document() -> Dict[str, Any]:
+    chat = openai_shaped_chat()
     return {
         "schema": "szl_serve/recipe@1",
-        "live_cpu": openai_shaped_chat()["live"],
-        "airgap_twin": openai_shaped_chat()["airgap_twin"],
+        "atelier": atelier_lock(),
+        "live_cpu": chat["live"],
+        "airgap_twin": chat["airgap_twin"],
         "gpu": GPU_PATH,
+        "forge_lab": dict(FORGE_LAB_PIN),
+        "energy_attested_runs": dict(ENERGY_ATTESTED_RUNS),
+        "ask_and_act": dict(ASK_AND_ACT),
         "weights": {k: v.to_dict() for k, v in WEIGHTS.items()},
         "lambda": "Conjecture 1 (advisory; never a theorem)",
         "doctrine": "v11 LOCKED 749/14/163",
