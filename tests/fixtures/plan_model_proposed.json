@@ -1,0 +1,43 @@
+{
+  "planId": "plan-KH-model-fixture-0001",
+  "capabilityProfile": "SZL-Khipu-1.5B-BrainNavigator",
+  "provenance": "MODEL_PROPOSED",
+  "query": "Which handle records the rolling 24h spend-cap policy?",
+  "contentAccess": "HANDLES_ONLY",
+  "candidates": [
+    {
+      "nodeId": "node://khipu-synthetic/0acdc9a6105f1f74",
+      "nodeKind": "CLAIM",
+      "label": "DECLARED",
+      "note": "synthetic handle — topic tag: policy-spend-cap; no node content is embedded."
+    },
+    {
+      "nodeId": "node://khipu-synthetic/1fab10b9385d636a",
+      "nodeKind": "CLAIM",
+      "label": "REPORTED",
+      "note": "synthetic handle — topic tag: frontier-window; no node content is embedded."
+    }
+  ],
+  "decision": "NAVIGATE",
+  "steps": [
+    {
+      "action": "RETRIEVE",
+      "nodeId": "node://khipu-synthetic/0acdc9a6105f1f74",
+      "rationale": "Its topic tag (policy-spend-cap) matches what the query asks for."
+    },
+    {
+      "action": "CITE",
+      "nodeId": "node://khipu-synthetic/0acdc9a6105f1f74",
+      "rationale": "Ground the route on the matching handle; the controller resolves its content."
+    }
+  ],
+  "citedNodeIds": ["node://khipu-synthetic/0acdc9a6105f1f74"],
+  "groundedOnly": true,
+  "brainBinding": {
+    "protocol": "khipu-retrieval",
+    "status": "NOT_RESOLVED",
+    "note": "Proposed route — no node content resolved; the controller resolves handles outside the weights."
+  },
+  "controllerBoundary": "The model only PROPOSES this retrieval route over handles. The A11oy controller validates it, resolves the cited handles' content OUTSIDE the weights, and returns the grounded result — the model never holds node text.",
+  "abstainReason": null
+}

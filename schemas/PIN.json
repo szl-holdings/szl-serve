@@ -1,0 +1,8 @@
+{
+  "source_repo": "SZLHOLDINGS/SZL-Khipu-1.5B-GGUF",
+  "source_path": "khipu.schema.json",
+  "copied_to": "schemas/khipu.schema.json",
+  "sha256": "b95f9927366dae7c5d36cfb7de6e229eb605524318ab642a6aa2292a212170d0",
+  "bytes": 6262,
+  "note": "Copied from the GGUF repo. Validation runs OUTSIDE the weights. Do not edit to soften fail-closed rules."
+}

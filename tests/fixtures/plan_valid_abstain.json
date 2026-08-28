@@ -1,0 +1,32 @@
+{
+  "planId": "plan-KH-abs-fixture-0001",
+  "capabilityProfile": "SZL-Khipu-1.5B-BrainNavigator",
+  "provenance": "SYNTHETIC",
+  "query": "Where is the classified payload stored?",
+  "contentAccess": "HANDLES_ONLY",
+  "candidates": [
+    {
+      "nodeId": "node://khipu-synthetic/aaa1111111111111",
+      "nodeKind": "CLAIM",
+      "label": "DECLARED",
+      "note": "synthetic handle — topic tag: policy-spend-cap; no node content is embedded."
+    },
+    {
+      "nodeId": "node://khipu-synthetic/bbb2222222222222",
+      "nodeKind": "INDEX",
+      "label": "REPORTED",
+      "note": "synthetic handle — topic tag: frontier-window; no node content is embedded."
+    }
+  ],
+  "decision": "ABSTAIN",
+  "steps": [],
+  "citedNodeIds": [],
+  "groundedOnly": true,
+  "brainBinding": {
+    "protocol": "khipu-retrieval",
+    "status": "NOT_RESOLVED",
+    "note": "Proposed route — no node content resolved; the controller resolves handles outside the weights."
+  },
+  "controllerBoundary": "The model only PROPOSES this retrieval route over handles. The A11oy controller validates it, resolves the cited handles' content OUTSIDE the weights, and returns the grounded result — the model never holds node text.",
+  "abstainReason": "No offered handle's metadata supports the query; fabricating a citation would be ungrounded."
+}
