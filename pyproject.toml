@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "szl-serve"
+version = "0.1.0"
+description = "Canonical SZL governed-inference serve recipe: pinned Khipu GGUF, schema validation outside the weights, honest energy receipts. Not a vendor engine."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [
+  { name = "Stephen P. Lutar Jr." },
+  { name = "SZL Holdings" },
+]
+keywords = [
+  "governed-inference",
+  "llama.cpp",
+  "ollama",
+  "gguf",
+  "receipts",
+  "energy",
+  "szl-holdings",
+]
+classifiers = [
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "jsonschema>=4.18",
+]
+
+[project.optional-dependencies]
+energy = ["szl-energy-attest>=0.3.0"]
+gpu = ["pynvml>=11.0"]
+sign = ["szl-receipt>=0.2.0"]
+test = ["pytest"]
+
+[project.urls]
+Homepage = "https://a-11-oy.com"
+Repository = "https://github.com/szl-holdings/szl-serve"
+"Hugging Face GGUF" = "https://huggingface.co/SZLHOLDINGS/SZL-Khipu-1.5B-GGUF"
+"MEASURED CPU lab (FORGE-owned Space; this repo pins it)" = "https://szlholdings-szl-model-inference-lab.hf.space"
+"Space card" = "https://huggingface.co/spaces/SZLHOLDINGS/szl-model-inference-lab"
+
+[project.scripts]
+szl-serve = "szl_serve.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["szl_serve*"]
+
+[tool.setuptools.package-data]
+szl_serve = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
