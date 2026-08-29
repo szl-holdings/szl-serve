@@ -8,6 +8,7 @@ import json
 import sys
 from typing import Optional, Sequence
 
+from szl_serve.kernels import probe_estate, selfcheck
 from szl_serve.recipe import format_recipe
 from szl_serve.schema import DISPOSITION_REJECT, validate_plan_file
 
@@ -45,12 +46,18 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     p_val.add_argument("plan", help="Path to a Khipu plan JSON fixture or model proposal.")
 
     sub.add_parser("recipe", help="Print the LIVE Space curl + llama.cpp/Ollama airgap twin.")
+    sub.add_parser("kernels", help="Import+call the SZL kernel estate or report UNAVAILABLE.")
 
     args = parser.parse_args(argv)
     if args.cmd == "validate":
         return _cmd_validate(args.plan)
     if args.cmd == "recipe":
         return _cmd_recipe()
+    if args.cmd == "kernels":
+        payload = {"selfcheck": selfcheck(), "estate": probe_estate()}
+        json.dump(payload, sys.stdout, indent=2, sort_keys=True, default=str)
+        sys.stdout.write("\n")
+        return 0 if payload["selfcheck"].get("ok") else 1
     parser.error(f"unknown command {args.cmd}")
     return 2
 
