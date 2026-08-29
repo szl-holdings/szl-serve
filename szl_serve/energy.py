@@ -76,6 +76,12 @@ def nvml_available() -> bool:
     except Exception:
         pass
     try:
+        from governed_inference_meter import nvml_available as _gim  # type: ignore
+
+        return bool(_gim())
+    except Exception:
+        pass
+    try:
         import pynvml  # type: ignore
 
         pynvml.nvmlInit()

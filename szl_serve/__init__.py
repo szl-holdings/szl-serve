@@ -50,6 +50,7 @@ from szl_serve.recipe import (
     recipe_document,
     weight_pin,
 )
+from szl_serve.kernels import list_estate, probe_estate, selfcheck
 from szl_serve.schema import (
     DISPOSITION_ACCEPT,
     DISPOSITION_REJECT,
@@ -84,8 +85,11 @@ __all__ = [
     "format_recipe",
     "llama_cli_command",
     "llama_server_command",
+    "list_estate",
     "load_khipu_schema",
     "measure_serve_energy",
+    "probe_estate",
+    "selfcheck",
     "ollama_command",
     "openai_shaped_chat",
     "recipe_document",
