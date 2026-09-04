@@ -1,0 +1,25 @@
+{
+  "schema": "szl.frontier.binding.v1",
+  "evaluated_at": "2026-09-04T13:36:00Z",
+  "owner": "szl-serve",
+  "default_effect": "HOLD",
+  "candidates": [
+    {
+      "id": "hf-webgpu-kernels-2026-09-01",
+      "source": "https://huggingface.co/blog/webgpu-kernels",
+      "role": "browser/local backend candidate",
+      "status": "EVALUATE",
+      "authority": "none",
+      "gates": ["revision pin", "license", "correctness", "latency", "memory", "rollback"]
+    },
+    {
+      "id": "vibevoice-streaming-asr-2026-09-03",
+      "source": "https://huggingface.co/microsoft/VibeVoice-ASR-Streaming-1.5B",
+      "role": "streaming transcription input adapter",
+      "status": "EVALUATE",
+      "authority": "evidence-input-only",
+      "gates": ["model revision", "WER/CER", "diarization", "hotword recall", "stream latency", "privacy/retention", "no speech-to-action bypass"]
+    }
+  ],
+  "production_promotion": false
+}
