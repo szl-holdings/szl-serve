@@ -1,16 +1,66 @@
 {
   "schema": "szl.frontier.binding.v1",
-  "evaluated_at": "2026-09-04T13:36:00Z",
+  "evaluated_at": "2026-09-07T13:23:58Z",
   "owner": "szl-serve",
+  "canonical_frontier_contract": "https://github.com/szl-holdings/szl-frontier/blob/94a039d086d1343d1fcfe5bca617f601006ca05b/public/frontier/top-choice-integration-matrix.v1.json",
+  "canonical_frontier_revision": "94a039d086d1343d1fcfe5bca617f601006ca05b",
   "default_effect": "HOLD",
   "candidates": [
+    {
+      "id": "k2-horizon-mova-36b-a4b-2026-09-03",
+      "source": "https://huggingface.co/IFM/K2-Horizon-MoVA-36B-A4B",
+      "source_revision": "05cab0a4d7150c1c460a000b37ff40cc1af2feaa",
+      "artifact_fingerprint": "259e31e5a7143d4f6cca70ed238296e9374b0a51aa497563f62e10af990ec9e2",
+      "role": "governed agent-model serving candidate",
+      "status": "EVALUATE",
+      "authority": "proposal-and-evidence-only",
+      "runtime_contract": "openai-compatible-evaluation-adapter",
+      "gates": [
+        "exact model revision",
+        "remote/custom-code review",
+        "tool-call exactness",
+        "structured-output exactness",
+        "long-context grounded recall",
+        "unsupported-claim rate",
+        "TTFT and p50/p95 latency",
+        "tokens/sec and peak GPU memory",
+        "concurrency and rollback",
+        "no model-to-action authority bypass"
+      ]
+    },
     {
       "id": "hf-webgpu-kernels-2026-09-01",
       "source": "https://huggingface.co/blog/webgpu-kernels",
       "role": "browser/local backend candidate",
       "status": "EVALUATE",
       "authority": "none",
-      "gates": ["revision pin", "license", "correctness", "latency", "memory", "rollback"]
+      "gates": [
+        "revision pin",
+        "selected-kernel license",
+        "reference correctness",
+        "browser/device latency",
+        "memory",
+        "device-loss fallback",
+        "rollback"
+      ]
+    },
+    {
+      "id": "vaani-noise-event-2026-08-07",
+      "source": "https://huggingface.co/datasets/ARTPARK-IISc/Vaani-Noise-Event-Dataset",
+      "source_revision": "be488e2ac12fd62bef46b9f83e3a5feded575333",
+      "artifact_fingerprint": "eaaee5703e5288affd9447ffb29feca84df66f0b70eef152a1f8913e8db7d4da",
+      "role": "noise-robust speech evaluation input",
+      "status": "GATED_HOLD",
+      "authority": "evidence-input-only",
+      "gates": [
+        "authorized Hub gate acceptance",
+        "CC-BY-4.0 attribution and access terms",
+        "bounded checksum-pinned sample",
+        "noise-event quality",
+        "downstream ASR robustness",
+        "audio privacy and retention",
+        "no speech-to-action bypass"
+      ]
     },
     {
       "id": "vibevoice-streaming-asr-2026-09-03",
@@ -18,7 +68,15 @@
       "role": "streaming transcription input adapter",
       "status": "EVALUATE",
       "authority": "evidence-input-only",
-      "gates": ["model revision", "WER/CER", "diarization", "hotword recall", "stream latency", "privacy/retention", "no speech-to-action bypass"]
+      "gates": [
+        "model revision",
+        "WER/CER",
+        "diarization",
+        "hotword recall",
+        "stream latency",
+        "privacy/retention",
+        "no speech-to-action bypass"
+      ]
     }
   ],
   "production_promotion": false
