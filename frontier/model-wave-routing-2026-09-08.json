@@ -1,0 +1,143 @@
+{
+  "schema": "szl.serve.frontier-route-contract.v1",
+  "captured_on": "2026-09-08",
+  "owner": "szl-serve",
+  "upstream_contracts": {
+    "frontier_registry": {
+      "repository": "szl-holdings/szl-frontier",
+      "revision": "dcc128140f3873d0ca396b9a83cf0eb5a0102b87",
+      "path": "public/frontier/release-evaluation-manifest.v1.json"
+    },
+    "forge_qualification": {
+      "repository": "szl-holdings/szl-forge",
+      "revision": "ffe66a1aba2c6027e48da6f89cdd5d4fc2f87794",
+      "path": "frontier/PINNED_MODEL_WAVE_2026-09-07.json"
+    },
+    "nemo_witness": {
+      "repository": "szl-holdings/szl-nemo",
+      "revision": "38018c7215d8915805c7620341903a472672839e",
+      "path": "frontier/pinned-model-wave-witness-2026-09-07.json"
+    }
+  },
+  "default_effect": "HOLD",
+  "production_promotion": false,
+  "model_output_authority": "PROPOSAL_ONLY",
+  "consequential_action_admission_layer": "A11oy",
+  "baseline": {
+    "weight_id": "khipu",
+    "model_id": "SZLHOLDINGS/SZL-Khipu-1.5B-GGUF",
+    "revision": "67d60ec577730747055491640cfb91fc4a4b5d25",
+    "status": "LIVE",
+    "selection": "DEFAULT_FALLBACK"
+  },
+  "candidate_routes": [
+    {
+      "id": "glm-5-3-flash",
+      "model_id": "zai-org/GLM-5.3-Flash",
+      "revision": "eb9eb208eb0d988989d07a6a12d0fdeb5f52574a",
+      "declared_license": "mit",
+      "route_class": "MULTIMODAL_AGENT_EVALUATION",
+      "authority": "proposal-only",
+      "evaluation_state": "SOURCE_PINNED",
+      "production_disposition": "HOLD",
+      "gate_state": {
+        "source_verification_pass": true,
+        "license_compatibility_pass": null,
+        "runtime_compatibility_pass": null,
+        "remote_code_review_pass": null,
+        "evaluation_authorized": false,
+        "safety_pass": null,
+        "cost_pass": null,
+        "fallback_pass": null,
+        "governance_pass": null,
+        "reproducibility_pass": null,
+        "nemo_witness_pass": null,
+        "production_approval": false
+      },
+      "promotion_receipt_sha256": null
+    },
+    {
+      "id": "deepseek-v4-flash-vision-exp",
+      "model_id": "deepseek-ai/DeepSeek-V4-Flash-Vision-Exp",
+      "revision": "6821d6ad3681a4b137b066b76094fa82ebd0a380",
+      "declared_license": "mit",
+      "route_class": "EXPERIMENTAL_MULTIMODAL_EVALUATION",
+      "authority": "proposal-only",
+      "evaluation_state": "SOURCE_PINNED",
+      "production_disposition": "HOLD",
+      "gate_state": {
+        "source_verification_pass": true,
+        "license_compatibility_pass": null,
+        "runtime_compatibility_pass": null,
+        "remote_code_review_pass": null,
+        "evaluation_authorized": false,
+        "safety_pass": null,
+        "cost_pass": null,
+        "fallback_pass": null,
+        "governance_pass": null,
+        "reproducibility_pass": null,
+        "nemo_witness_pass": null,
+        "production_approval": false
+      },
+      "promotion_receipt_sha256": null
+    },
+    {
+      "id": "qwen3-8-flash-next-nvfp4",
+      "model_id": "nvidia/Qwen3.8-Flash-Next-NVFP4",
+      "revision": "fc694b54fb0174e0913e6adf86691ef85a4ead47",
+      "declared_license": "other",
+      "base_model_id": "Qwen/Qwen3.8-Flash-Next",
+      "base_model_revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+      "route_class": "QUANTIZED_GPU_BENCHMARK",
+      "authority": "proposal-only",
+      "evaluation_state": "LICENSE_REVIEW_REQUIRED",
+      "production_disposition": "HOLD",
+      "gate_state": {
+        "source_verification_pass": true,
+        "license_compatibility_pass": null,
+        "runtime_compatibility_pass": null,
+        "remote_code_review_pass": null,
+        "evaluation_authorized": false,
+        "safety_pass": null,
+        "cost_pass": null,
+        "fallback_pass": null,
+        "governance_pass": null,
+        "reproducibility_pass": null,
+        "nemo_witness_pass": null,
+        "production_approval": false
+      },
+      "promotion_receipt_sha256": null
+    }
+  ],
+  "reference_artifacts": [
+    {
+      "id": "glm-5-3-reference",
+      "model_id": "zai-org/GLM-5.3",
+      "revision": "aca966e4e02791568aa6a4ced368624b3d897f42",
+      "declared_license": "other",
+      "status": "REFERENCE_HOLD",
+      "routable": false
+    },
+    {
+      "id": "qwen3-8-flash-next-base-reference",
+      "model_id": "Qwen/Qwen3.8-Flash-Next",
+      "revision": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+      "declared_license": "other",
+      "status": "REFERENCE_HOLD",
+      "routable": false
+    }
+  ],
+  "fallback_triggers": [
+    "missing or mutable model identity",
+    "license compatibility not passed",
+    "runtime compatibility not passed",
+    "remote code review not passed",
+    "evaluation not explicitly authorized",
+    "load failure or timeout",
+    "malformed or policy-rejected output",
+    "unsupported modality or hardware",
+    "safety, cost, governance, reproducibility, or Nemo witness not passed",
+    "missing verified promotion receipt",
+    "production promotion disabled"
+  ]
+}
