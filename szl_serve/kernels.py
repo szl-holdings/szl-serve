@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 SZL Holdings
-"""Serve-side kernel estate: import+call SZL kernels or honest UNAVAILABLE.
+"""Serve-side kernel estate: explicit local probe verdicts, never inferred readiness.
 
 GPU / vLLM remain ROADMAP. joblib/pickle are not load paths. Energy stays
 MEASURED-only via governed-inference-meter when that package is present.
@@ -81,9 +81,35 @@ def _summarize(result: Any) -> Any:
             if key in result:
                 out[key] = result[key]
         if "ok" not in out and "arithmetic_ok" in result:
-            out["ok"] = bool(result["arithmetic_ok"])
+            out["ok"] = result["arithmetic_ok"]
         return out or {"keys": sorted(result.keys())[:12]}
     return type(result).__name__
+
+
+def _probe_verdict(result: Any) -> Tuple[str, str]:
+    if type(result) is bool:
+        return ("LIVE", "explicit_positive_verdict") if result else ("FAILED", "explicit_negative_verdict")
+    if isinstance(result, tuple) and len(result) == 2 and type(result[0]) is bool:
+        ok, violations = result
+        if not ok:
+            return "FAILED", "explicit_negative_verdict"
+        if not isinstance(violations, (list, tuple)):
+            return "UNAVAILABLE", "unsupported_violation_contract"
+        return ("FAILED", "reported_violations") if violations else ("LIVE", "explicit_positive_verdict")
+    if isinstance(result, dict):
+        verdicts = [result[key] for key in ("ok", "arithmetic_ok") if key in result]
+        for key in ("status", "label"):
+            label = result.get(key)
+            label = label.upper() if isinstance(label, str) else ""
+            if label.startswith("UNAVAILABLE"):
+                return "UNAVAILABLE", "probe_reports_unavailable"
+            if label in ("FAILED", "FAIL", "BLOCKED", "MISMATCH", "DEGRADED"):
+                return "FAILED", "probe_reports_failure"
+        if any(value is False for value in verdicts):
+            return "FAILED", "explicit_negative_verdict"
+        if verdicts and all(value is True for value in verdicts):
+            return "LIVE", "explicit_positive_verdict"
+    return "UNAVAILABLE", "unsupported_success_contract"
 
 
 def _call_probe(mod: Any, probe: str) -> Any:
@@ -101,19 +127,21 @@ def probe_member(entry: Dict[str, str]) -> Dict[str, Any]:
     rec = dict(entry)
     rec["joblib"] = "QUARANTINED"
     rec["pickle"] = "QUARANTINED"
+    rec["evidence_scope"] = "LOCAL_KERNEL_PROBE"
     if entry["key"] == "szl-serve":
         rec.update(
             {
-                "status": "LIVE",
+                "status": "DECLARED",
                 "via": "szl_serve.selfcheck",
-                "called": True,
-                "probe_result": {"ok": True, "label": "serve-recipe"},
+                "called": False,
+                "probe_result": None,
+                "reason": "self_entry_not_called_to_avoid_recursive_estate_probe",
             }
         )
         return rec
     try:
         mod = importlib.import_module(entry["module"])
-    except Exception as exc:
+    except ImportError as exc:
         rec.update(
             {
                 "status": "UNAVAILABLE",
@@ -122,11 +150,19 @@ def probe_member(entry: Dict[str, str]) -> Dict[str, Any]:
             }
         )
         return rec
+    except Exception as exc:
+        rec.update({"status": "FAILED", "called": False, "reason": f"{type(exc).__name__}: {exc}"})
+        return rec
     try:
+        if not callable(getattr(mod, entry["probe"], None)):
+            rec.update({"status": "UNAVAILABLE", "called": False, "reason": "probe_callable_missing"})
+            return rec
         result = _call_probe(mod, entry["probe"])
+        status, reason = _probe_verdict(result)
         rec.update(
             {
-                "status": "LIVE",
+                "status": status,
+                "reason": reason,
                 "via": f"{entry['module']}.{entry['probe']}",
                 "called": True,
                 "probe_result": _summarize(result),
@@ -136,7 +172,7 @@ def probe_member(entry: Dict[str, str]) -> Dict[str, Any]:
     except Exception as exc:
         rec.update(
             {
-                "status": "UNAVAILABLE",
+                "status": "FAILED",
                 "called": True,
                 "reason": f"{type(exc).__name__}: {exc}",
             }
@@ -148,9 +184,22 @@ def probe_estate() -> Dict[str, Any]:
     _extend_sys_path()
     kernels = [probe_member(dict(e)) for e in ESTATE]
     live = sum(1 for k in kernels if k.get("status") == "LIVE")
+    failed = sum(1 for k in kernels if k.get("status") == "FAILED")
+    unavailable = sum(1 for k in kernels if k.get("status") == "UNAVAILABLE")
+    declared = sum(1 for k in kernels if k.get("status") == "DECLARED")
+    expected = len(kernels) - declared
+    ok = expected > 0 and live == expected
+    status = "LIVE" if ok else ("FAILED" if failed else ("DEGRADED" if live else "UNAVAILABLE"))
     return {
-        "ok": live >= 1,
+        "ok": ok,
+        "status": status,
+        "evidence_scope": "LOCAL_KERNEL_PROBES",
+        "any_available": live > 0,
         "live": live,
+        "failed": failed,
+        "unavailable": unavailable,
+        "declared": declared,
+        "expected_probes": expected,
         "enumerated": len(kernels),
         "cuda": cuda_status(),
         "joblib": "QUARANTINED",
@@ -161,16 +210,27 @@ def probe_estate() -> Dict[str, Any]:
 
 
 def selfcheck() -> Dict[str, Any]:
-    """CPU selfcheck: schema + energy UNAVAILABLE + estate catalog call."""
+    """Separate recipe validity from successful probes of the declared estate."""
     from szl_serve.energy import LABEL_UNAVAILABLE, measure_serve_energy
     from szl_serve.recipe import ATELIER_SERVE_STUDIO, GPU_PATH
-    from szl_serve.schema import schema_sha256
+    from szl_serve.schema import SCHEMA_SHA256_PIN, schema_sha256
 
     energy = measure_serve_energy()
     estate = probe_estate()
+    schema_digest = schema_sha256()
+    recipe_ok = (
+        energy.label == LABEL_UNAVAILABLE
+        and energy.joules is None
+        and estate["enumerated"] == len(ESTATE)
+        and schema_digest == SCHEMA_SHA256_PIN
+    )
     return {
-        "ok": energy.label == LABEL_UNAVAILABLE and energy.joules is None and estate["enumerated"] == 16,
-        "schema_sha256": schema_sha256(),
+        "ok": recipe_ok and estate["ok"],
+        "recipe_ok": recipe_ok,
+        "estate_ok": estate["ok"],
+        "status": estate["status"] if recipe_ok else "FAILED",
+        "evidence_scope": "LOCAL_RECIPE_AND_KERNEL_PROBES",
+        "schema_sha256": schema_digest,
         "energy_label": energy.label,
         "energy_joules": energy.joules,
         "gpu": GPU_PATH.get("status", "ROADMAP") if isinstance(GPU_PATH, dict) else GPU_PATH,
