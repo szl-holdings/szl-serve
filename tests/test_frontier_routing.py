@@ -151,6 +151,58 @@ def test_reviewed_production_plan_still_carries_no_execution_authority() -> None
     assert plan.consequential_action_admission_layer == "A11oy"
 
 
+class _NoCoercion:
+    """Caller values must not execute truthiness or equality hooks."""
+
+    def __bool__(self):
+        raise AssertionError("promotion allowance was coerced to bool")
+
+    def __eq__(self, other):
+        raise AssertionError("promotion allowance used equality")
+
+
+@pytest.mark.parametrize(
+    "allowance",
+    [False, None, 0, 1, -1, 1.0, "", "false", "true", "0", "1",
+     [], [True], {}, {"allowed": True}, object(), _NoCoercion()],
+    ids=["false", "none", "zero", "one", "negative", "float-one",
+         "empty-string", "string-false", "string-true", "string-zero",
+         "string-one", "empty-list", "list", "empty-dict", "dict",
+         "object", "coercion-hooks"],
+)
+def test_production_allowance_requires_literal_true(allowance) -> None:
+    candidate = copy.deepcopy(next(iter(_candidates().values())))
+    for gate in PRODUCTION_GATE_KEYS:
+        candidate["gate_state"][gate] = True
+    candidate["production_disposition"] = "APPROVED"
+    candidate["promotion_receipt_sha256"] = "b" * 64
+    before = copy.deepcopy(candidate)
+
+    plan = plan_frontier_route(
+        candidate, mode="production", production_promotion_allowed=allowance,
+    )
+
+    assert plan.disposition == "HOLD_FALLBACK"
+    assert plan.fallback_used is True
+    assert plan.selected_model_id == KHIPU_REPO
+    assert plan.selected_revision == KHIPU_REVISION
+    assert plan.reasons == ("production_promotion:disabled",)
+    assert plan.executable is False
+    assert plan.model_output_authority == "PROPOSAL_ONLY"
+    assert candidate == before
+
+
+def test_evaluation_does_not_consult_production_allowance() -> None:
+    candidate = copy.deepcopy(next(iter(_candidates().values())))
+    for gate in EVALUATION_GATE_KEYS:
+        candidate["gate_state"][gate] = True
+    plan = plan_frontier_route(
+        candidate, mode="evaluation", production_promotion_allowed=_NoCoercion(),
+    )
+    assert plan.disposition == "EVALUATION_ONLY"
+    assert plan.executable is False
+
+
 def test_mutable_or_missing_candidate_revision_is_rejected() -> None:
     candidate = copy.deepcopy(next(iter(_candidates().values())))
     candidate["revision"] = "main"

@@ -125,8 +125,9 @@ def plan_frontier_route(
     ``evaluation`` may propose a candidate only after every evaluation gate is
     literally ``True``. ``production`` additionally requires every production
     gate, an approved disposition, a verified 64-hex promotion receipt, and an
-    explicit caller-side promotion allowance. Returned plans remain
-    non-executable and proposal-only.
+    caller-side promotion allowance that is literally ``True``. Truthy strings,
+    numbers, containers, and other objects do not grant promotion. Returned
+    plans remain non-executable and proposal-only.
     """
 
     if mode not in {"evaluation", "production"}:
@@ -165,7 +166,7 @@ def plan_frontier_route(
         )
 
     reasons.extend(_missing_gates(gate_state, PRODUCTION_GATE_KEYS))
-    if not production_promotion_allowed:
+    if production_promotion_allowed is not True:
         reasons.append("production_promotion:disabled")
     if candidate.get("production_disposition") != "APPROVED":
         reasons.append("production_disposition:not_approved")
