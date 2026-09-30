@@ -35,7 +35,7 @@ dependencies = [
 energy = ["szl-energy-attest>=0.3.0"]
 gpu = ["pynvml>=11.0"]
 sign = ["szl-receipt>=0.2.0"]
-test = ["pytest"]
+test = ["pytest", "setuptools>=61", "wheel"]
 
 [project.urls]
 Homepage = "https://a-11-oy.com"
@@ -47,11 +47,15 @@ Repository = "https://github.com/szl-holdings/szl-serve"
 [project.scripts]
 szl-serve = "szl_serve.cli:main"
 
-[tool.setuptools.packages.find]
-include = ["szl_serve*"]
+[tool.setuptools]
+packages = ["szl_serve", "szl_serve.schemas"]
+
+[tool.setuptools.package-dir]
+"szl_serve.schemas" = "schemas"
 
 [tool.setuptools.package-data]
 szl_serve = ["py.typed"]
+"szl_serve.schemas" = ["khipu.schema.json", "PIN.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -1,0 +1,2 @@
+# Preserve exact pinned schema bytes across platform checkouts.
+schemas/*.json text eol=lf

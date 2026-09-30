@@ -87,6 +87,13 @@ python -m szl_serve recipe
 
 Model output is **proposal-only**. Copy of [`khipu.schema.json`](schemas/khipu.schema.json) is pinned from the GGUF repo (SHA-256 `b95f9927366dae7c5d36cfb7de6e229eb605524318ab642a6aa2292a212170d0`).
 
+Built wheels include this exact 6,262-byte schema and its `PIN.json` under
+`szl_serve/schemas/`. The validator prefers these package resources; source
+checkouts use the canonical root `schemas/` copy. Git preserves LF bytes for
+both JSON files on Windows as well as Linux. Schema bytes and the SHA-256 pin
+remain strict: a drifted packaged schema is rejected, rather than normalized
+or replaced with a fallback copy.
+
 - Hallucinated `citedNodeIds` → **REJECT**. Never silently repaired into a green plan.
 - `brainBinding.status` stays **NOT_RESOLVED**.
 - Real model output provenance is **MODEL_PROPOSED**, not `SYNTHETIC`.
@@ -133,6 +140,11 @@ Never invent a joule. Hash-chain a serve receipt: request hash, output hash, mod
 ## Tests
 
 Unit tests use fixture plan JSON. **No network. Do not download the ~1 GB GGUF in CI.**
+The packaging regression builds a wheel and an sdist-to-wheel round trip with
+installed build tools and no package index, then installs the wheel into a
+temporary target. An isolated Python subprocess outside the checkout checks
+the exact schema and pin, validates a benign synthetic ABSTAIN proposal, and
+confirms that tampered package data fails closed. Build tooling is a test extra.
 
 ```bash
 pip install -e ".[test]"
