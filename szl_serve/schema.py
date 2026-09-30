@@ -41,14 +41,17 @@ def _repo_root() -> Path:
 
 
 def schema_path() -> Path:
-    path = _repo_root() / "schemas" / "khipu.schema.json"
-    if not path.is_file():
-        raise FileNotFoundError(
-            f"pinned khipu.schema.json missing at {path}. "
-            "This repo copies the schema from SZLHOLDINGS/SZL-Khipu-1.5B-GGUF; "
-            "it does not live inside the weights."
-        )
-    return path
+    """Prefer wheel resources; use the canonical root copy in a source checkout."""
+    packaged = Path(__file__).resolve().parent / "schemas" / "khipu.schema.json"
+    source = _repo_root() / "schemas" / "khipu.schema.json"
+    for path in (packaged, source):
+        if path.is_file():
+            return path
+    raise FileNotFoundError(
+        f"pinned khipu.schema.json missing at {packaged} and {source}. "
+        "This package copies the schema from SZLHOLDINGS/SZL-Khipu-1.5B-GGUF; "
+        "it does not live inside the weights."
+    )
 
 
 def schema_sha256() -> str:
