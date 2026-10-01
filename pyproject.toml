@@ -34,7 +34,7 @@ dependencies = [
 [project.optional-dependencies]
 energy = ["szl-energy-attest>=0.3.0"]
 gpu = ["pynvml>=11.0"]
-sign = ["szl-receipt>=0.2.0"]
+sign = ["szl-receipt-dsse>=0.3.1"]
 test = ["pytest", "setuptools>=61", "wheel"]
 
 [project.urls]
@@ -43,6 +43,8 @@ Repository = "https://github.com/szl-holdings/szl-serve"
 "Hugging Face GGUF" = "https://huggingface.co/SZLHOLDINGS/SZL-Khipu-1.5B-GGUF"
 "MEASURED CPU lab (FORGE-owned Space; this repo pins it)" = "https://szlholdings-szl-model-inference-lab.hf.space"
 "Space card" = "https://huggingface.co/spaces/SZLHOLDINGS/szl-model-inference-lab"
+Issues = "https://github.com/szl-holdings/szl-serve/issues"
+Changelog = "https://github.com/szl-holdings/szl-serve/releases"
 
 [project.scripts]
 szl-serve = "szl_serve.cli:main"
@@ -60,3 +62,6 @@ szl_serve = ["py.typed"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+
+[tool.szl.release]
+import_names = ["szl_serve"] # wheel top-level import names; the release gate fails if the built wheel differs
