@@ -4,6 +4,19 @@
 
 KERNEL-owned canonical governed-inference **recipe + validator + energy receipt** for SZL Holdings.
 
+<!-- szl:header v1 -->
+<!-- Native identity: szl-brand@4309f6fce89179331b0b3ed8c99494e76c5be256; Orbit v2 icon. -->
+<p>
+  <a href="https://github.com/szl-holdings">
+    <img src="https://raw.githubusercontent.com/szl-holdings/szl-brand/4309f6fce89179331b0b3ed8c99494e76c5be256/kit/logos/orbit-v2/suite/szl-icon-32.svg" alt="SZL Holdings — Orbit v2" width="32" height="32" />
+  </a>
+</p>
+
+**Control before action. Evidence after.**
+
+[Product](https://a-11-oy.com) · [Proof](https://a11oy.net) · [GitHub organization](https://github.com/szl-holdings)
+<!-- /szl:header -->
+
 This is **not** a vendor engine. It is the silhouette of 2026 serving (vLLM / SGLang / TGI / TensorRT-LLM / llama.cpp / Dynamo) — without copying those engines, and without fabricating tokens/s or joules.
 
 Homepage: [a-11-oy.com](https://a-11-oy.com) · Owner: Stephen P. Lutar Jr. / SZL Holdings · Doctrine v11 LOCKED **749/14/163** · Λ = **Conjecture 1** (advisory, never a theorem) · Apache-2.0
