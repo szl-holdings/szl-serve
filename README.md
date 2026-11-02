@@ -59,7 +59,7 @@ ATELIER serve studio. **Not** `szl-forge-lab`.
 |---|---|
 | Surface | https://szlholdings-szl-model-inference-lab.hf.space |
 | Space | https://huggingface.co/spaces/SZLHOLDINGS/szl-model-inference-lab |
-| FORGE source | https://github.com/szl-holdings/szl-forge/tree/main/spaces/szl-model-inference-lab |
+| FORGE source | [`e28abe9d4be3ce5efbb09ea2a3a248494c654636`](https://github.com/szl-holdings/szl-forge/tree/e28abe9d4be3ce5efbb09ea2a3a248494c654636/spaces/szl-model-inference-lab) |
 | API | OpenAI subset `POST /v1/chat/completions` |
 | Model | `SZLHOLDINGS/SZL-Khipu-1.5B-GGUF@67d60ec577730747055491640cfb91fc4a4b5d25` |
 | GGUF | `SZL-Khipu-1.5B-Q4_K_M.gguf` · SHA-256 `13c1a1993063e1dff92f7413ccf48eaca6d48efc8801ae9af35961ae3396623a` · 986047904 bytes |
@@ -75,6 +75,31 @@ curl https://szlholdings-szl-model-inference-lab.hf.space/v1/chat/completions \
 ```
 
 Contract: `/.well-known/szl-inference-contract.json`. Identity: `/api/v1/identity`.
+
+---
+
+## Read-only runtime qualification
+
+The pinned recipe can drift from the public Space. `qualify` reads four bounded
+JSON surfaces and emits one receipt with per-field `OBSERVED`, `DIVERGENT`, or
+`UNKNOWN` states:
+
+```bash
+szl-serve qualify --output qualification.json
+```
+
+The command checks `/api/build-info`, `/api/v1/identity`,
+`/.well-known/szl-inference-contract.json`, and `/v1/models`. It requires the
+exact Forge source repository and revision, model revision, GGUF file, byte
+count, SHA-256, contract schema, and model-list identity. A timeout, partial
+JSON, HTML response, oversized response, cross-origin redirect, missing field,
+or stale value never becomes success. The current public contract may report
+`UNKNOWN` for source repository until `/api/build-info` exposes that field;
+the qualifier does not infer it from a URL or Space name.
+
+Qualification is read-only. It sends no prompt, mints no signed release
+receipt, changes no provider state, and says nothing about response quality,
+safety, SLA, or production readiness.
 
 ---
 
@@ -166,9 +191,16 @@ the exact schema and pin, validates a benign synthetic ABSTAIN proposal, and
 confirms that tampered package data fails closed. Build tooling is a test extra.
 
 ```bash
-pip install -e ".[test]"
+python -m pip install --require-hashes -r requirements/test.lock
+python -m pip install --no-deps -e .
 pytest -q
 ```
+
+`requirements/test.lock` is a universal hash-locked closure generated from the
+published package metadata at the declared Python 3.10 floor, with an
+`exclude-newer` cutoff of 2026-11-02 UTC.
+Library compatibility ranges remain in `pyproject.toml`; the lock controls CI
+and review reproduction without narrowing downstream consumers.
 
 ---
 

@@ -3,13 +3,36 @@
 """CPU energy is UNAVAILABLE. Never invent a joule. No network."""
 from __future__ import annotations
 
+import pytest
+
 from szl_serve.energy import (
+    EnergyReading,
     LABEL_MEASURED,
     LABEL_UNAVAILABLE,
     ServeEnergyMeter,
     measure_serve_energy,
     wrap_serve,
 )
+
+
+@pytest.fixture(autouse=True)
+def force_cpu_only_meter(monkeypatch):
+    """Exercise the declared CPU path even when a developer host exposes NVML."""
+
+    def enter(meter):
+        return meter
+
+    def exit(meter, _exc_type, _exc, _tb):
+        meter.reading = EnergyReading(
+            joules=None,
+            label=LABEL_UNAVAILABLE,
+            note="test fixture: CPU path has no NVML counter",
+            source="test-cpu-fixture",
+        )
+        return False
+
+    monkeypatch.setattr(ServeEnergyMeter, "__enter__", enter)
+    monkeypatch.setattr(ServeEnergyMeter, "__exit__", exit)
 
 
 def test_cpu_energy_unavailable_null_joules():

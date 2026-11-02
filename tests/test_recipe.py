@@ -13,6 +13,8 @@ from szl_serve.recipe import (
     ENERGY_ATTESTED_RUNS,
     FORGE_LAB_PIN,
     FORGE_LAB_SPACE,
+    FORGE_SOURCE_REVISION,
+    FORGE_SPACE_SOURCE,
     GPU_PATH,
     KHIPU_LFS_SHA256,
     KHIPU_OPENAI_MODEL_ID,
@@ -46,6 +48,9 @@ def test_live_cpu_is_the_existing_space_not_a_second_runtime():
     assert LIVE_CHAT_URL.endswith("/v1/chat/completions")
     assert "szl-model-inference-lab" in live["space"]
     assert live["curl"].startswith("curl https://szlholdings-szl-model-inference-lab.hf.space/v1/chat/completions")
+    assert len(FORGE_SOURCE_REVISION) == 40
+    assert FORGE_SOURCE_REVISION in FORGE_SPACE_SOURCE
+    assert "/tree/main/" not in FORGE_SPACE_SOURCE
 
 
 def test_measured_sample_is_raw_counts_not_tokens_per_second():
