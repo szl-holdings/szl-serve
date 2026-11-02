@@ -22,6 +22,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Dict, Optional
 import json
+import shlex
 
 # ---------------------------------------------------------------------------
 # Pinned LIVE weight (Khipu GGUF Q4_K_M)
@@ -253,7 +254,7 @@ def weight_pin(weight_id: str = DEFAULT_WEIGHT_ID) -> WeightPin:
 
 
 def live_openai_curl(prompt: str = "Explain one limit of cryptographic receipts.") -> str:
-    """OpenAI-subset call against the MEASURED Space. Dummy bearer only."""
+    """POSIX-shell OpenAI-subset recipe. Prompt stays data; dummy bearer only."""
     payload = {
         "model": KHIPU_OPENAI_MODEL_ID,
         "messages": [{"role": "user", "content": prompt}],
@@ -265,19 +266,24 @@ def live_openai_curl(prompt: str = "Explain one limit of cryptographic receipts.
         f"curl {LIVE_CHAT_URL} \\\n"
         "  -H \"content-type: application/json\" \\\n"
         "  -H \"authorization: Bearer not-a-secret\" \\\n"
-        f"  -d {json.dumps(body)}"
+        f"  -d {shlex.quote(body)}"
     )
 
 
 def llama_cli_command(prompt: str = "Navigate: which receipt signed decision d-42?") -> str:
+    """Return a POSIX-shell recipe with one literal prompt argument."""
     return (
         f"llama-cli -hf {KHIPU_REPO}:{KHIPU_QUANT} "
-        f"-p {prompt!r}"
+        f"-p {shlex.quote(prompt)}"
     )
 
 
 def llama_server_command(host: str = "127.0.0.1", port: int = 8080) -> str:
-    return f"llama-server -hf {KHIPU_REPO}:{KHIPU_QUANT} --host {host} --port {port}"
+    """Quote server values for a POSIX shell; the engine validates their meaning."""
+    return (
+        f"llama-server -hf {KHIPU_REPO}:{KHIPU_QUANT} "
+        f"--host {shlex.quote(host)} --port {shlex.quote(str(port))}"
+    )
 
 
 def ollama_command() -> str:
