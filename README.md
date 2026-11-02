@@ -197,7 +197,8 @@ pytest -q
 ```
 
 `requirements/test.lock` is a universal hash-locked closure generated from the
-published package metadata with an `exclude-newer` cutoff of 2026-11-02 UTC.
+published package metadata at the declared Python 3.10 floor, with an
+`exclude-newer` cutoff of 2026-11-02 UTC.
 Library compatibility ranges remain in `pyproject.toml`; the lock controls CI
 and review reproduction without narrowing downstream consumers.
 
