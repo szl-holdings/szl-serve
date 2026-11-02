@@ -94,6 +94,12 @@ Print the recipe (no GGUF download):
 python -m szl_serve recipe
 ```
 
+Generated command strings target POSIX shells (`sh`/Bash). Prompts, the JSON
+request body, and server host/port values are quoted as literal arguments;
+shell substitutions inside them are not executed. PowerShell and `cmd.exe`
+use different quoting rules and are not supported by these command generators.
+The generators print recipes only; the selected engine validates host/port values.
+
 ---
 
 ## Controller — schema outside the weights
