@@ -45,10 +45,11 @@ LIVE_CHAT_URL = f"{LIVE_SPACE_BASE}/v1/chat/completions"
 LIVE_MODELS_URL = f"{LIVE_SPACE_BASE}/v1/models"
 LIVE_CONTRACT_URL = f"{LIVE_SPACE_BASE}/.well-known/szl-inference-contract.json"
 LIVE_IDENTITY_URL = f"{LIVE_SPACE_BASE}/api/v1/identity"
+FORGE_SOURCE_REVISION = "e28abe9d4be3ce5efbb09ea2a3a248494c654636"
 FORGE_SPACE_SOURCE = (
-    "https://github.com/szl-holdings/szl-forge/tree/main/spaces/szl-model-inference-lab"
+    "https://github.com/szl-holdings/szl-forge/tree/"
+    f"{FORGE_SOURCE_REVISION}/spaces/szl-model-inference-lab"
 )
-FORGE_SOURCE_REVISION = "952e99834c106797254f92a1a46e1627c2847791"
 
 # SNAPSHOT / READ-ONLY evidence console. Not a trainer. Not a serve runtime.
 # REACHABLE = transport only. Curriculum BLUEPRINT_NOT_TRAINED.
