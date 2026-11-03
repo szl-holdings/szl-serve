@@ -190,6 +190,10 @@ def validate_plan(
       - ``MODEL`` — real model output; ``provenance`` must be ``MODEL_PROPOSED``.
       - ``SYNTHETIC`` — fixture / illustrative example; ``SYNTHETIC`` is allowed.
       - ``UNKNOWN`` — schema + cross-field only (tests, CLI).
+
+    Model proposals also require controller-provided ``offered_ids``. Their
+    own candidate list is not an independent grounding source. An explicitly
+    empty iterable means no handles were offered; it does not disable checking.
     """
     if not isinstance(plan, Mapping):
         return ValidationResult(
@@ -205,9 +209,11 @@ def validate_plan(
     original = copy.deepcopy(dict(plan))
     reasons: list[str] = []
 
+    schema_valid = True
     try:
         _validator().validate(original)
     except Exception as exc:  # noqa: BLE001 — any schema failure is a reject
+        schema_valid = False
         reasons.append(f"schema: {str(exc).splitlines()[0]}")
 
     provenance = original.get("provenance")
@@ -218,7 +224,14 @@ def validate_plan(
     if provenance not in ("SYNTHETIC", "MODEL_PROPOSED", None) and "schema:" not in "".join(reasons):
         reasons.append(f"unknown provenance {provenance!r}")
 
-    reasons.extend(_cross_field_reasons(original, _as_set(offered_ids)))
+    if source == SOURCE_MODEL and offered_ids is None:
+        reasons.append("MODEL proposals require controller-provided offered_ids")
+
+    # Cross-field checks assume the shapes guaranteed by the pinned schema.
+    # A rejected model payload must not reach .get()/set() operations on
+    # malformed nested values and raise instead of returning REJECT.
+    if schema_valid:
+        reasons.extend(_cross_field_reasons(original, _as_set(offered_ids)))
 
     binding = original.get("brainBinding") or {}
     ok = len(reasons) == 0

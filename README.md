@@ -141,7 +141,13 @@ or replaced with a fallback copy.
 - Hallucinated `citedNodeIds` → **REJECT**. Never silently repaired into a green plan.
 - `brainBinding.status` stays **NOT_RESOLVED**.
 - Real model output provenance is **MODEL_PROPOSED**, not `SYNTHETIC`.
+- Calls using `source="MODEL"` require controller-provided `offered_ids`;
+  the model's own candidate list cannot establish grounding. An empty list
+  explicitly means no handles were offered and still enforces rejection.
 - Invalid JSON / cross-field contract failure → fail closed (`REJECT`).
+
+The CLI examples below check schema and internal consistency (`source="UNKNOWN"`).
+They do not establish that handles were independently offered to a real model.
 
 ```bash
 python -m szl_serve validate tests/fixtures/plan_model_proposed.json
