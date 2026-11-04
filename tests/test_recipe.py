@@ -55,13 +55,16 @@ def test_live_cpu_is_the_existing_space_not_a_second_runtime():
 
 def test_measured_sample_is_raw_counts_not_tokens_per_second():
     sample = MEASURED_CPU_SAMPLE
-    assert sample["date"] == "2026-08-28"
-    assert sample["completion_tokens"] == 21
-    assert sample["elapsed_ms"] == 2053
+    assert sample["date"] == "2026-11-04"
+    assert sample["completion_tokens"] == 24
+    assert sample["elapsed_ms"] == 8237
     assert sample["execution_record"] == "UNSIGNED"
     assert sample["tokens_per_second"] is None
+    assert sample["gpu"] == "ROADMAP"
     assert sample["energy"]["joules"] is None
     assert sample["energy"]["label"] == "UNAVAILABLE"
+    assert sample["evidence"] == "evidence/measured-cpu-serve-20261104.json"
+    assert sample["hardware"]["accelerator_observed"] == "cpu"
 
 
 def test_gpu_vllm_tgi_remain_roadmap():

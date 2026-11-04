@@ -63,8 +63,9 @@ ATELIER serve studio. **Not** `szl-forge-lab`.
 | API | OpenAI subset `POST /v1/chat/completions` |
 | Model | `SZLHOLDINGS/SZL-Khipu-1.5B-GGUF@67d60ec577730747055491640cfb91fc4a4b5d25` |
 | GGUF | `SZL-Khipu-1.5B-Q4_K_M.gguf` · SHA-256 `13c1a1993063e1dff92f7413ccf48eaca6d48efc8801ae9af35961ae3396623a` · 986047904 bytes |
-| Sample 2026-08-28 | **21** completion tokens · **elapsed_ms 2053** · execution_record **UNSIGNED** |
+| Sample 2026-11-04 | **24** completion tokens · **elapsed_ms 8237** · execution_record **UNSIGNED** · evidence [`measured-cpu-serve-20261104.json`](evidence/measured-cpu-serve-20261104.json) |
 | Energy | `joules=null` · label **UNAVAILABLE** (CPU lab; MEASURED only from a real NVML delta) |
+| GPU | **ROADMAP** until MEASURED on named hardware |
 | SLA | Best-effort public demo. No provider SLA. Dummy bearer `not-a-secret` only — never a real token. |
 
 ```bash
@@ -173,7 +174,7 @@ Never invent a joule. Hash-chain a serve receipt: request hash, output hash, mod
 
 | Surface | Label |
 |---|---|
-| FORGE Space CPU OpenAI subset + GGUF pin + 2026-08-28 sample | **MEASURED** |
+| FORGE Space CPU OpenAI subset + GGUF pin + 2026-11-04 sample | **MEASURED** |
 | llama.cpp / Ollama commands for the same pin | **LIVE recipe** (airgap twin) |
 | Energy on CPU | **UNAVAILABLE** |
 | GPU / vLLM / TGI / TensorRT-LLM / SGLang / Dynamo | **ROADMAP** |

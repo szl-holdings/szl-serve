@@ -109,21 +109,38 @@ ATELIER_LOCK: Dict[str, Any] = {
     "gpu": "ROADMAP",
 }
 
-# MEASURED sample (2026-08-28). Raw counts + elapsed. Not a tokens/s claim.
+# MEASURED sample (2026-11-04). Raw counts + elapsed. Not a tokens/s claim.
+# Evidence: evidence/measured-cpu-serve-20261104.json (hash-chained UNSIGNED receipt).
 MEASURED_CPU_SAMPLE: Dict[str, Any] = {
-    "date": "2026-08-28",
+    "date": "2026-11-04",
+    "stamp": "2026-11-04T17:46:48Z",
     "surface": LIVE_SPACE_BASE,
     "method": "POST /v1/chat/completions",
     "model": KHIPU_OPENAI_MODEL_ID,
-    "completion_tokens": 21,
-    "elapsed_ms": 2053,
+    "completion_tokens": 24,
+    "prompt_tokens": 49,
+    "total_tokens": 73,
+    "elapsed_ms": 8237,
     "execution_record": "UNSIGNED",
     "energy": {"joules": None, "label": "UNAVAILABLE"},
     "tokens_per_second": None,
+    "gpu": "ROADMAP",
+    "hardware": {
+        "required": "cpu-basic",
+        "accelerator_observed": "cpu",
+        "cpu_cores_observed": "2",
+        "memory_observed": "16.0G",
+    },
+    "evidence": "evidence/measured-cpu-serve-20261104.json",
+    "chat_id": "chatcmpl-szl-406b010a26df4aa7a62913f8ab3d89e4",
+    "request_sha256": "3ebaa71f2226218cc6d9b444ee8d0cb8e52a1d57e110c23d2a88460dca34c22d",
+    "response_sha256": "2dc8910faef0fd417bdc5653bfe3bbcee9c7793b196c707ca8e780f934968d15",
     "note": (
         "MEASURED wall elapsed and tokenizer completion count from the FORGE "
-        "Space. Not a tokens/s leaderboard. Not proven trust. Energy was not "
-        "an NVML delta on that CPU box, so joules stay null / UNAVAILABLE."
+        "Space on 2026-11-04 (cpu-basic). Not a tokens/s leaderboard. Not proven "
+        "trust. Energy was not an NVML delta on that CPU box, so joules stay null "
+        "/ UNAVAILABLE. GPU remains ROADMAP. Supersedes the 2026-08-28 sample "
+        "(21 tokens / 2053 ms) as the CARD pin."
     ),
 }
 

@@ -11,7 +11,7 @@ Not a vendor engine. Not a takeover of the Hugging Face Space.
 | Live CPU runtime | **MEASURED** | Existing lab `https://szlholdings-szl-model-inference-lab.hf.space` — FORGE owns the Space (`szl-holdings/szl-forge`). This repo pins it. Do not invent a second runtime. |
 | OpenAI subset | **MEASURED** | `POST /v1/chat/completions` · model `SZLHOLDINGS/SZL-Khipu-1.5B-GGUF@67d60ec577730747055491640cfb91fc4a4b5d25` |
 | Weight pin | **MEASURED** | `SZL-Khipu-1.5B-Q4_K_M.gguf` · LFS SHA-256 `13c1a1993063e1dff92f7413ccf48eaca6d48efc8801ae9af35961ae3396623a` · 986047904 bytes |
-| Sample 2026-08-28 | **MEASURED** | 21 completion tokens · `elapsed_ms` 2053 · execution_record **UNSIGNED**. Not a tokens/s rating. |
+| Sample 2026-11-04 | **MEASURED** | 24 completion tokens · `elapsed_ms` 8237 · execution_record **UNSIGNED**. Not a tokens/s rating. Receipt: [`evidence/measured-cpu-serve-20261104.json`](evidence/measured-cpu-serve-20261104.json). Hardware: cpu-basic / 2 cores / 16G. |
 | Energy (CPU lab) | **UNAVAILABLE** | `joules=null`. MEASURED only from a real NVML delta. Never invent a joule. |
 | llama.cpp / Ollama | **LIVE recipe** | Airgap twin of the same pin. Not a clone of vLLM. |
 | GPU / vLLM / TGI / TRT-LLM / SGLang / Dynamo | **ROADMAP** | Until MEASURED on named hardware. |

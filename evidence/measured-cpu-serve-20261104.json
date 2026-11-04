@@ -1,0 +1,75 @@
+{
+  "chain_verify": {
+    "first_break_index": -1,
+    "length": 1,
+    "ok": true
+  },
+  "chat_id": "chatcmpl-szl-406b010a26df4aa7a62913f8ab3d89e4",
+  "completion_tokens": 24,
+  "content_preview": "One limit of cryptographic receipts is that they are only as secure as the underlying blockchain or smart contract. If the blockchain or",
+  "credit": "Stephen Lutar / SZL Holdings",
+  "elapsed_ms": 8237,
+  "energy": {
+    "joules": null,
+    "label": "UNAVAILABLE"
+  },
+  "execution_record": "UNSIGNED",
+  "gpu": "ROADMAP",
+  "hardware": {
+    "accelerator_observed": "cpu",
+    "cpu_cores_observed": "2",
+    "memory_observed": "16.0G",
+    "required": "cpu-basic"
+  },
+  "http_status": 200,
+  "lambda": "Conjecture 1 advisory",
+  "method": "POST /v1/chat/completions",
+  "model": "SZLHOLDINGS/SZL-Khipu-1.5B-GGUF@67d60ec577730747055491640cfb91fc4a4b5d25",
+  "prompt": "Explain one limit of cryptographic receipts.",
+  "prompt_tokens": 49,
+  "request_sha256": "3ebaa71f2226218cc6d9b444ee8d0cb8e52a1d57e110c23d2a88460dca34c22d",
+  "response_sha256": "2dc8910faef0fd417bdc5653bfe3bbcee9c7793b196c707ca8e780f934968d15",
+  "schema": "szl_serve/measured_cpu_sample@1",
+  "serve_receipt": {
+    "digest": "sha256:e399cb7ba9d5d341431c960f3b9fcb92297c985b28a838f0ad72b0fa53151d72",
+    "energy_joules": null,
+    "energy_label": "UNAVAILABLE",
+    "energy_source": "none",
+    "lambda": "Conjecture 1 (advisory; trust never 100%)",
+    "model_pin": {
+      "bytes": 986047904,
+      "filename": "SZL-Khipu-1.5B-Q4_K_M.gguf",
+      "lfs_sha256": "13c1a1993063e1dff92f7413ccf48eaca6d48efc8801ae9af35961ae3396623a",
+      "openai_model_id": "SZLHOLDINGS/SZL-Khipu-1.5B-GGUF@67d60ec577730747055491640cfb91fc4a4b5d25",
+      "repo_id": "SZLHOLDINGS/SZL-Khipu-1.5B-GGUF",
+      "revision": "67d60ec577730747055491640cfb91fc4a4b5d25",
+      "weight_id": "khipu"
+    },
+    "note": "MEASURED CPU serve sample on FORGE Space szl-model-inference-lab. Raw completion_tokens + elapsed_ms only. Not a tokens/s rating. GPU ROADMAP. Energy UNAVAILABLE (no NVML). UNSIGNED. Credit Stephen Lutar. \u039b=Conjecture 1.",
+    "output_sha256": "cf73b34d65f9467ba6e22b30d02ff1054f0283299f58c8fa2742cd2448130189",
+    "payload_digest": "sha256:d4b2df7fda9da2030204b05e152f3ad896c1566af05965e226b857e6cb3528e1",
+    "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+    "request_sha256": "57a7d635675c0ced9c1314c76e0433f73d1897668f4970e38f8152bdfb99ac63",
+    "schema": "szl_serve/receipt@1",
+    "signature": null,
+    "signed": false,
+    "validation_disposition": "ACCEPT_PROPOSAL"
+  },
+  "space_id": "SZLHOLDINGS/szl-model-inference-lab",
+  "stamp": "2026-11-04T17:46:48Z",
+  "supersedes_sample": {
+    "completion_tokens": 21,
+    "date": "2026-08-28",
+    "elapsed_ms": 2053,
+    "note": "Prior CARD pin retained as historical; this receipt is the current MEASURED pin."
+  },
+  "surface": "https://szlholdings-szl-model-inference-lab.hf.space",
+  "tokens_per_second": null,
+  "total_tokens": 73,
+  "what_not": [
+    "not a tokens/s leaderboard",
+    "not NVML MEASURED energy",
+    "not GPU/vLLM/TGI LIVE",
+    "not proven trust / not DSSE"
+  ]
+}
