@@ -165,9 +165,11 @@ def selfcheck() -> Dict[str, Any]:
     from szl_serve.energy import LABEL_UNAVAILABLE, measure_serve_energy
     from szl_serve.recipe import ATELIER_SERVE_STUDIO, GPU_PATH
     from szl_serve.schema import schema_sha256
+    from szl_serve.specdecode import probe_specdecode
 
     energy = measure_serve_energy()
     estate = probe_estate()
+    specdecode = probe_specdecode()
     return {
         "ok": energy.label == LABEL_UNAVAILABLE and energy.joules is None and estate["enumerated"] == 16,
         "schema_sha256": schema_sha256(),
@@ -179,5 +181,11 @@ def selfcheck() -> Dict[str, Any]:
         "estate_enumerated": estate["enumerated"],
         "cuda": estate["cuda"],
         "joblib": "QUARANTINED",
+        "specdecode": {
+            "status": specdecode.get("status"),
+            "label": specdecode.get("label"),
+            "gpu": specdecode.get("gpu"),
+            "speedup_claim": specdecode.get("speedup_claim"),
+        },
         "lambda": "Conjecture 1 (advisory)",
     }

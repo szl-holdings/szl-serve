@@ -16,6 +16,7 @@ Not a vendor engine. Not a takeover of the Hugging Face Space.
 | llama.cpp / Ollama | **LIVE recipe** | Airgap twin of the same pin. Not a clone of vLLM. |
 | GPU / vLLM / TGI / TRT-LLM / SGLang / Dynamo | **ROADMAP** | Until MEASURED on named hardware. |
 | GPU attention | **ROADMAP** | No fused/paged-attention LIVE claim. No tokens/s invented. |
+| Speculative decode (`szl-specdecode`) | **SPECDECODE=UNAVAILABLE** until soft-import LIVE | Optional pointer to [`szl-holdings/szl-specdecode`](https://github.com/szl-holdings/szl-specdecode) / [`SZLHOLDINGS/szl-specdecode`](https://huggingface.co/SZLHOLDINGS/szl-specdecode). Soft-imports `verify_draft` when installed; else honest null. GPU kernel **UNAVAILABLE**. Speedup **null**. Not a Medusa/EAGLE/vLLM rehost. |
 | `szl-forge-lab` | **SNAPSHOT** | Not a trainer. Not a serve target. No LIVE URL, curl, or model pin. |
 | energy-attested-runs | **8/8 SIMULATED** | Not MEASURED NVML joules. Not a live serve path. Not this recipe's CPU energy evidence. |
 | Ask & Act | **not a live control plane** | a11oy operator tab. Does not gate, launch, or control this recipe. |
