@@ -51,6 +51,12 @@ from szl_serve.recipe import (
     weight_pin,
 )
 from szl_serve.kernels import list_estate, probe_estate, selfcheck
+from szl_serve.specdecode import (
+    LABEL_UNAVAILABLE as SPECDECODE_LABEL_UNAVAILABLE,
+    get_verify_draft,
+    probe_specdecode,
+    verify_draft_available,
+)
 from szl_serve.schema import (
     DISPOSITION_ACCEPT,
     DISPOSITION_REJECT,
@@ -89,6 +95,10 @@ __all__ = [
     "load_khipu_schema",
     "measure_serve_energy",
     "probe_estate",
+    "probe_specdecode",
+    "get_verify_draft",
+    "verify_draft_available",
+    "SPECDECODE_LABEL_UNAVAILABLE",
     "selfcheck",
     "ollama_command",
     "openai_shaped_chat",

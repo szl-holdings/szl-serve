@@ -179,12 +179,26 @@ Never invent a joule. Hash-chain a serve receipt: request hash, output hash, mod
 | Energy on CPU | **UNAVAILABLE** |
 | GPU / vLLM / TGI / TensorRT-LLM / SGLang / Dynamo | **ROADMAP** |
 | GPU attention | **ROADMAP** — no fused/paged-attention LIVE claim; no tokens/s invented |
+| Speculative decode (`szl-specdecode`) | **SPECDECODE=UNAVAILABLE** until soft-import LIVE — see below |
 | `SZLHOLDINGS/szl-forge-lab` | **SNAPSHOT** — not a trainer; do not point this recipe at it |
 | `SZLHOLDINGS/energy-attested-runs` | **8/8 SIMULATED** — not MEASURED NVML; not a live serve path |
 | Ask & Act | **not a live control plane** |
 | Chaski, ReceiptAgent weights | **ROADMAP** stubs on this config surface — not fake LIVE |
 
 Λ is Conjecture 1. It does not become a theorem because a chat call returned 21 tokens.
+
+---
+
+## Speculative decode silhouette (optional)
+
+Pointer to [`szl-holdings/szl-specdecode`](https://github.com/szl-holdings/szl-specdecode) (HF twin [`SZLHOLDINGS/szl-specdecode`](https://huggingface.co/SZLHOLDINGS/szl-specdecode)). Soft-imports `szl_specdecode.verify_draft` when that package is installed; otherwise labels **SPECDECODE=UNAVAILABLE**. GPU draft kernels stay **UNAVAILABLE**. Speedup claim stays **null** until a MEASURED draft/target pair receipt exists. Not a rehost of Medusa, EAGLE, TensorRT-LLM speculative decoding, or vLLM. Credit Stephen Lutar. MEASURED-or-null.
+
+```python
+from szl_serve.specdecode import probe_specdecode, get_verify_draft
+
+probe_specdecode()           # {"label": "SPECDECODE=UNAVAILABLE", ...} or import-LIVE
+get_verify_draft()           # callable or None — never fabricates tokens/s
+```
 
 ---
 
