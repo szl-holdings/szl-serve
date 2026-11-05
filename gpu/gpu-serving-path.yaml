@@ -1,0 +1,98 @@
+# GPU MEASURED Serving Path — Estate-Trained Models
+#
+# This file defines the GPU serving path that szl-serve's ROADMAP called for.
+# The A6000 inference server runs vLLM and serves estate-trained models
+# behind the Cloudflare monetization gateway at api.a-11-oy.com.
+
+apiVersion: szl-serve.gpu/v1
+
+# Inference server (A6000 via Massed Compute)
+server:
+  endpoint: https://api.a-11-oy.com
+  internal: http://localhost:8080
+  engine: vLLM
+  hardware: 1x RTX A6000 (48GB)
+  status: MEASURED
+  monetization: x402 per-call
+
+# Estate-trained models served on this path
+models:
+  - id: SZLHOLDINGS/SZL-Nemotron-Mini-4B-Estate-v1
+    alias: nemotron-estate
+    description: The estate study flagship — NVIDIA Nemotron fine-tuned on the complete knowledge of the SZL Holdings estate
+    training_receipt: https://huggingface.co/datasets/SZLHOLDINGS/wave-logs
+    proof_banner: true
+    corpus: 4855 examples across 6 datasets
+    context_length: 2048
+    dtype: bfloat16
+    pricing:
+      per_call_usd: 0.05
+      verified_bots_usd: 0.10
+
+  - id: SZLHOLDINGS/SZL-Khipu-1.5B-estate-sft-v1
+    alias: khipu-estate
+    description: The doctrine model — Khipu fine-tuned on the full estate chat corpus
+    training_receipt: https://huggingface.co/datasets/SZLHOLDINGS/wave-logs
+    proof_banner: true
+    corpus: 2940 examples across 3 datasets
+    context_length: 4096
+    dtype: bfloat16
+    pricing:
+      per_call_usd: 0.05
+
+  - id: SZLHOLDINGS/szl-receiptagent-qwen35-0.8b-dpo-v2
+    alias: receiptagent-dpo
+    description: The abstention model — ReceiptAgent with eval-driven DPO preference training
+    training_receipt: https://huggingface.co/datasets/SZLHOLDINGS/wave-logs
+    proof_banner: true
+    corpus: 62 preference pairs (doctrine abstention)
+    context_length: 2048
+    dtype: bfloat16
+    pricing:
+      per_call_usd: 0.02
+
+# Chat endpoint (OpenAI-compatible)
+chat:
+  path: /v1/chat/completions
+  model_default: SZLHOLDINGS/SZL-Nemotron-Mini-4B-Estate-v1
+  max_tokens_default: 256
+  streaming: true
+
+# Inference endpoint
+inference:
+  path: /v1/inference
+  method: POST
+  model_param: model
+  prompt_param: prompt
+  max_tokens_param: max_tokens
+
+# Receipt wrapping (extends szl-serve's existing receipt system)
+receipts:
+  chain: khipu  # hash-linked receipt chain
+  include:
+    - model_id
+    - model_revision
+    - training_receipt_link
+    - inference_timestamp
+    - prompt_hash
+    - response_hash
+    - elapsed_ms
+    - energy_label
+
+# Energy measurement (NVML on A6000)
+energy:
+  source: NVML
+  label: MEASURED  # was UNAVAILABLE on CPU
+  hardware: RTX A6000
+
+# Monetization (x402 via Cloudflare)
+monetization:
+  gateway: Cloudflare
+  protocol: x402
+  settlement_wallet: 0x50E9B335ac233fcc5e87404367E7De253A63D460
+  rules:
+    - path: /v1/inference
+      price_all: 0.05
+      price_verified_bots: 0.10
+    - path: /v1/chat/completions
+      price_all: 0.02
