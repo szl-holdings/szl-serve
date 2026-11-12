@@ -89,7 +89,8 @@ energy:
 monetization:
   gateway: Cloudflare
   protocol: x402
-  settlement_wallet: 0x50E9B335ac233fcc5e87404367E7De253A63D460
+  # Base USDC. Cloudflare payment rules switched to this wallet on 2026-11-12.
+  settlement_wallet: 0x7b133ef996852c223379d6d1245430300970291A
   rules:
     - path: /v1/inference
       price_all: 0.05
