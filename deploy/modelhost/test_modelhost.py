@@ -274,8 +274,16 @@ class ModelHostTests(Fixture, unittest.TestCase):
                 self.options = {"local_files_only": local_files_only}
             def eval(self):
                 pass
+        class CurrentIntegration:
+            def load_adapter(self, path, adapter_name=None, local_files_only=False,
+                             adapter_kwargs=None, **kwargs):
+                if local_files_only:
+                    raise TypeError("LoadStateDictConfig.__init__() got an unexpected keyword argument 'local_files_only'")
+                self.options = adapter_kwargs
+            def eval(self):
+                pass
         backend = TorchBackend.__new__(TorchBackend)
-        for cls in (Old, New):
+        for cls in (Old, New, CurrentIntegration):
             model = cls()
             backend.load_adapter({"model": model}, {"path": "/local/adapter"}, "alias")
             self.assertEqual(model.options, {"local_files_only": True})

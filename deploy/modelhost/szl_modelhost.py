@@ -155,8 +155,12 @@ class TorchBackend:
 
     def load_adapter(self, base, spec, alias):
         load = base["model"].load_adapter
-        kwargs = ({"local_files_only": True} if "local_files_only" in inspect.signature(load).parameters
-                  else {"adapter_kwargs": {"local_files_only": True}})
+        parameters = inspect.signature(load).parameters
+        # Current Transformers accepts the top-level flag but incorrectly sends
+        # it to LoadStateDictConfig. adapter_kwargs targets download_kwargs and
+        # works with both the older and current PEFT integrations.
+        kwargs = ({"adapter_kwargs": {"local_files_only": True}} if "adapter_kwargs" in parameters
+                  else {"local_files_only": True})
         load(spec["path"], adapter_name=alias, **kwargs)
         base["model"].eval()
         return {**base, "alias": alias}
