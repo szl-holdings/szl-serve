@@ -1,0 +1,14 @@
+[
+  {
+    "host": "gate1",
+    "exit": 0,
+    "stdout": "{\"tests_exit\": 0, \"stdout\": \"\", \"stderr\": \"----------------------------------------------------------------------\\nRan 67 tests in 0.390s\\n\\nOK\\n\"}\n{\"compile_exit\": 0, \"stderr\": \"\"}\n",
+    "stderr": ""
+  },
+  {
+    "host": "cuda",
+    "exit": 0,
+    "stdout": "{\"tests_exit\": 0, \"stdout\": \"\", \"stderr\": \"----------------------------------------------------------------------\\nRan 67 tests in 0.427s\\n\\nOK\\n\"}\n{\"compile_exit\": 0, \"stderr\": \"\"}\n",
+    "stderr": ""
+  }
+]

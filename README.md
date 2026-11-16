@@ -247,3 +247,11 @@ tests/fixtures/*.json
 <sub>SLSA: L1 honest · L2 attested · L3 roadmap. Λ = Conjecture 1. Trust ceiling 0.97 — never 100%.</sub>
 
 </div>
+
+## Massed GPU operator deployment
+
+The separately deployed Massed Transformers/PEFT service is tracked under
+[`deploy/modelhost`](deploy/modelhost/README.md), with immutable artifact locks,
+bounded serving, encrypted SSH operator access, and per-host operational evidence.
+This deployment has its own readiness gates and does not change the CPU recipe,
+its public studio, or the roadmap status of the vendor-engine integrations.
