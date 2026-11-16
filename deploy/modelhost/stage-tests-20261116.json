@@ -1,14 +1,112 @@
-[
-  {
-    "host": "gate1",
-    "exit": 0,
-    "stdout": "{\"tests_exit\": 0, \"stdout\": \"\", \"stderr\": \"----------------------------------------------------------------------\\nRan 67 tests in 0.390s\\n\\nOK\\n\"}\n{\"compile_exit\": 0, \"stderr\": \"\"}\n",
-    "stderr": ""
+{
+  "gate1": {
+    "planning_changes": [
+      {
+        "repo": "SZLHOLDINGS/szl-receiptagent-qwen35-0.8b-v2m-estate-sft-v1",
+        "before_mb": 3673,
+        "after_mb": 1965,
+        "projected_bf16_bytes": 1705971840,
+        "stored_tensor_bytes": 3411943680
+      },
+      {
+        "repo": "Qwen/Qwen2.5-Coder-3B-Instruct",
+        "before_mb": 6437,
+        "after_mb": 6437,
+        "projected_bf16_bytes": 6171877376,
+        "stored_tensor_bytes": 6171877376
+      },
+      {
+        "repo": "Qwen/Qwen2.5-1.5B",
+        "before_mb": 3348,
+        "after_mb": 3348,
+        "projected_bf16_bytes": 3087428608,
+        "stored_tensor_bytes": 3087428608
+      },
+      {
+        "repo": "nvidia/NVIDIA-Nemotron-3-Nano-4B-BF16",
+        "before_mb": 8214,
+        "after_mb": 8214,
+        "projected_bf16_bytes": 7947113664,
+        "stored_tensor_bytes": 7947113664
+      },
+      {
+        "repo": "Qwen/Qwen3.5-0.8B",
+        "before_mb": 2006,
+        "after_mb": 2006,
+        "projected_bf16_bytes": 1746877568,
+        "stored_tensor_bytes": 1746882752
+      },
+      {
+        "repo": "SZLHOLDINGS/SZL-Nemotron-Mini-4B-Estate-v1",
+        "before_mb": 8649,
+        "after_mb": 8649,
+        "projected_bf16_bytes": 8381018112,
+        "stored_tensor_bytes": 8381018112
+      },
+      {
+        "repo": "Qwen/Qwen2.5-0.5B-Instruct",
+        "before_mb": 1246,
+        "after_mb": 1246,
+        "projected_bf16_bytes": 988065536,
+        "stored_tensor_bytes": 988065536
+      },
+      {
+        "repo": "Qwen/Qwen3-1.7B",
+        "before_mb": 4326,
+        "after_mb": 4325,
+        "projected_bf16_bytes": 4063479808,
+        "stored_tensor_bytes": 4063479808
+      }
+    ],
+    "tests_exit": 0,
+    "tests_stderr": "----------------------------------------------------------------------\nRan 87 tests in 0.499s\n\nOK\n"
   },
-  {
-    "host": "cuda",
-    "exit": 0,
-    "stdout": "{\"tests_exit\": 0, \"stdout\": \"\", \"stderr\": \"----------------------------------------------------------------------\\nRan 67 tests in 0.427s\\n\\nOK\\n\"}\n{\"compile_exit\": 0, \"stderr\": \"\"}\n",
-    "stderr": ""
+  "cuda": {
+    "planning_changes": [
+      {
+        "repo": "SZLHOLDINGS/szl-receiptagent-qwen35-0.8b-v2m-estate-sft-v1",
+        "before_mb": 3673,
+        "after_mb": 1965,
+        "projected_bf16_bytes": 1705971840,
+        "stored_tensor_bytes": 3411943680
+      },
+      {
+        "repo": "Qwen/Qwen2.5-Coder-3B-Instruct",
+        "before_mb": 6437,
+        "after_mb": 6437,
+        "projected_bf16_bytes": 6171877376,
+        "stored_tensor_bytes": 6171877376
+      },
+      {
+        "repo": "Qwen/Qwen2.5-1.5B",
+        "before_mb": 3348,
+        "after_mb": 3348,
+        "projected_bf16_bytes": 3087428608,
+        "stored_tensor_bytes": 3087428608
+      },
+      {
+        "repo": "Qwen/Qwen3.5-0.8B",
+        "before_mb": 2006,
+        "after_mb": 2006,
+        "projected_bf16_bytes": 1746877568,
+        "stored_tensor_bytes": 1746882752
+      },
+      {
+        "repo": "Qwen/Qwen2.5-0.5B-Instruct",
+        "before_mb": 1246,
+        "after_mb": 1246,
+        "projected_bf16_bytes": 988065536,
+        "stored_tensor_bytes": 988065536
+      },
+      {
+        "repo": "Qwen/Qwen3-1.7B",
+        "before_mb": 4326,
+        "after_mb": 4325,
+        "projected_bf16_bytes": 4063479808,
+        "stored_tensor_bytes": 4063479808
+      }
+    ],
+    "tests_exit": 0,
+    "tests_stderr": "----------------------------------------------------------------------\nRan 87 tests in 0.508s\n\nOK\n"
   }
-]
+}

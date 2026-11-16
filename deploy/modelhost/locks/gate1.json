@@ -1,7 +1,7 @@
 {
   "bases": {
     "266a718d6f0b6e0c93eadc21": {
-      "estimated_vram_mb": 3673,
+      "estimated_vram_mb": 1965,
       "files": [
         {
           "path": "chat_template.jinja",
@@ -36,7 +36,28 @@
       ],
       "path": "/home/Ubuntu/szl-modelhost/hf/hub/models--SZLHOLDINGS--szl-receiptagent-qwen35-0.8b-v2m-estate-sft-v1/snapshots/aa3e937e991af2513f9f77f28aeab4f220622785",
       "repo": "SZLHOLDINGS/szl-receiptagent-qwen35-0.8b-v2m-estate-sft-v1",
-      "revision": "aa3e937e991af2513f9f77f28aeab4f220622785"
+      "revision": "aa3e937e991af2513f9f77f28aeab4f220622785",
+      "vram_planning": {
+        "fixed_overhead_mb": 256,
+        "headroom_percent": 5,
+        "method": "safetensors_bf16_projection/v1",
+        "minimum_mb": 900,
+        "projected_bf16_bytes": 1705971840,
+        "stored_tensor_bytes": 3411943680,
+        "target_float_dtype": "BF16",
+        "weight_files": {
+          "model.safetensors": {
+            "dtype_elements": {
+              "F32": 852985920
+            },
+            "file_bytes": 3412002208,
+            "header_bytes": 58520,
+            "projected_bf16_bytes": 1705971840,
+            "stored_tensor_bytes": 3411943680,
+            "tensor_count": 473
+          }
+        }
+      }
     },
     "26d9c2788552ac1d86016648": {
       "estimated_vram_mb": 6437,
@@ -89,7 +110,38 @@
       ],
       "path": "/home/Ubuntu/szl-modelhost/hf/hub/models--Qwen--Qwen2.5-Coder-3B-Instruct/snapshots/488639f1ff808d1d3d0ba301aef8c11461451ec5",
       "repo": "Qwen/Qwen2.5-Coder-3B-Instruct",
-      "revision": "488639f1ff808d1d3d0ba301aef8c11461451ec5"
+      "revision": "488639f1ff808d1d3d0ba301aef8c11461451ec5",
+      "vram_planning": {
+        "fixed_overhead_mb": 256,
+        "headroom_percent": 5,
+        "method": "safetensors_bf16_projection/v1",
+        "minimum_mb": 900,
+        "projected_bf16_bytes": 6171877376,
+        "stored_tensor_bytes": 6171877376,
+        "target_float_dtype": "BF16",
+        "weight_files": {
+          "model-00001-of-00002.safetensors": {
+            "dtype_elements": {
+              "BF16": 2478760448
+            },
+            "file_bytes": 4957560304,
+            "header_bytes": 39400,
+            "projected_bf16_bytes": 4957520896,
+            "stored_tensor_bytes": 4957520896,
+            "tensor_count": 344
+          },
+          "model-00002-of-00002.safetensors": {
+            "dtype_elements": {
+              "BF16": 607178240
+            },
+            "file_bytes": 1214366696,
+            "header_bytes": 10208,
+            "projected_bf16_bytes": 1214356480,
+            "stored_tensor_bytes": 1214356480,
+            "tensor_count": 90
+          }
+        }
+      }
     },
     "2cb255f7a2a546a14e2923f7": {
       "estimated_vram_mb": 3348,
@@ -132,7 +184,28 @@
       ],
       "path": "/home/Ubuntu/szl-modelhost/hf/hub/models--Qwen--Qwen2.5-1.5B/snapshots/8faed761d45a263340a0528343f099c05c9a4323",
       "repo": "Qwen/Qwen2.5-1.5B",
-      "revision": "8faed761d45a263340a0528343f099c05c9a4323"
+      "revision": "8faed761d45a263340a0528343f099c05c9a4323",
+      "vram_planning": {
+        "fixed_overhead_mb": 256,
+        "headroom_percent": 5,
+        "method": "safetensors_bf16_projection/v1",
+        "minimum_mb": 900,
+        "projected_bf16_bytes": 3087428608,
+        "stored_tensor_bytes": 3087428608,
+        "target_float_dtype": "BF16",
+        "weight_files": {
+          "model.safetensors": {
+            "dtype_elements": {
+              "BF16": 1543714304
+            },
+            "file_bytes": 3087467144,
+            "header_bytes": 38528,
+            "projected_bf16_bytes": 3087428608,
+            "stored_tensor_bytes": 3087428608,
+            "tensor_count": 338
+          }
+        }
+      }
     },
     "4ca6cbfc8472a8da69bb8585": {
       "estimated_vram_mb": 8214,
@@ -175,7 +248,28 @@
       ],
       "path": "/home/Ubuntu/szl-modelhost/hf/hub/models--nvidia--NVIDIA-Nemotron-3-Nano-4B-BF16/snapshots/dfaf35de3e30f1867dd8dbc38a7fc9fb52d3914f",
       "repo": "nvidia/NVIDIA-Nemotron-3-Nano-4B-BF16",
-      "revision": "dfaf35de3e30f1867dd8dbc38a7fc9fb52d3914f"
+      "revision": "dfaf35de3e30f1867dd8dbc38a7fc9fb52d3914f",
+      "vram_planning": {
+        "fixed_overhead_mb": 256,
+        "headroom_percent": 5,
+        "method": "safetensors_bf16_projection/v1",
+        "minimum_mb": 900,
+        "projected_bf16_bytes": 7947113664,
+        "stored_tensor_bytes": 7947113664,
+        "target_float_dtype": "BF16",
+        "weight_files": {
+          "model.safetensors": {
+            "dtype_elements": {
+              "BF16": 3973556832
+            },
+            "file_bytes": 7947142640,
+            "header_bytes": 28968,
+            "projected_bf16_bytes": 7947113664,
+            "stored_tensor_bytes": 7947113664,
+            "tensor_count": 263
+          }
+        }
+      }
     },
     "66b1ace877a76f71bcb75eb9": {
       "estimated_vram_mb": 2006,
@@ -213,7 +307,29 @@
       ],
       "path": "/home/Ubuntu/szl-modelhost/hf/hub/models--Qwen--Qwen3.5-0.8B/snapshots/2fc06364715b967f1860aea9cf38778875588b17",
       "repo": "Qwen/Qwen3.5-0.8B",
-      "revision": "2fc06364715b967f1860aea9cf38778875588b17"
+      "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+      "vram_planning": {
+        "fixed_overhead_mb": 256,
+        "headroom_percent": 5,
+        "method": "safetensors_bf16_projection/v1",
+        "minimum_mb": 900,
+        "projected_bf16_bytes": 1746877568,
+        "stored_tensor_bytes": 1746882752,
+        "target_float_dtype": "BF16",
+        "weight_files": {
+          "model.safetensors-00001-of-00001.safetensors": {
+            "dtype_elements": {
+              "BF16": 873436192,
+              "F32": 2592
+            },
+            "file_bytes": 1746942600,
+            "header_bytes": 59840,
+            "projected_bf16_bytes": 1746877568,
+            "stored_tensor_bytes": 1746882752,
+            "tensor_count": 488
+          }
+        }
+      }
     },
     "721810d89baaeedb02869cc1": {
       "estimated_vram_mb": 8649,
@@ -251,7 +367,28 @@
       ],
       "path": "/home/Ubuntu/szl-modelhost/hf/hub/models--SZLHOLDINGS--SZL-Nemotron-Mini-4B-Estate-v1/snapshots/272514fd62729db94dc4fb66052753c7ab6397d7",
       "repo": "SZLHOLDINGS/SZL-Nemotron-Mini-4B-Estate-v1",
-      "revision": "272514fd62729db94dc4fb66052753c7ab6397d7"
+      "revision": "272514fd62729db94dc4fb66052753c7ab6397d7",
+      "vram_planning": {
+        "fixed_overhead_mb": 256,
+        "headroom_percent": 5,
+        "method": "safetensors_bf16_projection/v1",
+        "minimum_mb": 900,
+        "projected_bf16_bytes": 8381018112,
+        "stored_tensor_bytes": 8381018112,
+        "target_float_dtype": "BF16",
+        "weight_files": {
+          "model.safetensors": {
+            "dtype_elements": {
+              "BF16": 4190509056
+            },
+            "file_bytes": 8381055608,
+            "header_bytes": 37488,
+            "projected_bf16_bytes": 8381018112,
+            "stored_tensor_bytes": 8381018112,
+            "tensor_count": 324
+          }
+        }
+      }
     },
     "8039b74746db8f08561663ad": {
       "estimated_vram_mb": 1246,
@@ -294,10 +431,31 @@
       ],
       "path": "/home/Ubuntu/szl-modelhost/hf/hub/models--Qwen--Qwen2.5-0.5B-Instruct/snapshots/7ae557604adf67be50417f59c2c2f167def9a775",
       "repo": "Qwen/Qwen2.5-0.5B-Instruct",
-      "revision": "7ae557604adf67be50417f59c2c2f167def9a775"
+      "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+      "vram_planning": {
+        "fixed_overhead_mb": 256,
+        "headroom_percent": 5,
+        "method": "safetensors_bf16_projection/v1",
+        "minimum_mb": 900,
+        "projected_bf16_bytes": 988065536,
+        "stored_tensor_bytes": 988065536,
+        "target_float_dtype": "BF16",
+        "weight_files": {
+          "model.safetensors": {
+            "dtype_elements": {
+              "BF16": 494032768
+            },
+            "file_bytes": 988097824,
+            "header_bytes": 32280,
+            "projected_bf16_bytes": 988065536,
+            "stored_tensor_bytes": 988065536,
+            "tensor_count": 290
+          }
+        }
+      }
     },
     "850ea0bbd0326abec39c10ea": {
-      "estimated_vram_mb": 4326,
+      "estimated_vram_mb": 4325,
       "files": [
         {
           "path": "config.json",
@@ -347,7 +505,38 @@
       ],
       "path": "/home/Ubuntu/szl-modelhost/hf/hub/models--Qwen--Qwen3-1.7B/snapshots/70d244cc86ccca08cf5af4e1e306ecf908b1ad5e",
       "repo": "Qwen/Qwen3-1.7B",
-      "revision": "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e"
+      "revision": "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e",
+      "vram_planning": {
+        "fixed_overhead_mb": 256,
+        "headroom_percent": 5,
+        "method": "safetensors_bf16_projection/v1",
+        "minimum_mb": 900,
+        "projected_bf16_bytes": 4063479808,
+        "stored_tensor_bytes": 4063479808,
+        "target_float_dtype": "BF16",
+        "weight_files": {
+          "model-00001-of-00002.safetensors": {
+            "dtype_elements": {
+              "BF16": 1720574976
+            },
+            "file_bytes": 3441185608,
+            "header_bytes": 35648,
+            "projected_bf16_bytes": 3441149952,
+            "stored_tensor_bytes": 3441149952,
+            "tensor_count": 310
+          },
+          "model-00002-of-00002.safetensors": {
+            "dtype_elements": {
+              "BF16": 311164928
+            },
+            "file_bytes": 622329984,
+            "header_bytes": 120,
+            "projected_bf16_bytes": 622329856,
+            "stored_tensor_bytes": 622329856,
+            "tensor_count": 1
+          }
+        }
+      }
     }
   },
   "generated_utc": "2026-11-16T23:04:25.339219+00:00",

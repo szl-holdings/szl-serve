@@ -292,11 +292,16 @@ class ModelHostTests(Fixture, unittest.TestCase):
 class ObservedServer(BoundedHTTPServer):
     def __init__(self, address, host):
         self.worker_started = threading.Event()
+        self.worker_finished = threading.Event()
         super().__init__(address, host)
 
     def process_request_thread(self, request, client_address):
+        self.worker_finished.clear()
         self.worker_started.set()
-        super().process_request_thread(request, client_address)
+        try:
+            super().process_request_thread(request, client_address)
+        finally:
+            self.worker_finished.set()
 
 
 class HTTPTests(Fixture, unittest.TestCase):
@@ -323,6 +328,11 @@ class HTTPTests(Fixture, unittest.TestCase):
         response = connection.getresponse()
         status, data = response.status, json.loads(response.read())
         connection.close()
+        # Receipt of Content-Length bytes can precede server-side thread cleanup.
+        # Keep endpoint-contract requests sequential; the separate overflow test
+        # intentionally leaves a worker occupied and must not wait for it here.
+        if not (status == 503 and data.get("err") == "http_workers_busy"):
+            self.assertTrue(self.server.worker_finished.wait(2))
         return status, data
 
     def test_health_is_not_readiness(self):
