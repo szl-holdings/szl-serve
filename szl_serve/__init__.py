@@ -1,21 +1,18 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 SZL Holdings
-"""szl-serve — KERNEL-owned canonical governed-inference serve recipe.
+"""szl-serve — historical Khipu evidence and governed Atelier migration.
 
-Silhouette of 2026 serving (vLLM / SGLang / TGI / TensorRT-LLM / llama.cpp /
-Dynamo): one OpenAI-shaped chat call, one pinned weight, one receipt.
+The public OpenAI chat recipe is RETIRED. Dated measurements and immutable
+artifact/source pins remain historical evidence, not current serving
+qualification. The default recipe prints navigation to the authenticated
+A11oy Atelier form and unqualified local llama.cpp / Ollama templates.
+It does not send or forward a prompt. Model output remains proposal-only.
 
-This is NOT a vendor engine and does not vendor-copy those stacks. LIVE CPU
-is the existing MEASURED Hugging Face Space (FORGE-owned). ATELIER lock:
-serve studio = SZLHOLDINGS/szl-model-inference-lab only. szl-forge-lab is
-SNAPSHOT, not a trainer, not a serve target. This repo pins that lab,
-validates proposals outside the weights, and wraps an honest energy
-receipt. llama.cpp / Ollama are the airgap twin of that Space, not a
-second public runtime and not a vLLM clone.
-
-GPU / vLLM / TGI remain ROADMAP. energy-attested-runs is 8/8 SIMULATED.
-Ask & Act is not a live control plane. Joules are MEASURED from a real
-NVML delta or UNAVAILABLE. Λ = Conjecture 1 (advisory), never a theorem.
+This is not a vendor engine. The separate modelhost deployment owns its own
+readiness gates. Vendor-engine GPU integrations remain ROADMAP.
+szl-forge-lab remains SNAPSHOT, not a trainer or serve target.
+energy-attested-runs is 8/8 SIMULATED. Joules are MEASURED from a real NVML
+delta or UNAVAILABLE. Λ = Conjecture 1 (advisory), never a theorem.
 """
 from __future__ import annotations
 

@@ -31,7 +31,8 @@ Revisit only after that card changes through the model-publish gate, not here.
 
 ## Claims boundary
 
-`ollama run hf.co/SZLHOLDINGS/SZL-Khipu-1.5B-GGUF:Q4_K_M` already works; this kit adds a library
-listing and short name, not a new model. The smoke step is a single temperature-0 prompt recorded
+`ollama run hf.co/SZLHOLDINGS/SZL-Khipu-1.5B-GGUF:Q4_K_M` is an unqualified command template.
+Verify downloaded bytes against the artifact pin and qualify the local runtime before use.
+This kit adds a library listing and short name, not a new model. The smoke step is a single temperature-0 prompt recorded
 in the receipt; it is not an evaluation. The signed receipts on the Hub cover the pre-quantized
 checkpoint, not GGUF numerics. Λ = Conjecture 1.

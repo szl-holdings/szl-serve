@@ -71,6 +71,13 @@ def _cmd_qualify(
         sys.stdout.write("\n")
     else:
         _write_json_atomic(Path(output), payload)
+    # Identity observations and route availability are independent. A declared
+    # retired/conflicting route must never make an automation see a green exit.
+    route_state = payload.get("legacy_route", {}).get("state", "UNKNOWN")
+    if route_state in {"RETIRED", "CONFLICT"}:
+        return 2
+    if route_state != "DECLARED":
+        return 1
     return 0 if payload["state"] == "OBSERVED" else 1
 
 
@@ -78,8 +85,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="szl_serve",
         description=(
-            "SZL governed-inference serve recipe: pin the MEASURED HF Space, "
-            "validate plans outside the weights, print the airgap twin. "
+            "SZL historical CPU evidence and governed Atelier migration: "
+            "validate plans outside the weights and document local command templates. "
             "Not vLLM. Not a tokens/s leaderboard."
         ),
     )
@@ -88,11 +95,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     p_val = sub.add_parser("validate", help="Validate a plan JSON (fail closed; no repair).")
     p_val.add_argument("plan", help="Path to a Khipu plan JSON fixture or model proposal.")
 
-    sub.add_parser("recipe", help="Print the LIVE Space curl + llama.cpp/Ollama airgap twin.")
+    sub.add_parser("recipe", help="Print retired-route metadata, Atelier navigation, and unqualified local templates.")
     sub.add_parser("kernels", help="Import+call the SZL kernel estate or report UNAVAILABLE.")
     p_qualify = sub.add_parser(
         "qualify",
-        help="Read identity/contract surfaces and write a fail-closed qualification receipt.",
+        help="Read identity and route declarations; this never qualifies serving or runs inference.",
     )
     p_qualify.add_argument("--base-url", default=LIVE_SPACE_BASE)
     p_qualify.add_argument("--output", required=True, help="Receipt path, or '-' for stdout.")
