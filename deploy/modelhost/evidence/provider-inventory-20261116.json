@@ -1,0 +1,52 @@
+{
+  "clock_utc": "2026-11-16T23:22:23.041806+00:00",
+  "count": 4,
+  "http_status": 200,
+  "instances": [
+    {
+      "active": 1,
+      "created": "2026-10-17T06:50:05.000Z",
+      "ip": "64.247.206.118",
+      "name": "nvidia/cuda:12.4.1-devel-ubuntu22.04",
+      "os_booted": 1,
+      "product": "gpu_1x_a6000_high_ram",
+      "region": "us-central-2",
+      "status": "Running",
+      "uuid": "d1a50da9-f615-4475-8a5b-03fc8fe96f67"
+    },
+    {
+      "active": 1,
+      "created": "2026-11-14T22:15:24.000Z",
+      "ip": "209.137.198.198",
+      "name": "gpu_2x_a6000_high_ram-5e78da67-abc0-48ff-b8d4-cfa5f5621232",
+      "os_booted": 1,
+      "product": "gpu_2x_a6000_high_ram",
+      "region": "us-central-1",
+      "status": "Running",
+      "uuid": "5e78da67-abc0-48ff-b8d4-cfa5f5621232"
+    },
+    {
+      "active": 1,
+      "created": "2026-11-14T22:28:34.000Z",
+      "ip": "209.137.198.194",
+      "name": "szl-hatun-mcp-production-v7",
+      "os_booted": 1,
+      "product": "gpu_1x_a6000_high_ram",
+      "region": "us-central-1",
+      "status": "Running",
+      "uuid": "4353a0cd-f234-46e6-a0b0-2231fead3b79"
+    },
+    {
+      "active": 1,
+      "created": "2026-11-15T01:59:37.000Z",
+      "ip": "64.247.196.50",
+      "name": "szl-frontier-gate-1",
+      "os_booted": 1,
+      "product": "gpu_1x_a6000_high_ram",
+      "region": "us-central-2",
+      "status": "Running",
+      "uuid": "072a4c0b-d197-4bec-9bfb-f23fa054e2ea"
+    }
+  ],
+  "schema": "szl.massed-inventory/v1"
+}

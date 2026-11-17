@@ -1,0 +1,62 @@
+{
+  "account_id": "d2d4084c615189c795286ea5eaec2229",
+  "application_policies": [],
+  "issues": [
+    "TARGET_TUNNEL_NOT_OBSERVED_IN_LIST"
+  ],
+  "limits": {
+    "deadline_seconds": 180,
+    "pages": 3,
+    "policy_apps": 6,
+    "requests": 30,
+    "response_bytes": 2097152,
+    "timeout_seconds": 10
+  },
+  "observations": {
+    "applications": {
+      "complete": true,
+      "items": [],
+      "pages_read": 1,
+      "status": "OBSERVED"
+    },
+    "organization": {
+      "complete": false,
+      "error_codes": [
+        10000
+      ],
+      "http_status": 403,
+      "status": "PERMISSION_DENIED"
+    },
+    "service_tokens": {
+      "complete": true,
+      "items": [],
+      "pages_read": 1,
+      "status": "OBSERVED"
+    },
+    "target_configuration": {
+      "complete": false,
+      "error_codes": [
+        1001
+      ],
+      "http_status": 401,
+      "status": "PERMISSION_DENIED"
+    },
+    "tunnels": {
+      "complete": true,
+      "items": [],
+      "pages_read": 1,
+      "status": "OBSERVED"
+    }
+  },
+  "observed_at": "2026-11-16T23:55:01.957828+00:00",
+  "provider_mutations": false,
+  "relevant_application_count": 0,
+  "request_count": 5,
+  "run_id": "43983235206",
+  "schema": "szl.cloudflare-massed-ingress-audit/v1",
+  "security_verdict": "NOT_EVALUATED",
+  "signature": "UNSIGNED",
+  "source_revision": "6848d7a1f15fe72883cc49bf3172e0e4439a325a",
+  "status": "INCOMPLETE",
+  "target_tunnel_id": "acd44edd-1faf-46fc-ad40-c2977b3f98fb"
+}

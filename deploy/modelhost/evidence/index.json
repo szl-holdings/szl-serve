@@ -1,0 +1,124 @@
+{
+  "schema": "szl.modelhost-evidence-index/v1",
+  "created_utc": "2026-11-17T00:01:57Z",
+  "unsigned": true,
+  "hash_scope": "Git index file bytes for this commit; original artifact timestamps retained",
+  "operational_access": "ssh_loopback",
+  "qualified_hosts": {
+    "gate1": {
+      "required": 48,
+      "loaded": 48,
+      "verified": 48
+    },
+    "cuda": {
+      "required": 45,
+      "loaded": 45,
+      "verified": 45
+    }
+  },
+  "public_http_status": "blocked_provider_authorization",
+  "runtime_source_sha256": {
+    "szl_modelhost.py": "df093c548351d85f4b79c36cafa97fb634d3f2b260408fb3a1a59f6b43dfc24f",
+    "contract.py": "06f433a895ab261f89584213f7b88b23f275d0970ed0a96a35ac6e67739506d6",
+    "freeze_cache.py": "b86bfcb12149d790bf61e0d773b581865042da4ec473f8253cea0d9103d1c376",
+    "locks/gate1.json": "1bfbf1a2da4b8d8326585ed316afdf579142d36c4600d4ebb52754fb7a409134",
+    "locks/cuda.json": "c973c5fe09e1a78881d20c8aee2f2ccf0a17315617c2a05742fb32d61bff848e"
+  },
+  "files": [
+    {
+      "file": "RESTORE.md",
+      "bytes": 1209,
+      "sha256": "b52b0cd98fe41ff8dbdabda2b8e9a2d451815bd999b3474eab620055cc064724"
+    },
+    {
+      "file": "cache-cleanup-summary-20261116.md",
+      "bytes": 4198,
+      "sha256": "efb67e26ae0c667c5b78a0befc3fdb52ebcc8eae152523be970974008cf0e4dc"
+    },
+    {
+      "file": "cache-disabled-snap-cleanup-20261116.json",
+      "bytes": 3894,
+      "sha256": "21ac084fb614e741c2fcc3c221479e643cd6d2b3dc63bc59fbbd4f45bbe5e739"
+    },
+    {
+      "file": "cache-eviction-20261116.json",
+      "bytes": 23862,
+      "sha256": "56abdc6f3a3d66524377dbfcc49f6a78bf82312c84d4fbc51aaebb9da6ce62ad"
+    },
+    {
+      "file": "cache-restoration-plan-20261116.json",
+      "bytes": 9678,
+      "sha256": "d8e2a6910c7a62b86bde786196683fff0cf0e1dae8afe7bd385507971595e450"
+    },
+    {
+      "file": "cloudflare-ingress-audit-20261116.json",
+      "bytes": 1467,
+      "sha256": "2db93abdc6e2e8462e742f734f3451e2bb413c7443d230beb0f05a8ce89053c8"
+    },
+    {
+      "file": "cuda-acceptance-20261116.json",
+      "bytes": 12268,
+      "sha256": "c8b0c31f818aa615369c737613ab693c69f6e76ac57ae954220d00377eed4a85"
+    },
+    {
+      "file": "cuda-live-facts-20261116.json",
+      "bytes": 915,
+      "sha256": "faf02fe4626c047b8215c77b1c3341b00bc1891f64db668d8117f3ad93481436"
+    },
+    {
+      "file": "cuda-qualification-summary-20261116.json",
+      "bytes": 1296,
+      "sha256": "3515d2f58bc80441c1cb26d21175a1a335cb93aea00a8bdc372e91ad1b9dce72"
+    },
+    {
+      "file": "fleet-catalog-comparison-20261116.json",
+      "bytes": 7809,
+      "sha256": "efec248f2853476dd275540bd580ede5a4b550d6cc9fc49a87245cbc434ac071"
+    },
+    {
+      "file": "gate1-acceptance-20261116.json",
+      "bytes": 13648,
+      "sha256": "0094dbba4a834950b4fbb53bd829f718939ad41fe37d3cad253cf7b02a81a811"
+    },
+    {
+      "file": "gate1-live-facts-20261116.json",
+      "bytes": 876,
+      "sha256": "f0220b7c6c01ebf85eacbcbdee04ed82284e7eb7cd8c98b2008039f92f411aaf"
+    },
+    {
+      "file": "gate1-qualification-summary-20261116.json",
+      "bytes": 1257,
+      "sha256": "2e7e49947a2e51ed5b1d3b567e75d650e19964dfaf8d559a0205c5a00d80b4ac"
+    },
+    {
+      "file": "gate1-training-resume-20261116.json",
+      "bytes": 491,
+      "sha256": "82175df823b54663894c86c51602696be6dce91fc0cdf41a027ace55a54f6e43"
+    },
+    {
+      "file": "heartbeat-verification-20261116.json",
+      "bytes": 3733,
+      "sha256": "31660f5d8c81ae9ee91c6c23d911039ee9ad64212d274b7cd8e75d21beed5ca8"
+    },
+    {
+      "file": "operator-cli-smoke-20261116.json",
+      "bytes": 1232,
+      "sha256": "8acdd4c6fe6f5bc0d89a9cbf69bb321d0ec93dbbd95b2a4d857c4790dfb332ca"
+    },
+    {
+      "file": "operator-final-inventory-20261116.json",
+      "bytes": 1428,
+      "sha256": "e88e9ff758a12ba53d36ff8abaa5a70b7130fcce362cb177f84b8f0de10bf62a"
+    },
+    {
+      "file": "planner-and-host-tests-20261116.json",
+      "bytes": 3258,
+      "sha256": "c76fc77eaf4cb4c79ffdaf4d1c5aa9c4ceb5fe66332e984204013b7fa9be9784"
+    },
+    {
+      "file": "provider-inventory-20261116.json",
+      "bytes": 1495,
+      "sha256": "ca602b0cc1afc7e92f553e78d41006eda6d767669f4715c871754a94c8ec686f"
+    }
+  ]
+}

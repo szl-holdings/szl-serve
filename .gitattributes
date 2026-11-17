@@ -1,2 +1,4 @@
 # Preserve exact pinned schema bytes across platform checkouts.
 schemas/*.json text eol=lf
+
+deploy/modelhost/** text eol=lf

@@ -1,0 +1,381 @@
+{
+  "boot_id": "c731b634-5e19-42b1-8e67-2c05aa40c9f4",
+  "checks": [
+    {
+      "name": "source_szl_modelhost.py",
+      "passed": true
+    },
+    {
+      "name": "source_contract.py",
+      "passed": true
+    },
+    {
+      "name": "liveness_v2_initialized",
+      "passed": true
+    },
+    {
+      "name": "catalog_v2_same_boot",
+      "passed": true
+    },
+    {
+      "name": "readiness_v2_same_boot",
+      "passed": true
+    },
+    {
+      "name": "running_receipt_matches_sources_and_boot",
+      "passed": true
+    },
+    {
+      "expected_count": 49,
+      "name": "full_manifest_preserved",
+      "observed_count": 49,
+      "passed": true
+    },
+    {
+      "name": "manifest_model_rows_complete",
+      "passed": true
+    },
+    {
+      "name": "required_denominator_preserved",
+      "passed": true
+    },
+    {
+      "failures": [],
+      "name": "all_required_models_identity_and_canary_verified",
+      "passed": true,
+      "required_count": 45
+    },
+    {
+      "expected_status": 404,
+      "name": "unknown_model_rejected",
+      "observed_error": "unknown_model",
+      "observed_status": 404,
+      "passed": true
+    },
+    {
+      "expected_status": 400,
+      "name": "boolean_token_count_rejected",
+      "observed_error": "invalid_max_new_tokens",
+      "observed_status": 400,
+      "passed": true
+    },
+    {
+      "expected_status": 400,
+      "name": "excess_output_tokens_rejected",
+      "observed_error": "invalid_max_new_tokens",
+      "observed_status": 400,
+      "passed": true
+    },
+    {
+      "expected_status": 413,
+      "name": "oversized_body_rejected",
+      "observed_error": "body_too_large",
+      "observed_status": 413,
+      "passed": true
+    },
+    {
+      "expected_status": 409,
+      "name": "wrong_artifact_identity_rejected",
+      "observed_error": "artifact_identity_mismatch",
+      "observed_status": 409,
+      "passed": true
+    },
+    {
+      "expected_status": 413,
+      "name": "excess_input_tokens_rejected",
+      "observed_error": "input_tokens_exceeded",
+      "observed_status": 413,
+      "passed": true
+    },
+    {
+      "name": "representative_generation_salad-a11oy-mini-r1",
+      "passed": true
+    },
+    {
+      "name": "representative_generation_forge-1.5b-v2-trained",
+      "passed": true
+    },
+    {
+      "name": "representative_generation_a11oy-code-r1-candidate",
+      "passed": true
+    },
+    {
+      "name": "representative_generation_absrl-grpo-r5b-candidate",
+      "passed": true
+    },
+    {
+      "name": "representative_generation_brain-navigator-r2",
+      "passed": true
+    },
+    {
+      "name": "representative_generation_szl-provenance-native-v2-lora",
+      "passed": true
+    },
+    {
+      "name": "same_boot_after_generation",
+      "passed": true
+    }
+  ],
+  "completed_utc": "2026-11-16T23:47:12.503719+00:00",
+  "configured_count": 49,
+  "fully_ready": true,
+  "generated_utc": "2026-11-16T23:47:07.441581+00:00",
+  "host": "mass-cuda-kci",
+  "intentional_exclusions": {
+    "khipu-abstain-r3-candidate": "metadata_only_repository_no_model_weights",
+    "salad-flagship54-v1": "protected_workload_vram_capacity",
+    "salad-frontier-v4-r1": "protected_workload_vram_capacity",
+    "salad-frontier-v5-r1": "protected_workload_vram_capacity"
+  },
+  "operational_only": true,
+  "operational_pass": true,
+  "prompt_or_output_text_retained": false,
+  "quality_assessed": false,
+  "readiness": {
+    "body": {
+      "boot_id": "c731b634-5e19-42b1-8e67-2c05aa40c9f4",
+      "clock_utc": "2026-11-16T23:47:12.503238+00:00",
+      "configured_count": 49,
+      "evidence": "operational_canaries_only",
+      "excluded_count": 4,
+      "host": "mass-cuda-kci",
+      "http_status": 200,
+      "intentional_exclusions": [
+        "khipu-abstain-r3-candidate",
+        "salad-flagship54-v1",
+        "salad-frontier-v4-r1",
+        "salad-frontier-v5-r1"
+      ],
+      "loaded": [
+        "a11oy-code-r1-candidate",
+        "absrl-grpo-r5b-candidate",
+        "abstention-doctrine-r1-candidate",
+        "abstention-v2-candidate",
+        "brain-navigator-r2",
+        "brain-navigator-v2-trained",
+        "chakana-v2-trained",
+        "chaski-5050",
+        "chaski-r2",
+        "chaski-r4",
+        "chaski-v2-trained",
+        "code-master-v3-fresh",
+        "creativity-v2-trained",
+        "doctrine-math-r1-candidate",
+        "doctrine-v2-trained",
+        "forge-1.5b-v2-trained",
+        "freeenergy-v2-trained",
+        "hatun-24-doctrine-math-r1-candidate",
+        "hatun-24-v2-trained",
+        "khipu-abstain-v2-trained",
+        "khipu-r3",
+        "khipu-r3-v2-trained",
+        "lean-invariants-v2-trained",
+        "miniembed-v2-trained",
+        "ouroboros-v2-trained",
+        "papers-v2-trained",
+        "quant-master-v1-candidate",
+        "receiptagent-v2-trained",
+        "salad-a11oy-mini-r1",
+        "salad-axiom-invariants-r2",
+        "salad-brain-navigator-r2-r1",
+        "salad-chaski-5050-r1",
+        "salad-chaski-r1",
+        "salad-chaski-r2-r1",
+        "salad-chaski-r4-r1",
+        "salad-doctrine-dpo-r2",
+        "salad-khipu-r2-r1",
+        "salad-measurement-honesty-r1",
+        "salad-quant-abstention-r1",
+        "salad-willay-r1",
+        "salad-x402-frontier-v1",
+        "salad-x402-frontier-v2",
+        "szl-provenance-native-v2-lora",
+        "triage-v2-trained",
+        "willay-v2-trained"
+      ],
+      "loaded_count": 45,
+      "missing": [],
+      "ready": true,
+      "reasons": [],
+      "required": [
+        "a11oy-code-r1-candidate",
+        "absrl-grpo-r5b-candidate",
+        "abstention-doctrine-r1-candidate",
+        "abstention-v2-candidate",
+        "brain-navigator-r2",
+        "brain-navigator-v2-trained",
+        "chakana-v2-trained",
+        "chaski-5050",
+        "chaski-r2",
+        "chaski-r4",
+        "chaski-v2-trained",
+        "code-master-v3-fresh",
+        "creativity-v2-trained",
+        "doctrine-math-r1-candidate",
+        "doctrine-v2-trained",
+        "forge-1.5b-v2-trained",
+        "freeenergy-v2-trained",
+        "hatun-24-doctrine-math-r1-candidate",
+        "hatun-24-v2-trained",
+        "khipu-abstain-v2-trained",
+        "khipu-r3",
+        "khipu-r3-v2-trained",
+        "lean-invariants-v2-trained",
+        "miniembed-v2-trained",
+        "ouroboros-v2-trained",
+        "papers-v2-trained",
+        "quant-master-v1-candidate",
+        "receiptagent-v2-trained",
+        "salad-a11oy-mini-r1",
+        "salad-axiom-invariants-r2",
+        "salad-brain-navigator-r2-r1",
+        "salad-chaski-5050-r1",
+        "salad-chaski-r1",
+        "salad-chaski-r2-r1",
+        "salad-chaski-r4-r1",
+        "salad-doctrine-dpo-r2",
+        "salad-khipu-r2-r1",
+        "salad-measurement-honesty-r1",
+        "salad-quant-abstention-r1",
+        "salad-willay-r1",
+        "salad-x402-frontier-v1",
+        "salad-x402-frontier-v2",
+        "szl-provenance-native-v2-lora",
+        "triage-v2-trained",
+        "willay-v2-trained"
+      ],
+      "required_count": 45,
+      "resources": {
+        "disk": {
+          "free_bytes": 54181756928,
+          "minimum_bytes": 53687091200
+        },
+        "vram": {
+          "free_mb": 5278,
+          "minimum_mb": 4000
+        }
+      },
+      "schema": "szl.modelhost/v2",
+      "unavailable": {},
+      "unexpected": [],
+      "unverified": [],
+      "verified_count": 45
+    },
+    "http_status": 200
+  },
+  "readiness_pass": true,
+  "representative_generations": [
+    {
+      "artifact_fingerprint": "c7356fd790e86ad7fe0263f7917175ae5d970d11e89c7f9ab75905c1cf5da15d",
+      "base_identity": "Qwen/Qwen2.5-0.5B-Instruct@7ae557604adf67be50417f59c2c2f167def9a775",
+      "completion_tokens": 8,
+      "elapsed_ms": 606.431,
+      "http_status": 200,
+      "model": "salad-a11oy-mini-r1",
+      "output_characters": 35,
+      "output_sha256": "2f62ffe11d02ea6dc12da762bf613c9223beac78f118fbe4263fc30090aa4b6d",
+      "passed": true,
+      "repo": "SZLHOLDINGS/salad-a11oy-mini-r1",
+      "request_elapsed_ms": 608.674,
+      "revision": "f9b64894efb6d9f611a779150ad8687098e4365c"
+    },
+    {
+      "artifact_fingerprint": "a91976871bb8700fbfcc4c64f54ad660c0e3c0e3da9b1cb63bd6d28312297ce1",
+      "base_identity": "Qwen/Qwen2.5-1.5B@8faed761d45a263340a0528343f099c05c9a4323",
+      "completion_tokens": 8,
+      "elapsed_ms": 688.001,
+      "http_status": 200,
+      "model": "forge-1.5b-v2-trained",
+      "output_characters": 48,
+      "output_sha256": "d1e355f88a0fb24794e7d0f6af4433cd2483733b13b4b0175cfe6d3688015643",
+      "passed": true,
+      "repo": "SZLHOLDINGS/forge-1.5b-v2-trained",
+      "request_elapsed_ms": 690.22,
+      "revision": "138fb644ca8ca0f6c0f6bee170d4ecc51adee7db"
+    },
+    {
+      "artifact_fingerprint": "34d66080b089d86b322ca919f14247157c8f1a0ee90e5a8c85bf573d5e469d14",
+      "base_identity": "Qwen/Qwen2.5-Coder-3B-Instruct@488639f1ff808d1d3d0ba301aef8c11461451ec5",
+      "completion_tokens": 8,
+      "elapsed_ms": 1175.829,
+      "http_status": 200,
+      "model": "a11oy-code-r1-candidate",
+      "output_characters": 29,
+      "output_sha256": "b8f68d5b4355dd290d4d01a1c5ec41d1cfab1db076318b74700891f095747153",
+      "passed": true,
+      "repo": "SZLHOLDINGS/a11oy-code-r1-candidate",
+      "request_elapsed_ms": 1178.044,
+      "revision": "e18fd511b9944be3c70d8d67efb7b27e91935c3c"
+    },
+    {
+      "artifact_fingerprint": "13fd9f6f16ba4f32de21579f23c281b4a3ed30f05468ea89c1b73a3279b7cfda",
+      "base_identity": "Qwen/Qwen3-1.7B@70d244cc86ccca08cf5af4e1e306ecf908b1ad5e",
+      "completion_tokens": 8,
+      "elapsed_ms": 899.132,
+      "http_status": 200,
+      "model": "absrl-grpo-r5b-candidate",
+      "output_characters": 31,
+      "output_sha256": "fab460d7697577cd0275ee368ba3453e644efa21c82bba4ac5ef133a472fd686",
+      "passed": true,
+      "repo": "SZLHOLDINGS/absrl-grpo-r5b-candidate",
+      "request_elapsed_ms": 901.576,
+      "revision": "4adad822ec90a4fef939e3cd0f654249c27b8613"
+    },
+    {
+      "artifact_fingerprint": "480cc3486003ff397ca3292fdc0e4cc889d72bbfeb0f2d58862d1d868d5b1b84",
+      "base_identity": "Qwen/Qwen3.5-0.8B@2fc06364715b967f1860aea9cf38778875588b17",
+      "completion_tokens": 8,
+      "elapsed_ms": 912.67,
+      "http_status": 200,
+      "model": "brain-navigator-r2",
+      "output_characters": 34,
+      "output_sha256": "52d5e4a7bd8f5488ca0a291d5576644090f26845773742e30d6b3dd812939b10",
+      "passed": true,
+      "repo": "SZLHOLDINGS/brain-navigator-r2",
+      "request_elapsed_ms": 915.172,
+      "revision": "78047dc39ff06763e2f726d96dd59bd39bca8110"
+    },
+    {
+      "artifact_fingerprint": "f492ef83bd47688588e652d38d73d1ed1091ff8176721ced98701f08a28049b2",
+      "base_identity": "SZLHOLDINGS/szl-receiptagent-qwen35-0.8b-v2m-estate-sft-v1@aa3e937e991af2513f9f77f28aeab4f220622785",
+      "completion_tokens": 8,
+      "elapsed_ms": 694.694,
+      "http_status": 200,
+      "model": "szl-provenance-native-v2-lora",
+      "output_characters": 13,
+      "output_sha256": "85a9c83bbc2dc1a7dd34ed65a251433cbbaa6df304c347fd2434d51694816ffe",
+      "passed": true,
+      "repo": "SZLHOLDINGS/szl-provenance-native-v2-lora",
+      "request_elapsed_ms": 697.184,
+      "revision": "4de6e0c9dde7a05db792f5fe327c924f06e81553"
+    }
+  ],
+  "required_count": 45,
+  "running_source_sha256": {
+    "contract.py": "06f433a895ab261f89584213f7b88b23f275d0970ed0a96a35ac6e67739506d6",
+    "model_lock.json": "c973c5fe09e1a78881d20c8aee2f2ccf0a17315617c2a05742fb32d61bff848e",
+    "szl_modelhost.py": "df093c548351d85f4b79c36cafa97fb634d3f2b260408fb3a1a59f6b43dfc24f"
+  },
+  "schema": "szl.modelhost-qualification/v1",
+  "source_checks": {
+    "contract.py": {
+      "actual_sha256": "06f433a895ab261f89584213f7b88b23f275d0970ed0a96a35ac6e67739506d6",
+      "expected_sha256": "06f433a895ab261f89584213f7b88b23f275d0970ed0a96a35ac6e67739506d6",
+      "passed": true
+    },
+    "szl_modelhost.py": {
+      "actual_sha256": "df093c548351d85f4b79c36cafa97fb634d3f2b260408fb3a1a59f6b43dfc24f",
+      "expected_sha256": "df093c548351d85f4b79c36cafa97fb634d3f2b260408fb3a1a59f6b43dfc24f",
+      "passed": true
+    }
+  },
+  "unsigned": true,
+  "versions": {
+    "accelerate": "1.15.0",
+    "huggingface-hub": "2.4.0",
+    "peft": "0.21.3",
+    "safetensors": "0.8.0",
+    "torch": "2.14.1",
+    "transformers": "5.20.2"
+  }
+}

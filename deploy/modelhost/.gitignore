@@ -1,0 +1,6 @@
+host_config.json
+receipts/
+*.token
+*.secret
+*.pem
+*-private-key*

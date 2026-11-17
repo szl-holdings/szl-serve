@@ -60,7 +60,7 @@ szl_serve = ["py.typed"]
 "szl_serve.schemas" = ["khipu.schema.json", "PIN.json"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "deploy/modelhost"]
 addopts = "-q"
 
 [tool.szl.release]
