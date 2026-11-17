@@ -1,31 +1,21 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 SZL Holdings
-"""Canonical serve recipe.
+"""Historical CPU recipe and migration to the governed A11oy Atelier form.
 
-LIVE CPU is the existing MEASURED Hugging Face Space — not a second runtime
-invented in this repo. FORGE owns that Space (szl-holdings/szl-forge).
-This KERNEL repo pins it, validates plans outside the weights, and wraps
-an honest energy receipt.
-
-ATELIER lock: serve studio = SZLHOLDINGS/szl-model-inference-lab only.
-SZLHOLDINGS/szl-forge-lab is SNAPSHOT, not a trainer, not a serve target.
-Do not point this recipe at forge-lab. GPU remains ROADMAP.
-energy-attested-runs is 8/8 SIMULATED (not MEASURED serve energy).
-Ask & Act is not a live control plane.
-
-llama.cpp / Ollama are the airgap twin of that Space, not a vLLM clone.
-GPU / vLLM / TGI / TensorRT-LLM / SGLang / Dynamo remain ROADMAP until
-MEASURED on named hardware. GPU attention is ROADMAP. Do not invent tokens/s.
+The public OpenAI chat route is RETIRED. Its dated measurement and immutable
+artifact/source pins remain evidence, not current serving qualification.
+This module prints navigation and contract metadata; it never sends a prompt,
+forwards an obsolete request, or authorizes an action. Local engine commands
+are unqualified recipes. The separate modelhost deployment owns its own gates.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Any, Dict, Optional
-import json
 import shlex
 
 # ---------------------------------------------------------------------------
-# Pinned LIVE weight (Khipu GGUF Q4_K_M)
+# Immutable historical artifact identity (Khipu GGUF Q4_K_M).
 # ---------------------------------------------------------------------------
 KHIPU_REPO = "SZLHOLDINGS/SZL-Khipu-1.5B-GGUF"
 KHIPU_REVISION = "67d60ec577730747055491640cfb91fc4a4b5d25"
@@ -35,8 +25,8 @@ KHIPU_BYTES = 986047904
 KHIPU_QUANT = "Q4_K_M"
 KHIPU_OPENAI_MODEL_ID = f"{KHIPU_REPO}@{KHIPU_REVISION}"
 
-# MEASURED live CPU surface. FORGE-owned. This repo does not take it over.
-# ATELIER lock: this Space is the only serve studio. Do not substitute forge-lab.
+# Compatibility names for the historical CPU surface. LIVE_* is not a readiness
+# claim: the chat route is retired, and only metadata GETs remain in qualification.
 ATELIER_SERVE_STUDIO = "SZLHOLDINGS/szl-model-inference-lab"
 LIVE_SPACE_ID = ATELIER_SERVE_STUDIO
 LIVE_SPACE_URL = "https://huggingface.co/spaces/SZLHOLDINGS/szl-model-inference-lab"
@@ -50,6 +40,45 @@ FORGE_SPACE_SOURCE = (
     "https://github.com/szl-holdings/szl-forge/tree/"
     f"{FORGE_SOURCE_REVISION}/spaces/szl-model-inference-lab"
 )
+
+LEGACY_RECIPE_STATE = "RETIRED"
+ATELIER_FORM_PATH = "/command-centre#cpu-work"
+ATELIER_TURN_PATH = "/api/a11oy/v1/atelier/cpu-lab/turn"
+
+
+class RetiredRecipeError(RuntimeError):
+    """The legacy executable recipe must not send or forward a request."""
+
+
+def atelier_migration() -> Dict[str, Any]:
+    """Describe the existing operator boundary, without creating an executor."""
+    return {
+        "availability": "NOT_PROBED",
+        "deployment": "Your operator-managed A11oy deployment",
+        "ui_path": ATELIER_FORM_PATH,
+        "method": "POST",
+        "api_path": ATELIER_TURN_PATH,
+        "operator_authentication_required": True,
+        "authorization_placeholder": "Bearer <A11OY_OPERATOR_TOKEN>",
+        "public_share_acknowledged_required": True,
+        "declared_required": "PUBLIC",
+        "max_output_tokens": 32,
+        "grounding_required": True,
+        "expected_success_response": {
+            "provider_decision": "PROPOSAL",
+            "authority": "NO_ACTION_AUTHORITY",
+            "executed": False,
+            "provider_output_signature_status": "UNSIGNED_LOCAL",
+        },
+        "tool_authority": False,
+        "action_authority": False,
+        "automatic_forwarding": False,
+        "note": (
+            "Open the form on your verified A11oy origin. Confirm public disclosure "
+            "for the specific prompt. The operator bearer belongs only to A11oy, "
+            "never to the public lab. This package does not execute the request."
+        ),
+    }
 
 # SNAPSHOT / READ-ONLY evidence console. Not a trainer. Not a serve runtime.
 # REACHABLE = transport only. Curriculum BLUEPRINT_NOT_TRAINED.
@@ -102,6 +131,8 @@ ATELIER_LOCK: Dict[str, Any] = {
     "serve_studio": ATELIER_SERVE_STUDIO,
     "serve_studio_only": True,
     "live_cpu": LIVE_SPACE_BASE,
+    "legacy_route_state": LEGACY_RECIPE_STATE,
+    "migration": atelier_migration(),
     "model": KHIPU_OPENAI_MODEL_ID,
     "forge_lab": FORGE_LAB_PIN,
     "energy_attested_runs": ENERGY_ATTESTED_RUNS,
@@ -150,7 +181,7 @@ DEFAULT_WEIGHT_ID = "khipu"
 @dataclass(frozen=True)
 class WeightPin:
     weight_id: str
-    status: str  # LIVE | ROADMAP
+    status: str  # PINNED artifact identity | ROADMAP
     repo_id: Optional[str]
     revision: Optional[str]
     filename: Optional[str]
@@ -178,7 +209,7 @@ class WeightPin:
 WEIGHTS: Dict[str, WeightPin] = {
     "khipu": WeightPin(
         weight_id="khipu",
-        status="LIVE",
+        status="PINNED",
         repo_id=KHIPU_REPO,
         revision=KHIPU_REVISION,
         filename=KHIPU_FILENAME,
@@ -187,9 +218,9 @@ WEIGHTS: Dict[str, WeightPin] = {
         quant=KHIPU_QUANT,
         openai_model_id=KHIPU_OPENAI_MODEL_ID,
         note=(
-            "Default LIVE weight. Served by the FORGE-owned MEASURED Space; "
-            "airgap twin via llama.cpp/Ollama. Schema validation stays outside "
-            "these bytes."
+            "Immutable artifact identity from the historical CPU sample. "
+            "The public OpenAI route is RETIRED. A pin does not qualify serving; "
+            "schema validation stays outside these bytes."
         ),
     ),
     "chaski": WeightPin(
@@ -240,8 +271,8 @@ GPU_PATH: Dict[str, Any] = {
 
 
 def live_serve_targets() -> tuple[str, ...]:
-    """The only public serve studio. forge-lab is never in this tuple."""
-    return (ATELIER_SERVE_STUDIO, LIVE_SPACE_BASE, LIVE_SPACE_URL, LIVE_CHAT_URL)
+    """Compatibility helper: no legacy serving target is currently qualified."""
+    return ()
 
 
 def is_forbidden_serve_target(value: str) -> bool:
@@ -250,12 +281,14 @@ def is_forbidden_serve_target(value: str) -> bool:
 
 
 def atelier_lock() -> Dict[str, Any]:
-    """Machine-readable ATELIER lock. Serve studio is inference-lab only."""
+    """Historical lab identity plus the separate authenticated migration path."""
     return {
         "schema": "szl_serve/atelier_lock@1",
         "serve_studio": ATELIER_SERVE_STUDIO,
         "serve_studio_only": True,
         "live_cpu": LIVE_SPACE_BASE,
+        "legacy_route_state": LEGACY_RECIPE_STATE,
+        "migration": atelier_migration(),
         "model": KHIPU_OPENAI_MODEL_ID,
         "forge_lab": dict(FORGE_LAB_PIN),
         "energy_attested_runs": dict(ENERGY_ATTESTED_RUNS),
@@ -272,19 +305,11 @@ def weight_pin(weight_id: str = DEFAULT_WEIGHT_ID) -> WeightPin:
 
 
 def live_openai_curl(prompt: str = "Explain one limit of cryptographic receipts.") -> str:
-    """POSIX-shell OpenAI-subset recipe. Prompt stays data; dummy bearer only."""
-    payload = {
-        "model": KHIPU_OPENAI_MODEL_ID,
-        "messages": [{"role": "user", "content": prompt}],
-        "max_tokens": 24,
-        "stream": False,
-    }
-    body = json.dumps(payload, separators=(",", ":"))
-    return (
-        f"curl {LIVE_CHAT_URL} \\\n"
-        "  -H \"content-type: application/json\" \\\n"
-        "  -H \"authorization: Bearer not-a-secret\" \\\n"
-        f"  -d {shlex.quote(body)}"
+    """Retained import with an explicit failure; never echo or forward the prompt."""
+    raise RetiredRecipeError(
+        "RETIRED: POST /v1/chat/completions returns 410. "
+        f"Open {ATELIER_FORM_PATH} on your authenticated A11oy deployment; "
+        "public disclosure requires acknowledgement for each prompt."
     )
 
 
@@ -309,17 +334,16 @@ def ollama_command() -> str:
 
 
 def openai_shaped_chat() -> Dict[str, Any]:
-    """Silhouette: one OpenAI-shaped chat call, one pinned weight, one receipt.
-
-    The LIVE endpoint is the existing Space (ATELIER serve studio only).
-    Local llama-server is the airgap twin of that same pin — not a second
-    public runtime, not vLLM, and not szl-forge-lab.
-    """
+    """Compatibility metadata for a retired recipe; it contains no public curl."""
     return {
-        "silhouette": "one OpenAI-shaped chat call, one pinned weight, one receipt",
+        "silhouette": "retired OpenAI recipe; navigate to governed A11oy Atelier",
         "atelier": atelier_lock(),
+        "migration": atelier_migration(),
         "live": {
-            "status": "MEASURED",
+            "status": LEGACY_RECIPE_STATE,
+            "available": False,
+            "status_code": 410,
+            "automatic_forwarding": False,
             "serve_studio": ATELIER_SERVE_STUDIO,
             "serve_studio_only": True,
             "owner": "FORGE (szl-holdings/szl-forge). KERNEL (this repo) pins + validates + receipts.",
@@ -329,20 +353,17 @@ def openai_shaped_chat() -> Dict[str, Any]:
             "method": "POST",
             "path": "/v1/chat/completions",
             "model": KHIPU_OPENAI_MODEL_ID,
-            "streaming": False,
-            "tools": False,
-            "choices": 1,
-            "decoding": "greedy temperature=0, top_p=1",
-            "curl": live_openai_curl(),
+            "curl": None,
             "sample": MEASURED_CPU_SAMPLE,
             "space": LIVE_SPACE_URL,
             "contract": LIVE_CONTRACT_URL,
         },
         "airgap_twin": {
-            "status": "LIVE_RECIPE",
+            "status": "UNQUALIFIED_RECIPE",
             "note": (
-                "Same pinned Q4_K_M bytes, local llama.cpp / Ollama. "
-                "Airgap twin of the Space, not a clone of vLLM/TGI."
+                "Local llama.cpp / Ollama command templates select a Hub quant label. "
+                "Verify downloaded bytes against the immutable artifact pin before use. "
+                "No current serving observation is made by this package."
             ),
             "llama_cli": llama_cli_command(),
             "llama_server": llama_server_command(),
@@ -360,33 +381,40 @@ def format_recipe() -> str:
     pin = weight_pin()
     sample = MEASURED_CPU_SAMPLE
     lines = [
-        "szl-serve — canonical governed-inference recipe",
+        "szl-serve - historical evidence and governed Atelier migration",
         "KERNEL-owned pin + validator + energy receipt. Not a vendor engine.",
-        "Λ = Conjecture 1 (advisory). Doctrine v11 LOCKED 749/14/163.",
+        "Lambda = Conjecture 1 (advisory). Doctrine v11 LOCKED 749/14/163.",
         "",
-        "ATELIER LOCK",
-        f"  serve studio : {ATELIER_SERVE_STUDIO} ONLY",
-        f"  live CPU     : {LIVE_SPACE_BASE}",
-        f"  model        : {KHIPU_OPENAI_MODEL_ID}",
+        "RETIRED PUBLIC OPENAI RECIPE",
+        f"  historical lab : {LIVE_SPACE_BASE}",
+        "  POST /v1/chat/completions : RETIRED (HTTP 410)",
+        "  No executable public chat request; no automatic forwarding.",
+        "",
+        "A11OY ATELIER MIGRATION - availability NOT_PROBED",
+        f"  open form : {ATELIER_FORM_PATH} on your verified A11oy deployment",
+        f"  operator API : POST {ATELIER_TURN_PATH}",
+        "  operator authentication is required; use the existing form",
+        "  explicit fields : prompt, declared=PUBLIC, public_share_acknowledged=true",
+        "  acknowledge public disclosure for the specific prompt before submission",
+        "  max_output_tokens <= 32; grounding required; output remains a proposal",
+        "  expected validated success: provider_decision=PROPOSAL, authority=NO_ACTION_AUTHORITY",
+        "  expected validated success: executed=false, provider_output_signature_status=UNSIGNED_LOCAL",
+        "  tool authority: none; action authority: none",
+        "  Send the operator bearer only to A11oy, never to the public lab.",
+        "  This package navigates and documents; it does not execute the request.",
+        "  Contract details: https://github.com/szl-holdings/szl-serve/blob/main/docs/atelier-migration.md",
+        "",
+        "ATELIER LOCK - historical backend identity, not serving qualification",
+        f"  pinned lab : {ATELIER_SERVE_STUDIO} ONLY",
         f"  {FORGE_LAB_SPACE} : SNAPSHOT, not a trainer, not a serve target",
         "  do not point szl-serve at forge-lab (no LIVE URL, curl, or model pin)",
-        "  GPU           : ROADMAP",
+        "  GPU           : ROADMAP (vendor-engine integrations)",
         "  energy-attested-runs : 8/8 SIMULATED (not MEASURED NVML; not a live serve path)",
         "  Ask & Act     : NOT a live control plane",
         "",
-        "WHAT THIS IS NOT",
-        "  not vLLM, not TGI, not TensorRT-LLM, not SGLang, not Dynamo",
-        "  not a tokens/s leaderboard, not proven trust, not a takeover of the HF Space",
-        "  not szl-forge-lab (SNAPSHOT, not a trainer)",
-        "  not Ask & Act as a live control plane",
-        "  not energy-attested-runs as MEASURED serve energy",
-        "",
-        "LIVE CPU (MEASURED) — existing Space; do not invent a second runtime",
-        f"  surface : {LIVE_SPACE_BASE}",
-        f"  space   : {LIVE_SPACE_URL}",
+        "HISTORICAL CPU MEASUREMENT - not current availability",
         f"  source  : {FORGE_SPACE_SOURCE}",
-        f"  forge   : {FORGE_SOURCE_REVISION} (FORGE owns the Space)",
-        f"  method  : POST /v1/chat/completions",
+        f"  forge   : {FORGE_SOURCE_REVISION} (historical source pin)",
         f"  model   : {pin.openai_model_id}",
         f"  GGUF    : {pin.filename}  sha256 {pin.lfs_sha256}  ({pin.bytes} bytes)",
         f"  sample  : {sample['date']}  completion_tokens={sample['completion_tokens']}  "
@@ -394,33 +422,19 @@ def format_recipe() -> str:
         "  energy  : joules=null  label=UNAVAILABLE (CPU; no NVML delta)",
         "  tokens/s: not claimed (raw counts + elapsed only)",
         "",
-        live_openai_curl(),
-        "",
-        "AIRGAP TWIN (same pin, local) — llama.cpp / Ollama, not a vLLM clone",
+        "AIRGAP TWIN - unqualified local command templates, not a vLLM clone",
+        "  Verify downloaded bytes against the artifact pin before use.",
         f"  {llama_cli_command()}",
         f"  {llama_server_command()}",
         f"  {ollama_command()}",
         "",
         "GPU / vLLM / TGI / TensorRT-LLM / SGLang / Dynamo: ROADMAP",
         "  GPU attention: ROADMAP (no fused/paged-attention LIVE claim; no tokens/s invented)",
-        "  until MEASURED on named hardware. No fabricated joule. No fabricated tok/s.",
-        "",
-        "ENERGY-ATTESTED-RUNS — 8/8 SIMULATED, not this recipe's CPU energy evidence",
-        f"  space   : {ENERGY_ATTESTED_RUNS['space']}",
-        f"  dataset : {ENERGY_ATTESTED_RUNS['dataset']}",
-        f"  result  : {ENERGY_ATTESTED_RUNS['result']}  label={ENERGY_ATTESTED_RUNS['label']}",
-        "  not MEASURED NVML joules; not a live serve path",
-        "",
-        "ASK & ACT — not a live control plane",
-        "  a11oy operator tab (Operate / ask). Does not gate, launch, or control this recipe.",
-        "",
-        "NEXT WEIGHTS (same config surface, not fake LIVE)",
-        "  chaski        ROADMAP — no pin fabricated",
-        "  receiptagent  ROADMAP — no pin fabricated",
+        "  The separate deploy/modelhost service owns its own readiness gates.",
         "",
         "CONTROLLER",
         "  model output is proposal-only; validate against schemas/khipu.schema.json",
-        "  hallucinated citedNodeIds → REJECT (never repaired into a green plan)",
+        "  hallucinated citedNodeIds -> REJECT (never repaired into a green plan)",
         "  brainBinding.status stays NOT_RESOLVED",
         "  real model provenance = MODEL_PROPOSED (not SYNTHETIC)",
         "  wrap energy: MEASURED NVML delta or UNAVAILABLE; receipt UNSIGNED unless a key exists",
@@ -431,7 +445,8 @@ def format_recipe() -> str:
 def recipe_document() -> Dict[str, Any]:
     chat = openai_shaped_chat()
     return {
-        "schema": "szl_serve/recipe@1",
+        "schema": "szl_serve/recipe@2",
+        "migration": atelier_migration(),
         "atelier": atelier_lock(),
         "live_cpu": chat["live"],
         "airgap_twin": chat["airgap_twin"],

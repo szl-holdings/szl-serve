@@ -205,6 +205,112 @@ def _evaluate(payloads: Mapping[str, Mapping[str, Any]]) -> list[dict[str, Any]]
     return sorted(checks, key=lambda item: item["name"])
 
 
+def _legacy_route_observation(
+    payloads: Mapping[str, Mapping[str, Any]],
+) -> dict[str, Any]:
+    """Observe declarations without testing inference or granting authority.
+
+    The pinned identity checks keep their original meaning. Retirement is
+    independent negative evidence, even if another metadata read failed.
+    Matching declarations never establish serving readiness.
+    """
+    method = "POST"
+    path = "/v1/chat/completions"
+    raw_declarations = {
+        "identity": _path(
+            payloads.get("identity", {}),
+            "runtime", "openai_compatible_subset", "chat_completions",
+        ),
+        "contract": _path(
+            payloads.get("inference_contract", {}),
+            "openai_compatible_subset", "chat_completions",
+        ),
+    }
+    declarations: dict[str, Any] = {}
+    bound: dict[str, Mapping[str, Any]] = {}
+    conflicts: set[str] = set()
+    unknown: set[str] = set()
+    retirement_observed = False
+    fields = ("method", "path", "state", "status_code", "reason_code", "successor")
+
+    for source, raw in raw_declarations.items():
+        prefix = source.upper()
+        if raw is None:
+            declarations[source] = None
+            unknown.add(f"{prefix}_DECLARATION_MISSING")
+            continue
+        if not isinstance(raw, Mapping):
+            declarations[source] = {"malformed_type": type(raw).__name__}
+            unknown.add(f"{prefix}_DECLARATION_MALFORMED")
+            continue
+        row = {key: raw[key] for key in fields if key in raw}
+        declarations[source] = row
+        for key, expected in (("method", method), ("path", path)):
+            observed = row.get(key)
+            if observed is None:
+                unknown.add(f"{prefix}_{key.upper()}_MISSING")
+            elif observed != expected:
+                conflicts.add(f"{prefix}_{key.upper()}_MISMATCH")
+        if row.get("method") != method or row.get("path") != path:
+            continue
+
+        bound[source] = row
+        state = row.get("state")
+        code = row.get("status_code")
+        valid_state = isinstance(state, str) and bool(state)
+        valid_code = type(code) is int and 100 <= code <= 599
+        if state is None:
+            unknown.add(f"{prefix}_STATE_MISSING")
+        elif not valid_state:
+            conflicts.add(f"{prefix}_STATE_MALFORMED")
+        if code is None:
+            unknown.add(f"{prefix}_STATUS_CODE_MISSING")
+        elif not valid_code:
+            conflicts.add(f"{prefix}_STATUS_CODE_MALFORMED")
+
+        retired_state = state == "RETIRED"
+        retired_code = type(code) is int and code == 410
+        retirement_observed = retirement_observed or retired_state or retired_code
+        if retired_state and code is not None and not retired_code:
+            conflicts.add(f"{prefix}_RETIREMENT_STATUS_CONFLICT")
+        if retired_code and state is not None and not retired_state:
+            conflicts.add(f"{prefix}_RETIREMENT_STATE_CONFLICT")
+
+        successor = row.get("successor")
+        if successor is not None and (not isinstance(successor, str) or not successor):
+            conflicts.add(f"{prefix}_SUCCESSOR_MALFORMED")
+
+    if len(bound) == 2:
+        for key in ("state", "status_code", "successor"):
+            left = bound["identity"].get(key)
+            right = bound["contract"].get(key)
+            if left is not None and right is not None and left != right:
+                conflicts.add(f"DECLARATION_{key.upper()}_DISAGREEMENT")
+
+    complete = len(bound) == 2 and all(
+        isinstance(row.get("state"), str) and bool(row["state"])
+        and type(row.get("status_code")) is int
+        and 100 <= row["status_code"] <= 599
+        for row in bound.values()
+    )
+    if conflicts:
+        state = "CONFLICT"
+    elif retirement_observed:
+        state = "RETIRED"
+    elif complete:
+        state = "DECLARED"
+    else:
+        state = "UNKNOWN"
+    return {
+        "method": method,
+        "path": path,
+        "state": state,
+        "retirement_observed": retirement_observed,
+        "declarations": declarations,
+        "reason_codes": sorted(conflicts | unknown),
+    }
+
+
 def _canonical_sha256(value: Mapping[str, Any]) -> str:
     raw = json.dumps(value, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
     return hashlib.sha256(raw.encode("utf-8")).hexdigest()
@@ -272,6 +378,9 @@ def qualify(
         "state": overall,
         "reads": reads,
         "checks": checks,
+        "serving_ready": False,
+        "serving_state": "NOT_QUALIFIED",
+        "legacy_route": _legacy_route_observation(payloads),
         "scope": {
             "mode": "READ_ONLY",
             "provider_write": False,

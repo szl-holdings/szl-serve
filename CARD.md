@@ -7,13 +7,14 @@ Not a vendor engine. Not a takeover of the Hugging Face Space.
 
 | Axis | Label | Fact |
 |---|---|---|
-| ATELIER serve studio | **LOCKED** | `SZLHOLDINGS/szl-model-inference-lab` **only**. Do not point `szl-serve` at forge-lab. |
-| Live CPU runtime | **MEASURED** | Existing lab `https://szlholdings-szl-model-inference-lab.hf.space` — FORGE owns the Space (`szl-holdings/szl-forge`). This repo pins it. Do not invent a second runtime. |
-| OpenAI subset | **MEASURED** | `POST /v1/chat/completions` · model `SZLHOLDINGS/SZL-Khipu-1.5B-GGUF@67d60ec577730747055491640cfb91fc4a4b5d25` |
-| Weight pin | **MEASURED** | `SZL-Khipu-1.5B-Q4_K_M.gguf` · LFS SHA-256 `13c1a1993063e1dff92f7413ccf48eaca6d48efc8801ae9af35961ae3396623a` · 986047904 bytes |
+| Historical backend | **PINNED** | `SZLHOLDINGS/szl-model-inference-lab`. The source pin records historical evidence, not current readiness. Do not point `szl-serve` at forge-lab. |
+| Public OpenAI subset | **RETIRED** | `POST /v1/chat/completions` returns HTTP 410. No executable recipe or automatic forwarding remains. |
+| A11oy Atelier migration | **NOT_PROBED** | Existing authenticated form `/command-centre#cpu-work`; exact operator/public acknowledgement contract in [migration documentation](docs/atelier-migration.md). Proposal-only; no tool or action authority. |
+| Weight identity | **PINNED** | `SZL-Khipu-1.5B-Q4_K_M.gguf` · LFS SHA-256 `13c1a1993063e1dff92f7413ccf48eaca6d48efc8801ae9af35961ae3396623a` · 986047904 bytes |
 | Sample 2026-11-04 | **MEASURED** | 24 completion tokens · `elapsed_ms` 8237 · execution_record **UNSIGNED**. Not a tokens/s rating. Receipt: [`evidence/measured-cpu-serve-20261104.json`](evidence/measured-cpu-serve-20261104.json). Hardware: cpu-basic / 2 cores / 16G. |
 | Energy (CPU lab) | **UNAVAILABLE** | `joules=null`. MEASURED only from a real NVML delta. Never invent a joule. |
-| llama.cpp / Ollama | **LIVE recipe** | Airgap twin of the same pin. Not a clone of vLLM. |
+| llama.cpp / Ollama | **UNQUALIFIED recipe** | Local command templates; verify downloaded bytes against the artifact pin. No current serving observation. |
+| Read-only qualification | **NOT_QUALIFIED for serving** | Identity state and legacy-route retirement are separate; no prompt is sent and metadata cannot establish serving readiness. |
 | GPU / vLLM / TGI / TRT-LLM / SGLang / Dynamo | **ROADMAP** | Until MEASURED on named hardware. |
 | GPU attention | **ROADMAP** | No fused/paged-attention LIVE claim. No tokens/s invented. |
 | Speculative decode (`szl-specdecode`) | **SPECDECODE=UNAVAILABLE** until soft-import LIVE | Optional pointer to [`szl-holdings/szl-specdecode`](https://github.com/szl-holdings/szl-specdecode) / [`SZLHOLDINGS/szl-specdecode`](https://huggingface.co/SZLHOLDINGS/szl-specdecode). Soft-imports `verify_draft` when installed; else honest null. GPU kernel **UNAVAILABLE**. Speedup **null**. Not a Medusa/EAGLE/vLLM rehost. |

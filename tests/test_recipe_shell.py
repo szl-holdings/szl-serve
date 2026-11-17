@@ -9,7 +9,7 @@ import sys
 
 import pytest
 
-from szl_serve.recipe import live_openai_curl, llama_cli_command, llama_server_command
+from szl_serve.recipe import llama_cli_command, llama_server_command
 
 
 pytestmark = pytest.mark.skipif(
@@ -22,7 +22,7 @@ pytestmark = pytest.mark.skipif(
 def run_recipe(tmp_path):
     bin_dir = tmp_path / "bin"
     bin_dir.mkdir()
-    for name in ("curl", "llama-cli", "llama-server"):
+    for name in ("llama-cli", "llama-server"):
         executable = bin_dir / name
         executable.write_text(
             f"#!{sys.executable}\nimport json, sys\nprint(json.dumps(sys.argv[1:]))\n",
@@ -52,11 +52,6 @@ def run_recipe(tmp_path):
     "it's $(touch should-not-exist) and `touch also-must-not-exist`",
 ])
 def test_prompt_is_one_literal_argument(run_recipe, tmp_path, prompt):
-    args = run_recipe(live_openai_curl(prompt))
-    payload = json.loads(args[args.index("-d") + 1])
-    assert payload["messages"][0]["content"] == prompt
-    assert len(args) == 7
-
     args = run_recipe(llama_cli_command(prompt))
     assert args[args.index("-p") + 1] == prompt
     assert len(args) == 4

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "szl-serve"
 version = "0.1.0"
-description = "Canonical SZL governed-inference serve recipe: pinned Khipu GGUF, schema validation outside the weights, honest energy receipts. Not a vendor engine."
+description = "SZL historical Khipu pins, offline proposal validation, read-only qualification, and migration to authenticated A11oy Atelier."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "Apache-2.0" }
@@ -41,7 +41,7 @@ test = ["pytest", "setuptools>=61", "wheel"]
 Homepage = "https://a-11-oy.com"
 Repository = "https://github.com/szl-holdings/szl-serve"
 "Hugging Face GGUF" = "https://huggingface.co/SZLHOLDINGS/SZL-Khipu-1.5B-GGUF"
-"MEASURED CPU lab (FORGE-owned)" = "https://szlholdings-szl-model-inference-lab.hf.space"
+"Historical CPU lab (metadata only; legacy chat retired)" = "https://szlholdings-szl-model-inference-lab.hf.space"
 "Space card" = "https://huggingface.co/spaces/SZLHOLDINGS/szl-model-inference-lab"
 Issues = "https://github.com/szl-holdings/szl-serve/issues"
 Changelog = "https://github.com/szl-holdings/szl-serve/releases"

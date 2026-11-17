@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 
 import pytest
@@ -95,6 +96,9 @@ def test_exact_fixture_is_observed_and_hash_is_deterministic():
     assert {check["state"] for check in first["checks"]} == {"OBSERVED"}
     assert first["scope"]["provider_write"] is False
     assert first["scope"]["inference_request"] is False
+    assert first["serving_ready"] is False
+    assert first["serving_state"] == "NOT_QUALIFIED"
+    assert first["legacy_route"]["state"] == "UNKNOWN"
     assert len(first["receipt_sha256"]) == 64
 
 
@@ -226,3 +230,237 @@ def test_cli_writes_receipt_and_returns_nonzero_for_unknown(monkeypatch, tmp_pat
     output = tmp_path / "qualification.json"
     assert main(["qualify", "--base-url", "https://example.test", "--output", str(output)]) == 1
     assert json.loads(output.read_text(encoding="utf-8")) == expected
+
+def _retired_payloads() -> dict:
+    payloads = exact_payloads()
+    route = {
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "state": "RETIRED",
+        "status_code": 410,
+        "reason_code": "LEGACY_COMPATIBILITY_ROUTE_RETIRED",
+        "successor": "/api/v3/governed-infer",
+    }
+    payloads["api/v1/identity"]["runtime"] = {
+        "openai_compatible_subset": {"chat_completions": copy.deepcopy(route)},
+    }
+    payloads[".well-known/szl-inference-contract.json"]["openai_compatible_subset"][
+        "chat_completions"
+    ] = copy.deepcopy(route)
+    return payloads
+
+
+def _route_rows(payloads: dict) -> tuple[dict, dict]:
+    return (
+        payloads["api/v1/identity"]["runtime"]["openai_compatible_subset"]["chat_completions"],
+        payloads[".well-known/szl-inference-contract.json"]["openai_compatible_subset"][
+            "chat_completions"
+        ],
+    )
+
+
+def _observe(payloads: dict) -> dict:
+    return qualify(
+        "https://example.test",
+        observed_at="2026-11-02T06:00:00Z",
+        fetcher=mapping_fetcher(payloads),
+    )
+
+
+def test_matching_identity_and_top_level_ready_do_not_override_retired_route():
+    result = _observe(_retired_payloads())
+    assert result["state"] == "OBSERVED"
+    assert len(result["checks"]) == 26
+    assert {check["state"] for check in result["checks"]} == {"OBSERVED"}
+    assert result["legacy_route"]["state"] == "RETIRED"
+    assert result["legacy_route"]["retirement_observed"] is True
+    assert result["legacy_route"]["reason_codes"] == []
+    assert result["legacy_route"]["declarations"]["identity"]["status_code"] == 410
+    assert result["legacy_route"]["declarations"]["contract"]["state"] == "RETIRED"
+    assert result["serving_ready"] is False
+    assert result["serving_state"] == "NOT_QUALIFIED"
+    assert result["scope"]["inference_request"] is False
+
+
+@pytest.mark.parametrize("failing_suffix", [
+    "api/build-info",
+    "api/v1/identity",
+    ".well-known/szl-inference-contract.json",
+    "v1/models",
+])
+def test_partial_read_failure_preserves_observed_retirement(failing_suffix):
+    calls = []
+    fetch = mapping_fetcher(_retired_payloads(), failing_suffix=failing_suffix)
+
+    def counted(url, timeout, limit):
+        calls.append(url)
+        return fetch(url, timeout, limit)
+
+    result = qualify("https://example.test", fetcher=counted)
+    assert result["state"] == "UNKNOWN"
+    assert result["legacy_route"]["state"] == "RETIRED"
+    assert result["legacy_route"]["retirement_observed"] is True
+    assert result["serving_ready"] is False
+    assert len(calls) == 4
+    assert len(set(calls)) == 4
+
+
+@pytest.mark.parametrize("changes,reason", [
+    ({"state": "READY"}, "IDENTITY_RETIREMENT_STATE_CONFLICT"),
+    ({"status_code": 200}, "IDENTITY_RETIREMENT_STATUS_CONFLICT"),
+    ({"state": "READY", "status_code": 200}, "DECLARATION_STATE_DISAGREEMENT"),
+    ({"successor": "/unreviewed-successor"}, "DECLARATION_SUCCESSOR_DISAGREEMENT"),
+])
+def test_conflicting_route_declarations_never_hide_retirement(changes, reason):
+    payloads = _retired_payloads()
+    identity, _contract = _route_rows(payloads)
+    identity.update(changes)
+    result = _observe(payloads)
+    assert result["state"] == "OBSERVED"
+    assert result["legacy_route"]["state"] == "CONFLICT"
+    assert result["legacy_route"]["retirement_observed"] is True
+    assert reason in result["legacy_route"]["reason_codes"]
+    assert result["serving_ready"] is False
+
+
+@pytest.mark.parametrize("field,value", [
+    ("method", "GET"),
+    ("path", "/different-route"),
+])
+def test_retirement_is_not_attributed_to_a_different_method_or_path(field, value):
+    payloads = _retired_payloads()
+    for row in _route_rows(payloads):
+        row[field] = value
+    result = _observe(payloads)
+    assert result["legacy_route"]["state"] == "CONFLICT"
+    assert result["legacy_route"]["retirement_observed"] is False
+    assert result["serving_ready"] is False
+
+
+@pytest.mark.parametrize("missing", [
+    ("method",),
+    ("path",),
+    ("state", "status_code"),
+])
+def test_incomplete_route_identity_or_absent_state_is_unknown(missing):
+    payloads = _retired_payloads()
+    for row in _route_rows(payloads):
+        for key in missing:
+            row.pop(key)
+    result = _observe(payloads)
+    assert result["legacy_route"]["state"] == "UNKNOWN"
+    assert result["legacy_route"]["retirement_observed"] is False
+    assert result["legacy_route"]["reason_codes"]
+    assert result["serving_ready"] is False
+
+
+@pytest.mark.parametrize("missing", ["state", "status_code"])
+def test_one_retirement_marker_remains_negative_evidence(missing):
+    payloads = _retired_payloads()
+    for row in _route_rows(payloads):
+        row.pop(missing)
+    result = _observe(payloads)
+    assert result["legacy_route"]["state"] == "RETIRED"
+    assert result["legacy_route"]["retirement_observed"] is True
+    assert result["legacy_route"]["reason_codes"]
+    assert result["serving_ready"] is False
+
+
+@pytest.mark.parametrize("code", ["410", 410.0, True])
+def test_status_codes_are_not_coerced_into_valid_declarations(code):
+    payloads = _retired_payloads()
+    identity, _contract = _route_rows(payloads)
+    identity["status_code"] = code
+    result = _observe(payloads)
+    assert result["legacy_route"]["state"] == "CONFLICT"
+    assert "IDENTITY_STATUS_CODE_MALFORMED" in result["legacy_route"]["reason_codes"]
+    assert result["serving_ready"] is False
+
+
+@pytest.mark.parametrize("malformed", [[], "RETIRED", False])
+def test_non_object_route_descriptors_are_unknown(malformed):
+    payloads = _retired_payloads()
+    payloads["api/v1/identity"]["runtime"]["openai_compatible_subset"][
+        "chat_completions"
+    ] = malformed
+    payloads[".well-known/szl-inference-contract.json"]["openai_compatible_subset"][
+        "chat_completions"
+    ] = malformed
+    result = _observe(payloads)
+    assert result["legacy_route"]["state"] == "UNKNOWN"
+    assert result["legacy_route"]["retirement_observed"] is False
+    assert result["serving_ready"] is False
+
+
+def test_matching_nonretired_declarations_do_not_qualify_serving():
+    payloads = _retired_payloads()
+    for row in _route_rows(payloads):
+        row.update(state="READY", status_code=200)
+        row.pop("reason_code")
+        row.pop("successor")
+    result = _observe(payloads)
+    assert result["state"] == "OBSERVED"
+    assert result["legacy_route"]["state"] == "DECLARED"
+    assert result["legacy_route"]["retirement_observed"] is False
+    assert result["serving_ready"] is False
+    assert result["serving_state"] == "NOT_QUALIFIED"
+
+
+def test_route_observations_are_bound_into_the_receipt_digest():
+    absent = _observe(exact_payloads())
+    retired = _observe(_retired_payloads())
+    assert absent["checks"] == retired["checks"]
+    assert absent["state"] == retired["state"] == "OBSERVED"
+    assert absent["receipt_sha256"] != retired["receipt_sha256"]
+    for receipt in (absent, retired):
+        unsigned = {key: value for key, value in receipt.items() if key != "receipt_sha256"}
+        encoded = json.dumps(
+            unsigned, ensure_ascii=False, separators=(",", ":"), sort_keys=True,
+        ).encode("utf-8")
+        assert hashlib.sha256(encoded).hexdigest() == receipt["receipt_sha256"]
+
+
+def test_qualification_reads_only_declared_metadata_gets_and_never_follows_successor(monkeypatch):
+    payloads = _retired_payloads()
+    for row in _route_rows(payloads):
+        row["successor"] = "https://example.invalid/must-not-be-contacted"
+    calls = []
+
+    def open_metadata(request, _timeout):
+        calls.append((request.get_method(), request.full_url))
+        suffix = request.full_url.removeprefix("https://example.test/")
+        assert suffix in payloads, request.full_url
+        return FakeResponse(
+            json.dumps(payloads[suffix]).encode("utf-8"),
+            final_url=request.full_url,
+        )
+
+    monkeypatch.setattr(qualifier, "_open_url", open_metadata)
+    result = qualify("https://example.test")
+    assert result["legacy_route"]["state"] == "RETIRED"
+    assert calls == [
+        ("GET", "https://example.test/api/build-info"),
+        ("GET", "https://example.test/api/v1/identity"),
+        ("GET", "https://example.test/.well-known/szl-inference-contract.json"),
+        ("GET", "https://example.test/v1/models"),
+    ]
+    assert result["scope"]["provider_write"] is False
+    assert result["scope"]["inference_request"] is False
+
+
+def test_cli_matching_identity_without_route_declarations_is_not_success(monkeypatch, capsys):
+    def fixture_qualification(base_url, **kwargs):
+        return qualify(
+            base_url,
+            observed_at="2026-11-17T00:00:00Z",
+            fetcher=mapping_fetcher(exact_payloads()),
+            **kwargs,
+        )
+
+    monkeypatch.setattr("szl_serve.cli.qualify", fixture_qualification)
+    assert main(["qualify", "--base-url", "https://example.test", "--output", "-"]) == 1
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["state"] == "OBSERVED"
+    assert len(payload["checks"]) == 26
+    assert payload["legacy_route"]["state"] == "UNKNOWN"
+    assert payload["serving_ready"] is False
