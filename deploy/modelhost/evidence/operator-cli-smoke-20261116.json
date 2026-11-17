@@ -1,0 +1,32 @@
+{
+  "gate1": {
+    "observed_at": "2026-11-16T23:46:29Z",
+    "inventory_returncode": 0,
+    "inventory_ready": true,
+    "generate_returncode": 0,
+    "http_status": 200,
+    "model": "a11oy-code-r1-candidate",
+    "artifact_fingerprint": "34d66080b089d86b322ca919f14247157c8f1a0ee90e5a8c85bf573d5e469d14",
+    "catalog_fingerprint": "34d66080b089d86b322ca919f14247157c8f1a0ee90e5a8c85bf573d5e469d14",
+    "identity_match": true,
+    "completion_tokens": 8,
+    "output_sha256": "1006a2f66539d1ecb5098486f7d641c8667e54550ab0e867d750f869e028fb7b",
+    "prompt_or_output_text_retained": false,
+    "passed": true
+  },
+  "cuda": {
+    "observed_at": "2026-11-16T23:46:34Z",
+    "inventory_returncode": 2,
+    "inventory_ready": false,
+    "generate_returncode": 0,
+    "http_status": 200,
+    "model": "a11oy-code-r1-candidate",
+    "artifact_fingerprint": "34d66080b089d86b322ca919f14247157c8f1a0ee90e5a8c85bf573d5e469d14",
+    "catalog_fingerprint": "34d66080b089d86b322ca919f14247157c8f1a0ee90e5a8c85bf573d5e469d14",
+    "identity_match": true,
+    "completion_tokens": 8,
+    "output_sha256": "1006a2f66539d1ecb5098486f7d641c8667e54550ab0e867d750f869e028fb7b",
+    "prompt_or_output_text_retained": false,
+    "passed": true
+  }
+}

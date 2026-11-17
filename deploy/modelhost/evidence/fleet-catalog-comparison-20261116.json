@@ -1,0 +1,212 @@
+{
+  "schema": "szl.modelhost-catalog-comparison/v1",
+  "observed_at": "2026-11-16T23:52:53Z",
+  "unsigned": true,
+  "host_boots": {
+    "gate1": "d1491260-8041-4f73-92c6-6c97e673992a",
+    "cuda": "c731b634-5e19-42b1-8e67-2c05aa40c9f4"
+  },
+  "loaded_placements": 93,
+  "distinct_model_names": 48,
+  "common_model_names": 45,
+  "same_artifact_count": 38,
+  "different_artifact_count": 7,
+  "same_artifact": [
+    {
+      "model": "a11oy-code-r1-candidate",
+      "artifact_fingerprint": "34d66080b089d86b322ca919f14247157c8f1a0ee90e5a8c85bf573d5e469d14"
+    },
+    {
+      "model": "abstention-doctrine-r1-candidate",
+      "artifact_fingerprint": "29f358d7a09455b2f2e8a8e7dbb93e3c6e34053dcdd812b42a55e62dee30fb88"
+    },
+    {
+      "model": "abstention-v2-candidate",
+      "artifact_fingerprint": "7fd1a5aa1c3b8284b927235b151505ae007686f5d07186cdad260fe39bab6b45"
+    },
+    {
+      "model": "brain-navigator-r2",
+      "artifact_fingerprint": "480cc3486003ff397ca3292fdc0e4cc889d72bbfeb0f2d58862d1d868d5b1b84"
+    },
+    {
+      "model": "brain-navigator-v2-trained",
+      "artifact_fingerprint": "4e7523389977ef47697188530585cb2469ac9cb57a2396b99061cbb329c8cc18"
+    },
+    {
+      "model": "chakana-v2-trained",
+      "artifact_fingerprint": "533774e9d27776b208202793c4bbcffbaf8eeaf1d041b0b6d0b62606ae650430"
+    },
+    {
+      "model": "chaski-5050",
+      "artifact_fingerprint": "d698f4c6f790f9ed850112a50523e1e7eb07a65acd96c167e091b2776287df4b"
+    },
+    {
+      "model": "chaski-r2",
+      "artifact_fingerprint": "8957e52bac842991e2640c72439347dd0732de3dcb0bea6b2fadf9c7d7e8785d"
+    },
+    {
+      "model": "chaski-r4",
+      "artifact_fingerprint": "1b934a8399b8f8c555b9d2bc4bcfeb7cdf123a1d3875535a2301ac1a94c62336"
+    },
+    {
+      "model": "chaski-v2-trained",
+      "artifact_fingerprint": "7bd7713d7a0193ef6be8f907a8c2062c7bb85beea499e5d0dc1ad38c6eff391c"
+    },
+    {
+      "model": "code-master-v3-fresh",
+      "artifact_fingerprint": "6b1be496209b82df8fb3c0094916bdec19428b84dd443c8eb5a4221e41e0d062"
+    },
+    {
+      "model": "creativity-v2-trained",
+      "artifact_fingerprint": "05a218f4f66ea9edb8e9abfd831da6f4fd7b3049ee085d08ce1bb7aeec8286d6"
+    },
+    {
+      "model": "doctrine-math-r1-candidate",
+      "artifact_fingerprint": "571e25b0d9d9bc63c3a2b6bb748bcff0b8a20d2b8893df5ea46824ba64c23687"
+    },
+    {
+      "model": "doctrine-v2-trained",
+      "artifact_fingerprint": "bc8e52abe0761012a2bfcb3910101b74faeebb53a1e768041c184f63e0f7cc17"
+    },
+    {
+      "model": "forge-1.5b-v2-trained",
+      "artifact_fingerprint": "a91976871bb8700fbfcc4c64f54ad660c0e3c0e3da9b1cb63bd6d28312297ce1"
+    },
+    {
+      "model": "freeenergy-v2-trained",
+      "artifact_fingerprint": "4483cb70af48689476a1c73980fdc04e00eaac0e0cbca832a90d911b21a97e9d"
+    },
+    {
+      "model": "hatun-24-doctrine-math-r1-candidate",
+      "artifact_fingerprint": "684d98fe77300b64b4c71a3539b03a879e1261ad66085168037ad4e4b0cec852"
+    },
+    {
+      "model": "hatun-24-v2-trained",
+      "artifact_fingerprint": "a57472055cdd1b6ef1d3807134083d642eb76b2c457e6e94f894fa4a4fdf095a"
+    },
+    {
+      "model": "khipu-abstain-v2-trained",
+      "artifact_fingerprint": "5fd5832bc559fcb9dde0fc8c668aa4d67e66e1a65907432930fc7e90b0f80e10"
+    },
+    {
+      "model": "khipu-r3",
+      "artifact_fingerprint": "ee6b6509f94264f70cf5d887667a360e8967b66a2813a51640929364891ea7f0"
+    },
+    {
+      "model": "khipu-r3-v2-trained",
+      "artifact_fingerprint": "47efc43ca8aceb792dc4e9578ff25fad8290eebadccca9117e055e303248551b"
+    },
+    {
+      "model": "lean-invariants-v2-trained",
+      "artifact_fingerprint": "bcf3af883eae5d60cbd18ef31e36f138bff0742a96a3475a5172c4f3a2f609d0"
+    },
+    {
+      "model": "miniembed-v2-trained",
+      "artifact_fingerprint": "13aec3044c7bae6270cc880247710e16747dc4281a920be7c5313ff59872bb83"
+    },
+    {
+      "model": "ouroboros-v2-trained",
+      "artifact_fingerprint": "1df64ed67c0049b5bad714783592ef17718af4943258cfaf9241870ba739be8b"
+    },
+    {
+      "model": "papers-v2-trained",
+      "artifact_fingerprint": "10bff4a9cb4d6b5ebd172d0b0d89034066f67bd23c7daed6ff63d44d156127c3"
+    },
+    {
+      "model": "quant-master-v1-candidate",
+      "artifact_fingerprint": "cb8fffa0d2546c81bb28598c6bb9595c5cad5edf9c8ea05c9efb736a834b997a"
+    },
+    {
+      "model": "receiptagent-v2-trained",
+      "artifact_fingerprint": "cb4f73b7b60484c6060b17751ba00994cdfc032750806756ffbc986b4100a49e"
+    },
+    {
+      "model": "salad-a11oy-mini-r1",
+      "artifact_fingerprint": "c7356fd790e86ad7fe0263f7917175ae5d970d11e89c7f9ab75905c1cf5da15d"
+    },
+    {
+      "model": "salad-brain-navigator-r2-r1",
+      "artifact_fingerprint": "5bad4140ff233529e6735182799a20ee0bde70a4d6363da41745bbc8d4da7ccb"
+    },
+    {
+      "model": "salad-chaski-5050-r1",
+      "artifact_fingerprint": "7ee73303730a43831620da36a83d1b40e88d70070a668b692e66d11bb05b4201"
+    },
+    {
+      "model": "salad-chaski-r1",
+      "artifact_fingerprint": "47d6e34a75cf9a33bef9538ad5d85de8d670c848dbbe90ab2cce2e173bcfcaf8"
+    },
+    {
+      "model": "salad-chaski-r2-r1",
+      "artifact_fingerprint": "0f70ac5bebe419c6d954ca656788209e0969d5c8e9e0e90ad0022d49062649b3"
+    },
+    {
+      "model": "salad-chaski-r4-r1",
+      "artifact_fingerprint": "0e92ab3771fe50d9373310ac0fb45f1049d43b8b10ebc39ce7e0c30fb8b9312f"
+    },
+    {
+      "model": "salad-khipu-r2-r1",
+      "artifact_fingerprint": "c88fddaa0767d0bc127d4313599ad99c9107884f4c58d3e19782bc0dff2e3cbe"
+    },
+    {
+      "model": "salad-willay-r1",
+      "artifact_fingerprint": "01f4c3c8adec62f14c57370dbb0fb0a65849a6487843712bd041ee2a31f6687a"
+    },
+    {
+      "model": "salad-x402-frontier-v1",
+      "artifact_fingerprint": "77885e57cf644eaec0cfaae61290f188100d604ebcee4a33a3cb489a51065a68"
+    },
+    {
+      "model": "triage-v2-trained",
+      "artifact_fingerprint": "7b310b5c6659e4ce288278bdcdbf59aad996f7d6ee7c195bb5c4303f9c04baa7"
+    },
+    {
+      "model": "willay-v2-trained",
+      "artifact_fingerprint": "db51fe820a83bb8bc2b796c55f1b0cabaf31c5370605974a719eff4c78678220"
+    }
+  ],
+  "different_artifact": [
+    {
+      "model": "absrl-grpo-r5b-candidate",
+      "gate1": "24d79794b5b60919f83b48a7b646eb967de9d038faeee126b055614096c52779",
+      "cuda": "13fd9f6f16ba4f32de21579f23c281b4a3ed30f05468ea89c1b73a3279b7cfda"
+    },
+    {
+      "model": "salad-axiom-invariants-r2",
+      "gate1": "5593a95d9e5dbe78d0c8296ea14b9bfff2e706d5c8bbaf6a3e4b6ebafe5f2512",
+      "cuda": "451095546d0f61f265dabbb50f324dd85f3fa15ae640ebd8658d380806d64046"
+    },
+    {
+      "model": "salad-doctrine-dpo-r2",
+      "gate1": "71fbf65af6dde7d4a32c4daa7389950a7b8d4b5254167283ca8bea922b00fadf",
+      "cuda": "4d9d57f536ea1c33089b45ee2ac5c3581ff3ee0740684ab28216858dcfc65560"
+    },
+    {
+      "model": "salad-measurement-honesty-r1",
+      "gate1": "ae7d378c88201f1f6551ee648962399287b893e7026109d9b7378194b9acbc69",
+      "cuda": "b1885cc3ab6b83aafd5fadb710beec0e884197474fd7e8035a44f499429011b7"
+    },
+    {
+      "model": "salad-quant-abstention-r1",
+      "gate1": "11b5158826a1e82af2a9775336e736d529a34d582d8a83a6aca9001f7c0f1fc6",
+      "cuda": "fea1838916d61245b3cb107fc6903df69479a4764c18863157c663542def0550"
+    },
+    {
+      "model": "salad-x402-frontier-v2",
+      "gate1": "1b049415af0d9c61fb3fbcc8bd9209ec48d265b6fc0a6cf3a8b87a1d9ad8f294",
+      "cuda": "8a94499825db1206b54423d5e6692e2f221fbd70023187579a765bd89c61a5cb"
+    },
+    {
+      "model": "szl-provenance-native-v2-lora",
+      "gate1": "b0701c9e2d35f1ab99121e4eb8a41004cb8f55abf48a524afe7442708d859cd9",
+      "cuda": "f492ef83bd47688588e652d38d73d1ed1091ff8176721ced98701f08a28049b2"
+    }
+  ],
+  "gate1_only": [
+    "salad-flagship54-v1",
+    "salad-frontier-v4-r1",
+    "salad-frontier-v5-r1"
+  ],
+  "cuda_only": [],
+  "automatic_failover_enabled": false
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "szl.modelhost-live-facts/v1",
+  "observed_at": "2026-11-16T23:47:12Z",
+  "host": "mass-cuda-kci",
+  "unsigned": true,
+  "qualification_returncode": 0,
+  "qualification_sha256": "c8b0c31f818aa615369c737613ab693c69f6e76ac57ae954220d00377eed4a85",
+  "disk_free_bytes": 54181744640,
+  "service": "MainPID=2425966\nNRestarts=0\nExecMainStartTimestamp=Mon 2026-11-16 23:34:58 UTC\nActiveState=active\nSubState=running\n",
+  "gpu_processes": "2139629, ./bin/cuda/llama-server, 24260\n2307902, /home/Ubuntu/bonsai-demo/bin/cuda/llama-server, 1530\n2425966, /home/Ubuntu/szl-modelhost/venv/bin/python, 17418\n",
+  "gpu_free_mb": 5279,
+  "origin_listener": [
+    "LISTEN 0      16         127.0.0.1:8091  0.0.0.0:*"
+  ],
+  "own_logs": [
+    {
+      "path": "/home/Ubuntu/szl-modelhost/host.log",
+      "size_bytes": 1346010,
+      "allocated_bytes": 1351680,
+      "mtime_ns": "1794870999631616005"
+    }
+  ]
+}

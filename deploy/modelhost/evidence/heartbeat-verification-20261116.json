@@ -1,0 +1,89 @@
+{
+  "schema": "szl.modelhost-heartbeat-verification/v1",
+  "verified_utc": "2026-11-16T23:56:02.004051+00:00",
+  "read_only_verification": true,
+  "manual_upload_performed": false,
+  "service_or_configuration_changed": false,
+  "credentials_or_prompt_output_text_retained": false,
+  "all_hosts_current": true,
+  "verification_method": "Installed Hugging Face SDK on each host read only its known dataset heartbeat; comparisons used that host's current local receipt.",
+  "verification_policy": {
+    "scheduled_upload_interval_seconds": 600,
+    "max_remote_receipt_age_seconds": 900,
+    "max_local_receipt_age_seconds": 180,
+    "max_future_clock_skew_seconds": 30,
+    "required_matches": [
+      "schema_v2",
+      "current_local_boot_id",
+      "runtime_source_and_contract_and_lock_hashes",
+      "configured_required_loaded_verified_counts"
+    ],
+    "journal_scope": "At most the last 400 journal lines since the current boot, projected to heartbeat/receipt failure event codes and exception classes only."
+  },
+  "hosts": {
+    "gate1": {
+      "host_label": "mass-frontier-gate-1",
+      "checked_utc": "2026-11-16T23:56:00.533715+00:00",
+      "dataset": "SZLHOLDINGS/wave-logs",
+      "path": "mass-modelhost/mass-frontier-gate-1-hb.json",
+      "observed_clock_utc": "2026-11-16T23:55:27.928664+00:00",
+      "schema": "szl.modelhost/v2",
+      "boot_id": "d1491260-8041-4f73-92c6-6c97e673992a",
+      "local_boot_id": "d1491260-8041-4f73-92c6-6c97e673992a",
+      "boot_id_matches_local": true,
+      "configured_count": 49,
+      "required_count": 48,
+      "loaded_count": 48,
+      "verified_count": 48,
+      "ready": true,
+      "reasons": [],
+      "source_sha256": {
+        "contract.py": "06f433a895ab261f89584213f7b88b23f275d0970ed0a96a35ac6e67739506d6",
+        "model_lock.json": "1bfbf1a2da4b8d8326585ed316afdf579142d36c4600d4ebb52754fb7a409134",
+        "szl_modelhost.py": "df093c548351d85f4b79c36cafa97fb634d3f2b260408fb3a1a59f6b43dfc24f"
+      },
+      "source_hashes_match_local": true,
+      "counts_match_local": true,
+      "readiness_matches_local": true,
+      "local_receipt_clock_utc": "2026-11-16T23:55:27.991939+00:00",
+      "local_receipt_age_seconds": 32.5,
+      "upload_age_seconds": 32.6,
+      "heartbeat_upload_enabled": true,
+      "latest_upload_current": true,
+      "safe_journal_events": [],
+      "status": "verified_current"
+    },
+    "cuda": {
+      "host_label": "mass-cuda-kci",
+      "checked_utc": "2026-11-16T23:56:02.004051+00:00",
+      "dataset": "SZLHOLDINGS/wave-logs",
+      "path": "mass-modelhost/mass-cuda-kci-hb.json",
+      "observed_clock_utc": "2026-11-16T23:47:22.879359+00:00",
+      "schema": "szl.modelhost/v2",
+      "boot_id": "c731b634-5e19-42b1-8e67-2c05aa40c9f4",
+      "local_boot_id": "c731b634-5e19-42b1-8e67-2c05aa40c9f4",
+      "boot_id_matches_local": true,
+      "configured_count": 49,
+      "required_count": 45,
+      "loaded_count": 45,
+      "verified_count": 45,
+      "ready": true,
+      "reasons": [],
+      "source_sha256": {
+        "contract.py": "06f433a895ab261f89584213f7b88b23f275d0970ed0a96a35ac6e67739506d6",
+        "model_lock.json": "c973c5fe09e1a78881d20c8aee2f2ccf0a17315617c2a05742fb32d61bff848e",
+        "szl_modelhost.py": "df093c548351d85f4b79c36cafa97fb634d3f2b260408fb3a1a59f6b43dfc24f"
+      },
+      "source_hashes_match_local": true,
+      "counts_match_local": true,
+      "readiness_matches_local": true,
+      "local_receipt_clock_utc": "2026-11-16T23:55:23.039582+00:00",
+      "local_receipt_age_seconds": 39,
+      "upload_age_seconds": 519.1,
+      "heartbeat_upload_enabled": true,
+      "latest_upload_current": true,
+      "safe_journal_events": [],
+      "status": "verified_current"
+    }
+  }
+}

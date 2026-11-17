@@ -1,164 +1,229 @@
-# Massed modelhost deployment
+# Massed modelhost: identity-v2 release
 
-This directory owns the separately deployed Transformers/PEFT modelhost on the
-Massed GPU machines. The repository's pinned CPU recipe remains a separate
-surface. This deployment does not claim a vendor serving engine, model quality,
-an SLA, signed provenance, or measured energy.
+This directory contains the Transformers/PEFT modelhost, its offline artifact
+planner, operator clients, and acceptance checks for the two Massed GPU hosts.
+The active release directory is
+`/home/Ubuntu/szl-modelhost/releases/20261116-identity-v2`.
+
+**Both hosts passed full operational and readiness qualification:** Gate1 at
+**2026-11-16 23:45:38 UTC** and CUDA at **2026-11-16 23:47:12 UTC**. The verified
+SSH service covers 48 model names across 93 placements. These are timestamped
+acceptance observations; use current receipts and endpoints for ongoing status.
+**Public HTTP ingress remains blocked on Cloudflare authorization.** The
+completed GET-only audit could not read the target tunnel configuration (401)
+or Access organization (403) with the existing production credential. See
+[INGRESS.md](INGRESS.md) for the exact observations and next action. See
+[OPERATIONS.md](OPERATIONS.md) for evidence, lifecycle, qualification, and recovery.
+
+Gate1 was temporarily paused to preserve an unrelated Vibe training job, observed
+as PID 10095. That job exited naturally; the rollout owner resumed the Gate1
+modelhost at **2026-11-16 23:42:10 UTC**, observed as PID 14459. These are historical
+observations, not permanent process identities. The acceptance records below
+follow that resume.
+
+## Host assignments and coverage
+
+| Host | SSH destination | Modelhost listener | Required model placements | VRAM reserve |
+| --- | --- | --- | ---: | ---: |
+| Gate1 | `Ubuntu@64.247.196.50` | `127.0.0.1:8090` | 48 | 6,000 MiB |
+| CUDA | `Ubuntu@64.247.206.118` | `127.0.0.1:8091` | 45 | 4,000 MiB |
+
+Both locks retain all **49 originally configured names**. The
+`khipu-abstain-r3-candidate` entry is an explicit metadata-only repository
+exclusion, with no model weights at the reviewed revision. CUDA's three
+additional capacity exclusions are `salad-frontier-v4-r1`,
+`salad-frontier-v5-r1`, and `salad-flagship54-v1`; all three are served by Gate1.
+Required coverage is thus
+48 placements on Gate1 and 45 on CUDA: **93 assigned placements, achieved at the
+recorded acceptance and covering 48 distinct model names with weights**. Placements include replicas; they are
+not 93 distinct models. Equal names across hosts also do not guarantee equal
+artifact revisions or fingerprints.
+
+The final live catalog comparison found 45 names present on both hosts: 38 had
+the same exact artifact fingerprint and seven had different pinned artifacts.
+The three Gate1-only names are the CUDA capacity exclusions above. See the
+[catalog comparison](evidence/fleet-catalog-comparison-20261116.json); consumers
+must keep their expected fingerprint when selecting another host.
+
+The free-disk reserve remains **50 GiB on each host**. Exclusions, missing files,
+load failures, and resource pressure remain visible. Do not remove a name from
+the denominator or lower a reserve to turn a failing readiness result into a
+passing one.
+
+## Exact artifact identity
+
+`freeze_cache.py` reads an existing cache without contacting the Hub. It selects
+one exact adapter release/checkpoint directory and records immutable repository
+revisions, file sizes, and actual SHA256 hashes. The server verifies the pinned
+base files once per loaded base and adapter files before loading. It also checks
+that the adapter configuration names the locked base repository.
+
+A base is shared only for the same `repo@revision`; adapter aliases incorporate
+the name and fingerprint. Loading uses exact local paths with local-only
+options. No request triggers a download or lazy model load.
+
+The artifact fingerprint covers adapter repository/revision, the selected
+adapter-config path, adapter file identities, and base repository/revision/file
+identities. Local paths and VRAM planning metadata do not enter the fingerprint.
+A change to the lock file still changes its separate whole-file SHA256 receipt.
+
+### BF16 allocation planning
+
+The planner reads a safetensors header capped at 16 MiB, validates tensor shapes,
+dtypes, offsets, complete file bounds, and stable metadata, and projects floating
+tensors to two bytes per element for the runtime's BF16 load. Integer and Boolean
+buffers retain their stored widths. It reads no tensor payload for this estimate
+and imports no GPU libraries.
+
+The allocation policy remains `max(900 MiB, ceil(projected MiB × 1.05) + 256 MiB)`.
+The host's VRAM reserve is added separately and remains unchanged. This corrects
+F32-on-disk overestimation; it does not claim exact future allocation or reduce
+headroom. The additional `vram_planning` metadata explains the estimate.
 
 ## Serving contract
 
-The runtime loads only local files listed in a frozen lock. Adapter selection is
-the exact selected release/checkpoint directory; it never recursively selects a
-different cached adapter. Base weights, tokenizer files, adapter configuration,
-and adapter weights are pinned by repository revision, byte count, and actual
-SHA-256. A base is shared only for the same repository and revision.
-
-| Endpoint | Meaning |
+| Endpoint | Contract |
 | --- | --- |
-| `GET /health` | Process liveness, boot identity, and resident models |
-| `GET /ready` or `/readyz` | HTTP 200 only when all assigned models have verified identities and fresh operational canaries, initialization is complete, and resource reserves hold; otherwise 503 with reasons |
-| `GET /models` | Versioned catalog including all configured entries, explicit exclusions, pins, canaries, and failures |
-| `POST /generate` | Bounded generation for an already loaded model; no downloads or lazy loading |
+| `GET /health` | Process liveness, boot ID, initialization status, and resident models; a 200 does not assert readiness |
+| `GET /ready` or `/readyz` | 200 only when required coverage, verified identities, fresh canaries, initialization, and resource reserves all pass; otherwise 503 with reasons |
+| `GET /models` | `szl.modelhost/v2` catalog with a `models` object, full manifest, explicit exclusions, identities, canaries, and failures |
+| `POST /generate` | Bounded generation using an already loaded model and optional exact-identity fence |
 
-The v2 `/models` response has a `models` object rather than the former flat map.
-`/health` retains its legacy `loaded` and `free_mb` fields. Uploaded heartbeats
-retain `loaded`, `statuses`, `free_mb`, and `gpu` alongside v2 evidence.
+Generation requires `model` and `prompt`. `max_new_tokens` defaults to 256 and
+must be an integer within the configured limit. For an exact artifact request,
+read the selected host's catalog and send its 64-character lowercase SHA256 as
+`expected_artifact_fingerprint`. A mismatch returns **409
+`artifact_identity_mismatch` before generation**. Verify the response fingerprint
+as well. Responses also carry repository/revision, boot ID, request ID, measured
+completion tokens, and elapsed milliseconds.
 
-Generation requires `model` and `prompt`; `max_new_tokens` defaults to 256.
-`expected_artifact_fingerprint` optionally pins the exact artifact identity.
-Invalid fingerprints are rejected, and a valid but different fingerprint yields
-409 before GPU work. Responses include the actual artifact fingerprint, model
-revision, boot ID, request ID, completion-token count, and elapsed milliseconds.
-Equal names on different machines do not imply equal checkpoints. There is no
-automatic cross-host failover.
+Defaults are 64 KiB bodies, 16,384 prompt characters, 2,048 input tokens, 256 new
+tokens, one active generation, two queued requests, eight HTTP workers, a
+2-second queue wait, and a 10-second socket timeout. The Transformers generation
+limit is cooperative at 60 seconds. The admission gate remains occupied until
+the call exits; the server does not launch overlapping GPU work when a client
+wait expires.
 
-Default limits are 64 KiB request bodies, 16,384 prompt characters, 2,048 input
-tokens, 256 new tokens, one active generation, two queued generations, eight HTTP
-workers, a two-second queue wait, and a ten-second socket read timeout. Generation
-has a 60-second cooperative Transformers limit. An unresponsive CUDA operation
-cannot safely be killed inside the process; the generation gate stays occupied
-until the operation exits. These controls do not constitute a latency SLA.
+Generation can succeed while `/ready` reports a resource problem. Record that
+503 and its reasons; successful inference does not override readiness.
 
-## Identity and readiness
+## SSH operator access
 
-`locks/gate1.json` and `locks/cuda.json` preserve the configured 49-entry
-denominator. `khipu-abstain-r3-candidate` is explicitly classified as a metadata
-repository: at the recorded revision it contains a README and evaluation report,
-with no model weights. CUDA additionally excludes the three 4B adapter placements
-to preserve the existing protected workload's VRAM. These are disclosed
-assignment decisions; exclusions are never counted as loaded models.
+The supported operator path is encrypted SSH to the selected host and HTTP on
+that host's loopback interface. A public authenticated hostname is a separate,
+unverified deployment surface. Preserve existing ThinLinc, mesh, SSH, and other
+unrelated routes.
 
-The disk reserve is 50 GiB. Gate1 retains a 6,000 MiB VRAM reserve and CUDA retains
-4,000 MiB. A disk-pressure 503 must remain visible until capacity is actually
-restored; do not lower a threshold to manufacture a successful readiness result.
-
-Every loaded adapter receives a one-token boot canary. A successful canary proves
-only that the pinned serving path executed. It does not establish model quality,
-correctness, safety, or suitability. Canary records contain token count, output
-hash, duration, and time without prompt/output content. Idle canary refresh runs
-every six hours; records older than 24 hours cease to establish readiness.
-
-Local receipts are atomically replaced every 60 seconds with mode 0600 and contain
-source/lock hashes, boot identity, full coverage, resource readings, and counters.
-Optional existing Hub telemetry runs independently every 600 seconds. Records
-are unsigned observations. No signing key or attestation is invented.
-
-## Freeze an existing cache
-
-Freeze does not contact the Hub and never downloads weights:
-
-```bash
-python freeze_cache.py \
-  --config /home/Ubuntu/szl-modelhost/host_config.json \
-  --cache /home/Ubuntu/szl-modelhost/hf/hub \
-  --exclusion-policy /path/to/reviewed-exclusion-policy.json \
-  --output /path/to/release/model_lock.json
-```
-
-The exclusion policy is a JSON object mapping configured model names to explicit
-reasons. Missing files remain in the lock with an unavailable status. A metadata
-repository exclusion also needs an independently recorded repository revision
-and file-list observation, as shown in the checked-in deployment locks.
-
-Do not commit a live `host_config.json`, SSH private key, Hub token, origin token,
-Cloudflare service token, or unsanitized configuration. The runtime dependencies
-are installed in the existing host virtual environments; recorded versions are
-observations, not a new dependency installation or an upstream reproducibility
-claim.
-
-## Secure operator access
-
-The modelhost binds to `127.0.0.1` by default. `fleet_client.py` uses the existing
-trusted SSH host keys and named operator key to call that loopback listener over
-an encrypted SSH channel. It rejects unknown host keys, never interpolates the
-prompt into a shell command, selects one host explicitly, and checks the returned
-artifact identity. It does not silently retry a generation on another machine.
+From this directory on the authorized operator machine:
 
 ```powershell
-python deploy/modelhost/fleet_client.py inventory --host gate1
-python deploy/modelhost/fleet_client.py generate --host gate1 --model chaski-r2 --prompt-file C:\SZL\prompt.txt --max-new-tokens 32
+python fleet_client.py inventory --host cuda
+python fleet_client.py generate --host cuda --model MODEL_NAME --prompt-file C:\SZL\prompt.txt --max-new-tokens 32
 ```
 
-The default host is Gate1. Use `--host cuda` for an intentional CUDA call. The
-client uses `~/.ssh/szl_massed_a6000_ed25519` unless an explicit key path is
-provided. Inventory includes the actual readiness HTTP status and reasons.
+Replace `MODEL_NAME` with a loaded name from that host's catalog. Use
+`--host gate1` for Gate1; the client's default is Gate1. The existing default key
+is `~/.ssh/szl_massed_a6000_ed25519`. `--key-file` and `--known-hosts` can select
+existing trusted files. Unknown SSH host keys are rejected.
 
-An authenticated public hostname is a separate deployment gate. Before enabling
-one, verify a narrowly scoped Access application and Service Auth policy, then
-configure connector-side Access JWT validation for that application's audience.
-Verify unauthenticated rejection, authorized inference, and origin bypass
-closure. Preserve the unrelated ThinLinc and laptop mesh tunnels. A healthy
-connector alone does not establish any of these properties.
+The client sends prompts as JSON on SSH stdin, uses fixed host/endpoint
+allowlists, disables HTTP proxies and redirects for loopback requests, pins the
+catalog fingerprint, and checks the response identity. It makes no automatic
+generation retry or cross-host failover. The operator command prints generated
+text; the server's operational receipts do not retain that text.
 
-## Staged activation and rollback
+Optional origin authentication is read privately from
+`/home/Ubuntu/szl-modelhost/releases/20261116-identity-v2/host_config.json`, the same
+active configuration used by the service. Use an absolute
+`origin_auth_token_file` path if enabling that option. Do not put credentials in
+CLI arguments or commit live configuration.
 
-Stage source, contract, lock, and private configuration in a versioned release
-directory. Compile and run the fixture tests first. Activate one host at a time
-through a named systemd drop-in, keeping the prior unit/source/configuration
-available. Do not start a second full modelhost on the same GPU during testing.
+## Receipts and qualification
 
-For the `20261116-identity-v2` release, the service override is
-`/etc/systemd/system/szl-modelhost.service.d/70-identity-v2.conf`. It points at the
-versioned release, uses the existing virtual environment, binds through the
-release's loopback configuration, and sends output to the journal rather than
-duplicating it into the former unbounded file log.
+Loaded adapters receive a one-token boot canary. Its evidence is operational
+execution only: actual completion-token count, output hash, elapsed time, and
+UTC timestamp. Idle refresh runs every six hours; evidence older than 24 hours
+fails freshness. A failed canary does not silently mark an unloaded or unverified
+model as ready.
 
-Rollback only this release's override, then reload and restart this one service:
+On each host, local runtime receipts are atomically replaced every 60 seconds at
+`/home/Ubuntu/szl-modelhost/receipts/latest.json`, mode 0600. Optional Hub upload
+runs independently every 600 seconds. Receipts include source and lock hashes,
+boot identity, complete coverage, resource observations, admission state, and
+counters. Legacy heartbeat fields `loaded`, `statuses`, `free_mb`, and `gpu`
+remain available. These records are unsigned observations and assess no model
+quality, correctness, or energy efficiency.
+
+Both naturally scheduled Hub uploads were verified against their current local
+boot, source/lock hashes, and ready model counts on 2026-11-16. See the
+[heartbeat verification](evidence/heartbeat-verification-20261116.json). No manual
+upload was used to substitute for the scheduled publisher.
+
+`qualify_running.py` checks the live boot, the on-disk and running-source hashes,
+all required identities and fresh canaries, six negative request cases, and one
+real eight-token request per distinct required base revision. It saves only
+output hashes, counts, timings, and identities. Use the exact invocation in
+[OPERATIONS.md](OPERATIONS.md), producing
+`/home/Ubuntu/szl-modelhost/receipts/acceptance-20261116.json` on each host.
+
+**Qualifier exit 0 means `operational_pass`, not full readiness.** Inspect
+`readiness_pass`, `fully_ready`, and the actual `/ready` HTTP status and reasons.
+A disk-pressure 503 must remain a 503 in acceptance evidence.
+
+## Tools in this directory
+
+| Tool | Purpose and limits |
+| --- | --- |
+| `szl_modelhost.py` | Versioned loopback serving, identity checks, bounded admission, canaries, and receipts |
+| `contract.py` | Pure-stdlib selection, request validation, readiness, and concurrency contracts |
+| `freeze_cache.py` | Offline lock creation and BF16 allocation planning from existing cache files |
+| `fleet_client.py` | Explicit-host SSH inventory and fingerprint-fenced generation |
+| `qualify_running.py` | One-pass acceptance of an already running host; no service controls or model loading |
+| `massed_inventory.py` | Read-only provider inventory using one authorized key; outputs only allowlisted fields |
+| `deduplicate_cache.py` | Audit or apply an explicit immutable-file hardlink plan after content verification |
+
+The Massed API helper calls `GET
+https://vm.massedcompute.com/api/v1/instance`, takes `--key-file` (default
+`C:\SZL\massed_api.key`), and strips provider passwords/startup commands from its
+output. Provider inventory does not prove SSH reachability or inference
+readiness. It does not create, stop, or delete instances.
+
+## Local verification and release evidence
+
+From this directory:
 
 ```bash
-sudo mv /etc/systemd/system/szl-modelhost.service.d/70-identity-v2.conf \
-  /etc/systemd/system/szl-modelhost.service.d/70-identity-v2.conf.disabled
-sudo systemctl daemon-reload
-sudo systemctl restart szl-modelhost.service
+python -m unittest discover -s . -p 'test_*.py' -q
 ```
 
-The old source/configuration remain at their original paths. A rollback restores
-the old listener behavior, including its public binding, so it is a recovery
-operation requiring a follow-up exposure check. Do not alter protected Bonsai,
-Colibri, Hatun, SSH, training services, or unrelated systemd overrides.
+Fixtures cover artifact selection and mutation, BF16 projection, admission and
+HTTP bounds, identity fences, exclusions, stale/failed canaries, receipts,
+clients, and qualification. The rollout owner recorded **87 tests passing
+locally and in both host virtual environments**, with the existing three-version
+Python CI green. These tests are separate from the live acceptance below.
 
-## Cache consolidation
+| Host | Accepted UTC on 2026-11-16 | Required / loaded / verified | Checks | Representative base groups | Result |
+| --- | --- | --- | ---: | ---: | --- |
+| Gate1 | 23:45:38 | 48 / 48 / 48 | 25 | 8 | Operational, readiness, and fully-ready flags true |
+| CUDA | 23:47:12 | 45 / 45 / 45 | 23 | 6 | Operational, readiness, and fully-ready flags true |
 
-`deduplicate_cache.py` audits an explicit plan by default. `--apply` atomically
-replaces only a reviewed duplicate with a hardlink after both actual hashes,
-immutable permissions, stable metadata, ownership, and filesystem identity pass.
-Cache blob filenames are not accepted as content hashes. Symlink paths and
-writable files are rejected. Repeated application is idempotent.
+Both runs had zero failed checks. Generation probes were capped at eight new
+tokens and were fenced to the catalog artifact. The receipt exports are named
+`gate1-acceptance-20261116.json` and `cuda-acceptance-20261116.json`; their SHA256
+values and resource observations are recorded in [OPERATIONS.md](OPERATIONS.md).
+The reports are available as [Gate1 acceptance](evidence/gate1-acceptance-20261116.json)
+and [CUDA acceptance](evidence/cuda-acceptance-20261116.json).
 
-This is appropriate only for verified immutable, quiescent cache blobs. It does
-not delete unique model stores or training artifacts. Future cache maintenance
-must continue treating these blobs as immutable. Deleting one cache entry does
-not delete the other hardlink's data.
+At acceptance, Gate1 had 100,484,075,520 free disk bytes and 13,311 MiB free VRAM;
+CUDA had 54,181,744,640 free disk bytes and 5,279 MiB free VRAM. CUDA's disk margin
+was only 494,653,440 bytes, approximately 472 MiB above the unchanged 50 GiB
+reserve. Continue monitoring that reserve. Both listeners were loopback-only,
+and external laptop TCP probes to their public HTTP ports timed out. This does
+not complete the separate public-hostname/Cloudflare authentication audit.
 
-## Verification
-
-```bash
-python -m unittest discover -s deploy/modelhost -p 'test_*.py' -q
-pytest -q
-```
-
-Fixture tests exercise selection, identity mismatches, cache mutation, token/body
-limits, worker/queue bounds, failed and stale canaries, exclusions, receipt writes,
-and safe consolidation. The release evidence separately records actual host
-loading, canaries, representative generation, direct-port closure, and protected
-service observations. Fixture tests alone never establish CUDA readiness.
+A later verified cleanup of disabled Snap revision 168 reclaimed another
+645,160,960 bytes. CUDA then had **54,826,770,432 free bytes (51.06 GiB)**,
+1.06 GiB above the reserve. The final [operator inventory](evidence/operator-final-inventory-20261116.json)
+returned HTTP 200 and `ready: true` on both hosts after that cleanup. The
+[cache cleanup summary](evidence/cache-cleanup-summary-20261116.md) and
+[restoration instructions](evidence/RESTORE.md) preserve the reviewed scope.

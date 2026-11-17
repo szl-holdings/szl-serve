@@ -1,0 +1,23 @@
+{
+  "schema": "szl.modelhost-live-facts/v1",
+  "observed_at": "2026-11-16T23:45:38Z",
+  "host": "mass-frontier-gate-1",
+  "unsigned": true,
+  "qualification_returncode": 0,
+  "qualification_sha256": "0094dbba4a834950b4fbb53bd829f718939ad41fe37d3cad253cf7b02a81a811",
+  "disk_free_bytes": 100484075520,
+  "service": "MainPID=14459\nNRestarts=0\nExecMainStartTimestamp=Mon 2026-11-16 23:42:10 UTC\nActiveState=active\nSubState=running\n",
+  "gpu_processes": "958, /home/Ubuntu/szl-infer/llama-b12426/llama-server, 2166\n14459, /home/Ubuntu/szl-modelhost/venv/bin/python, 33050\n",
+  "gpu_free_mb": 13311,
+  "origin_listener": [
+    "LISTEN 0      16         127.0.0.1:8090 0.0.0.0:*"
+  ],
+  "own_logs": [
+    {
+      "path": "/home/Ubuntu/szl-modelhost/host.log",
+      "size_bytes": 1683304,
+      "allocated_bytes": 1687552,
+      "mtime_ns": "1794870347200059911"
+    }
+  ]
+}

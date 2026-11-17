@@ -50,7 +50,9 @@ def run():
     if (method, path) not in {("GET", "/models"), ("GET", "/ready"), ("POST", "/generate")}:
         raise ValueError("invalid_request")
     headers = {"Accept": "application/json"}
-    config_path = Path("/home/Ubuntu/szl-modelhost/host_config.json")
+    # Read the same private configuration as the deployed v2 systemd service.
+    # The untouched legacy root configuration is retained only for recovery.
+    config_path = Path("/home/Ubuntu/szl-modelhost/releases/20261116-identity-v2/host_config.json")
     config = json.loads(config_path.read_text(encoding="utf-8"))
     token = config.get("origin_auth_token")
     token_file = config.get("origin_auth_token_file")

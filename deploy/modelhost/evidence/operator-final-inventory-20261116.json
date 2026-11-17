@@ -1,0 +1,54 @@
+{
+  "observed_at": "2026-11-16T23:52:53Z",
+  "hosts": {
+    "gate1": {
+      "exit_code": 0,
+      "http_status": 200,
+      "ready": true,
+      "required_count": 48,
+      "loaded_count": 48,
+      "verified_count": 48,
+      "boot_id": "d1491260-8041-4f73-92c6-6c97e673992a",
+      "reasons": [],
+      "resources": {
+        "disk": {
+          "free_bytes": 100483006464,
+          "minimum_bytes": 53687091200
+        },
+        "vram": {
+          "free_mb": 13311,
+          "minimum_mb": 6000
+        }
+      },
+      "exclusions": {
+        "khipu-abstain-r3-candidate": "metadata_only_repository_no_model_weights"
+      }
+    },
+    "cuda": {
+      "exit_code": 0,
+      "http_status": 200,
+      "ready": true,
+      "required_count": 45,
+      "loaded_count": 45,
+      "verified_count": 45,
+      "boot_id": "c731b634-5e19-42b1-8e67-2c05aa40c9f4",
+      "reasons": [],
+      "resources": {
+        "disk": {
+          "free_bytes": 54826749952,
+          "minimum_bytes": 53687091200
+        },
+        "vram": {
+          "free_mb": 5278,
+          "minimum_mb": 4000
+        }
+      },
+      "exclusions": {
+        "khipu-abstain-r3-candidate": "metadata_only_repository_no_model_weights",
+        "salad-flagship54-v1": "protected_workload_vram_capacity",
+        "salad-frontier-v4-r1": "protected_workload_vram_capacity",
+        "salad-frontier-v5-r1": "protected_workload_vram_capacity"
+      }
+    }
+  }
+}

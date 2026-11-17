@@ -1,0 +1,206 @@
+[
+  {
+    "name": "merged/khipu-r3",
+    "source_path": "/home/Ubuntu/szl-modelhost/hf/hub/blobs/6a/6a9f040debda4dc7215658c64b04152e96b96ddf61d682b0d5067d934c118509",
+    "archive_path": "/home/Ubuntu/szl-modelhost/cold-cache-archives/cuda-merged-weights-20261116/khipu-r3.model.safetensors",
+    "sha256": "bbed5906611f4830fc752195662a08bfcd3f1484b71cbed9b6674f01d5cc9b3e",
+    "size": 3009613624,
+    "original_metadata": {
+      "aliases": [
+        "/home/Ubuntu/szl-modelhost/hf/hub/models--SZLHOLDINGS--khipu-r3/snapshots/22e6dd84892ca534ef8661c1f9c0500c6160349e/model.safetensors",
+        "/home/Ubuntu/szl-modelhost/hf/hub/models--SZLHOLDINGS--khipu-r3/blobs/bbed5906611f4830fc752195662a08bfcd3f1484b71cbed9b6674f01d5cc9b3e"
+      ],
+      "allocated": 3009617920,
+      "ctime_ns": "1794812863005864728",
+      "dev": 2050,
+      "gid": 1001,
+      "in_frozen_lock": false,
+      "inode": 2772873,
+      "loader_kind": "lora",
+      "mode": "0o444",
+      "mtime_ns": "1794812857961851043",
+      "name": "khipu-r3",
+      "nlink": 1,
+      "path": "/home/Ubuntu/szl-modelhost/hf/hub/blobs/6a/6a9f040debda4dc7215658c64b04152e96b96ddf61d682b0d5067d934c118509",
+      "selected_path": "/home/Ubuntu/szl-modelhost/hf/hub/models--SZLHOLDINGS--khipu-r3/snapshots/22e6dd84892ca534ef8661c1f9c0500c6160349e",
+      "selected_revision": "22e6dd84892ca534ef8661c1f9c0500c6160349e",
+      "size": 3009613624,
+      "uid": 1001
+    }
+  },
+  {
+    "name": "merged/brain-navigator-r2",
+    "source_path": "/home/Ubuntu/szl-modelhost/hf/hub/blobs/35/3525b4fe5dbb979f2505ec8d145680eb5ac2dab09c854e85667b1a0364d5009b",
+    "archive_path": "/home/Ubuntu/szl-modelhost/cold-cache-archives/cuda-merged-weights-20261116/brain-navigator-r2.model.safetensors",
+    "sha256": "1b825de2e632001c97e4e1edba56b1baf56c0676775a4ede5e654cebb06176ce",
+    "size": 3009613624,
+    "original_metadata": {
+      "aliases": [
+        "/home/Ubuntu/szl-modelhost/hf/hub/models--SZLHOLDINGS--brain-navigator-r2/snapshots/78047dc39ff06763e2f726d96dd59bd39bca8110/model.safetensors",
+        "/home/Ubuntu/szl-modelhost/hf/hub/models--SZLHOLDINGS--brain-navigator-r2/blobs/1b825de2e632001c97e4e1edba56b1baf56c0676775a4ede5e654cebb06176ce"
+      ],
+      "allocated": 3009617920,
+      "ctime_ns": "1794812880370910008",
+      "dev": 2050,
+      "gid": 1001,
+      "in_frozen_lock": false,
+      "inode": 2772886,
+      "loader_kind": "lora",
+      "mode": "0o444",
+      "mtime_ns": "1794812876100899135",
+      "name": "brain-navigator-r2",
+      "nlink": 1,
+      "path": "/home/Ubuntu/szl-modelhost/hf/hub/blobs/35/3525b4fe5dbb979f2505ec8d145680eb5ac2dab09c854e85667b1a0364d5009b",
+      "selected_path": "/home/Ubuntu/szl-modelhost/hf/hub/models--SZLHOLDINGS--brain-navigator-r2/snapshots/78047dc39ff06763e2f726d96dd59bd39bca8110",
+      "selected_revision": "78047dc39ff06763e2f726d96dd59bd39bca8110",
+      "size": 3009613624,
+      "uid": 1001
+    }
+  },
+  {
+    "name": "merged/chaski-r2",
+    "source_path": "/home/Ubuntu/szl-modelhost/hf/hub/blobs/93/93823e3857ae382847929de97762e0c240e43e49f57a832f78e4ef41fb80e451",
+    "archive_path": "/home/Ubuntu/szl-modelhost/cold-cache-archives/cuda-merged-weights-20261116/chaski-r2.model.safetensors",
+    "sha256": "f3b3130117711c670ce7979bdea165ddd06e00c2d307637d54ce62177a9d941d",
+    "size": 3009613624,
+    "original_metadata": {
+      "aliases": [
+        "/home/Ubuntu/szl-modelhost/hf/hub/models--SZLHOLDINGS--chaski-r2/snapshots/39b6d0b79f49e45a784b3c5271ab956ba641f1c5/model.safetensors",
+        "/home/Ubuntu/szl-modelhost/hf/hub/models--SZLHOLDINGS--chaski-r2/blobs/f3b3130117711c670ce7979bdea165ddd06e00c2d307637d54ce62177a9d941d"
+      ],
+      "allocated": 3009617920,
+      "ctime_ns": "1794812899259956112",
+      "dev": 2050,
+      "gid": 1001,
+      "in_frozen_lock": false,
+      "inode": 2772897,
+      "loader_kind": "lora",
+      "mode": "0o444",
+      "mtime_ns": "1794812894207944097",
+      "name": "chaski-r2",
+      "nlink": 1,
+      "path": "/home/Ubuntu/szl-modelhost/hf/hub/blobs/93/93823e3857ae382847929de97762e0c240e43e49f57a832f78e4ef41fb80e451",
+      "selected_path": "/home/Ubuntu/szl-modelhost/hf/hub/models--SZLHOLDINGS--chaski-r2/snapshots/39b6d0b79f49e45a784b3c5271ab956ba641f1c5",
+      "selected_revision": "39b6d0b79f49e45a784b3c5271ab956ba641f1c5",
+      "size": 3009613624,
+      "uid": 1001
+    }
+  },
+  {
+    "name": "merged/chaski-5050",
+    "source_path": "/home/Ubuntu/szl-modelhost/hf/hub/blobs/e4/e42247baaa99e7077463502c76d375e3d48db205553e3e7ffbc54c2ff5879ca2",
+    "archive_path": "/home/Ubuntu/szl-modelhost/cold-cache-archives/cuda-merged-weights-20261116/chaski-5050.model.safetensors",
+    "sha256": "eb7471be811f1aa4a3cc92ffe8dfccca6b3236bca553b9d926069ada478bb5b4",
+    "size": 3009613624,
+    "original_metadata": {
+      "aliases": [
+        "/home/Ubuntu/szl-modelhost/hf/hub/models--SZLHOLDINGS--chaski-5050/snapshots/08c36c86c361315854739debd5be7881066aeab1/model.safetensors",
+        "/home/Ubuntu/szl-modelhost/hf/hub/models--SZLHOLDINGS--chaski-5050/blobs/eb7471be811f1aa4a3cc92ffe8dfccca6b3236bca553b9d926069ada478bb5b4"
+      ],
+      "allocated": 3009617920,
+      "ctime_ns": "1794812918226999221",
+      "dev": 2050,
+      "gid": 1001,
+      "in_frozen_lock": false,
+      "inode": 2772914,
+      "loader_kind": "lora",
+      "mode": "0o444",
+      "mtime_ns": "1794812913929989728",
+      "name": "chaski-5050",
+      "nlink": 1,
+      "path": "/home/Ubuntu/szl-modelhost/hf/hub/blobs/e4/e42247baaa99e7077463502c76d375e3d48db205553e3e7ffbc54c2ff5879ca2",
+      "selected_path": "/home/Ubuntu/szl-modelhost/hf/hub/models--SZLHOLDINGS--chaski-5050/snapshots/08c36c86c361315854739debd5be7881066aeab1",
+      "selected_revision": "08c36c86c361315854739debd5be7881066aeab1",
+      "size": 3009613624,
+      "uid": 1001
+    }
+  },
+  {
+    "name": "qwen/model-00001-of-00004.safetensors",
+    "source_path": "/home/Ubuntu/hf/hub/blobs/dd/ddfa1ff25e39c57076e10f1a8b02cc96888ce69b0717f0d296c57b842695c965",
+    "archive_path": "/home/Ubuntu/szl-modelhost/cold-cache-archives/cuda-qwen25-7b-20261116/public-hf-cache/blobs/dd/ddfa1ff25e39c57076e10f1a8b02cc96888ce69b0717f0d296c57b842695c965",
+    "sha256": "a1333e6293854747c481288ea83b348226af178dd565c49b6f9495ba1966aba7",
+    "size": 3945441440,
+    "original_metadata": {
+      "allocated": 3945447424,
+      "ctime_ns": "1792728124287553974",
+      "dev": 2050,
+      "gid": 1001,
+      "inode": 7606172,
+      "mode": 292,
+      "mtime_ns": "1792728117444610718",
+      "nlink": 1,
+      "relative_path": "blobs/dd/ddfa1ff25e39c57076e10f1a8b02cc96888ce69b0717f0d296c57b842695c965",
+      "sha256": "a1333e6293854747c481288ea83b348226af178dd565c49b6f9495ba1966aba7",
+      "size": 3945441440,
+      "type": "file",
+      "uid": 1001
+    }
+  },
+  {
+    "name": "qwen/model-00002-of-00004.safetensors",
+    "source_path": "/home/Ubuntu/hf/hub/blobs/7a/7a5652df2a86bd1ac6bfd0de4a00fb014360f98669f437fda9a4641947a28520",
+    "archive_path": "/home/Ubuntu/szl-modelhost/cold-cache-archives/cuda-qwen25-7b-20261116/public-hf-cache/blobs/7a/7a5652df2a86bd1ac6bfd0de4a00fb014360f98669f437fda9a4641947a28520",
+    "sha256": "f5d25a2772cb825164a2a2c0fb6d51a87e282abf21e4dd75bc5cfb3cd0ea6185",
+    "size": 3864726352,
+    "original_metadata": {
+      "allocated": 3864731648,
+      "ctime_ns": "1792728171896159029",
+      "dev": 2050,
+      "gid": 1001,
+      "inode": 7606201,
+      "mode": 292,
+      "mtime_ns": "1792728151832325507",
+      "nlink": 1,
+      "relative_path": "blobs/7a/7a5652df2a86bd1ac6bfd0de4a00fb014360f98669f437fda9a4641947a28520",
+      "sha256": "f5d25a2772cb825164a2a2c0fb6d51a87e282abf21e4dd75bc5cfb3cd0ea6185",
+      "size": 3864726352,
+      "type": "file",
+      "uid": 1001
+    }
+  },
+  {
+    "name": "qwen/model-00003-of-00004.safetensors",
+    "source_path": "/home/Ubuntu/hf/hub/blobs/4d/4d520dc8bdd4416c539421314778ea8bae719387b2d14e13dd4dbb3bd2d74018",
+    "archive_path": "/home/Ubuntu/szl-modelhost/cold-cache-archives/cuda-qwen25-7b-20261116/public-hf-cache/blobs/4d/4d520dc8bdd4416c539421314778ea8bae719387b2d14e13dd4dbb3bd2d74018",
+    "sha256": "8efdec4c1bc12317ae1a38dc42b595ce777738a64deea3fcb8a0a91381bcdfd5",
+    "size": 3864726424,
+    "original_metadata": {
+      "allocated": 3864731648,
+      "ctime_ns": "1792728206872868704",
+      "dev": 2050,
+      "gid": 1001,
+      "inode": 7606224,
+      "mode": 292,
+      "mtime_ns": "1792728201800910810",
+      "nlink": 1,
+      "relative_path": "blobs/4d/4d520dc8bdd4416c539421314778ea8bae719387b2d14e13dd4dbb3bd2d74018",
+      "sha256": "8efdec4c1bc12317ae1a38dc42b595ce777738a64deea3fcb8a0a91381bcdfd5",
+      "size": 3864726424,
+      "type": "file",
+      "uid": 1001
+    }
+  },
+  {
+    "name": "qwen/model-00004-of-00004.safetensors",
+    "source_path": "/home/Ubuntu/hf/hub/blobs/22/22555b6a3a2093431facfb11807dd591855196ee19b8543dcc05a66d16a39892",
+    "archive_path": "/home/Ubuntu/szl-modelhost/cold-cache-archives/cuda-qwen25-7b-20261116/public-hf-cache/blobs/22/22555b6a3a2093431facfb11807dd591855196ee19b8543dcc05a66d16a39892",
+    "sha256": "1a72d403cdf0c1ec3cb7f289f17b394a01e64394c2e9b3c0f94dbce3faf879bd",
+    "size": 3556377672,
+    "original_metadata": {
+      "allocated": 3556384768,
+      "ctime_ns": "1792728249183517331",
+      "dev": 2050,
+      "gid": 1001,
+      "inode": 7606247,
+      "mode": 292,
+      "mtime_ns": "1792728241618580170",
+      "nlink": 1,
+      "relative_path": "blobs/22/22555b6a3a2093431facfb11807dd591855196ee19b8543dcc05a66d16a39892",
+      "sha256": "1a72d403cdf0c1ec3cb7f289f17b394a01e64394c2e9b3c0f94dbce3faf879bd",
+      "size": 3556377672,
+      "type": "file",
+      "uid": 1001
+    }
+  }
+]

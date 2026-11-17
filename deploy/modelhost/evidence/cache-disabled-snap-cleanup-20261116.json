@@ -1,0 +1,153 @@
+{
+  "actions": [
+    {
+      "command": [
+        "snap",
+        "remove",
+        "gnome-46-2404",
+        "--revision=168"
+      ],
+      "exit_code": 0,
+      "free_after": 54181617664,
+      "stderr_bytes": 0,
+      "stdout_sha256": "2b580dc0eb130d2a071ec02a4d1ef591d6a4fdce9b81774c92e6da458d87e78f"
+    },
+    {
+      "action": "unlink_exact_derived_cache_hardlink",
+      "free_after": 54826770432,
+      "metadata_before": {
+        "allocated": 645152768,
+        "ctime_ns": "1794873126652540534",
+        "dev": 2050,
+        "gid": 0,
+        "inode": 525710,
+        "mode": 384,
+        "mtime_ns": "1792220249826068417",
+        "nlink": 1,
+        "size": 645148672,
+        "uid": 0
+      },
+      "path": "/var/lib/snapd/cache/638d61f2cb5c2f1d8470f9d67085f7d2431e243e945462801b65f3d5817f14eeed0bf7c581014bb961d2e0ce0ea9cd8f",
+      "sha256": "fd0da3e90af3ae0708c0ed8b5cd0a78e83d4763140785041b91a0770e75c7156"
+    }
+  ],
+  "after": {
+    "free": 54826770432,
+    "total": 316338548736,
+    "used": 248293826560
+  },
+  "before": {
+    "free": 54181609472,
+    "total": 316338548736,
+    "used": 248938987520
+  },
+  "current_image_before": {
+    "allocated": 645955584,
+    "ctime_ns": "1793495799663889246",
+    "dev": 2050,
+    "gid": 0,
+    "inode": 525271,
+    "mode": 384,
+    "mtime_ns": "1793495796228919068",
+    "nlink": 2,
+    "size": 645951488,
+    "uid": 0
+  },
+  "current_revision": "177",
+  "derived_cache_alias": "/var/lib/snapd/cache/638d61f2cb5c2f1d8470f9d67085f7d2431e243e945462801b65f3d5817f14eeed0bf7c581014bb961d2e0ce0ea9cd8f",
+  "finished_utc": "2026-11-16T23:52:09Z",
+  "gate1_archives_changed": false,
+  "holder_audit": {
+    "holders": [],
+    "permission_errors": 0
+  },
+  "image_metadata_before": {
+    "allocated": 645152768,
+    "ctime_ns": "1792220253298041262",
+    "dev": 2050,
+    "gid": 0,
+    "inode": 525710,
+    "mode": 384,
+    "mtime_ns": "1792220249826068417",
+    "nlink": 2,
+    "size": 645148672,
+    "uid": 0
+  },
+  "image_path": "/var/lib/snapd/snaps/gnome-46-2404_168.snap",
+  "image_sha256": "fd0da3e90af3ae0708c0ed8b5cd0a78e83d4763140785041b91a0770e75c7156",
+  "protected_container_after": {
+    "id": "74e0e38a2f3b02cb1222175ca8cbd21e4ad2e96042bd70c115e8c42f94a11dc6",
+    "image": "sha256:0131784115794405cb36a8068a82d7aea0937196d1d6e844b9dd021252ccf7e4",
+    "status": "running"
+  },
+  "protected_container_before": {
+    "id": "74e0e38a2f3b02cb1222175ca8cbd21e4ad2e96042bd70c115e8c42f94a11dc6",
+    "image": "sha256:0131784115794405cb36a8068a82d7aea0937196d1d6e844b9dd021252ccf7e4",
+    "status": "running"
+  },
+  "protected_container_unchanged": true,
+  "protected_processes_after": [
+    {
+      "name": "qwen36",
+      "pid": 1047,
+      "start_ticks": "578",
+      "state": "S"
+    },
+    {
+      "name": "llama-server",
+      "pid": 2139629,
+      "start_ticks": "106808673",
+      "state": "S"
+    },
+    {
+      "name": "llama-server",
+      "pid": 2307902,
+      "start_ticks": "116149750",
+      "state": "S"
+    }
+  ],
+  "protected_processes_before": [
+    {
+      "name": "qwen36",
+      "pid": 1047,
+      "start_ticks": "578",
+      "state": "S"
+    },
+    {
+      "name": "llama-server",
+      "pid": 2139629,
+      "start_ticks": "106808673",
+      "state": "S"
+    },
+    {
+      "name": "llama-server",
+      "pid": 2307902,
+      "start_ticks": "116149750",
+      "state": "S"
+    }
+  ],
+  "protected_processes_unchanged": true,
+  "revisions_after": [
+    {
+      "name": "gnome-46-2404",
+      "notes": "-",
+      "revision": "177"
+    }
+  ],
+  "revisions_before": [
+    {
+      "name": "gnome-46-2404",
+      "notes": "disabled",
+      "revision": "168"
+    },
+    {
+      "name": "gnome-46-2404",
+      "notes": "-",
+      "revision": "177"
+    }
+  ],
+  "schema": "szl.exact-disabled-snap-cleanup/v1",
+  "services_changed": false,
+  "started_utc": "2026-11-16T23:52:05Z",
+  "total_freed_bytes": 645160960
+}
