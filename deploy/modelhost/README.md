@@ -9,6 +9,18 @@ The active release directory is
 **2026-11-16 23:45:38 UTC** and CUDA at **2026-11-16 23:47:12 UTC**. The verified
 SSH service covers 48 model names across 93 placements. These are timestamped
 acceptance observations; use current receipts and endpoints for ongoing status.
+**Current CUDA recovery:** At **2026-11-17 23:56:18 UTC**, a
+source-fenced, owner-authorized cleanup of only three old ignored/generated
+outputs restored CUDA's exact 50 GiB disk reserve. Fresh `GET /ready`
+returned **200 / true** with 45/45 identity-verified required placements;
+Gate1 remained ready with 48/48. An eight-token-maximum exact-fingerprint
+canary succeeded through existing SSH/loopback on both nodes. This is
+operator-serving evidence, **not** a public A11oy→GPU ingress or
+production-quality claim. See the dated
+[CUDA recovery and Alloy wiring hold](evidence/CUDA-READINESS-RECOVERY-20261117.md).
+Only ~570 MiB disk margin remained on CUDA at that sample; monitor it
+without lowering the 50 GiB reserve.
+
 **Public HTTP ingress remains blocked on Cloudflare authorization.** The
 completed GET-only audit could not read the target tunnel configuration (401)
 or Access organization (403) with the existing production credential. See
