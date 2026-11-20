@@ -198,11 +198,15 @@ def test_fetch_json_rejects_non_contract_responses(monkeypatch, response, error)
     "body,reason",
     [
         (b'{"source":"old","source":"pinned"}', "DUPLICATE_JSON_KEY"),
+        (b'{"source":"same","source":"same"}', "DUPLICATE_JSON_KEY"),
+        (b'{"rows":[{"source":"old","source":"new"}]}', "DUPLICATE_JSON_KEY"),
         (b'{"identity":{"revision":"old","revision":"pinned"}}', "DUPLICATE_JSON_KEY"),
         (b'{"quality":NaN}', "NONFINITE_JSON_NUMBER"),
+        (b'{"nested":[{"quality":NaN}]}', "NONFINITE_JSON_NUMBER"),
         (b'{"quality":Infinity}', "NONFINITE_JSON_NUMBER"),
         (b'{"quality":-Infinity}', "NONFINITE_JSON_NUMBER"),
         (b'{"quality":1e9999}', "NONFINITE_JSON_NUMBER"),
+        (b'{"quality":1e-324}', "UNDERFLOW_JSON_NUMBER"),
     ],
 )
 def test_fetch_json_denies_ambiguous_or_nonfinite_provider_evidence(
@@ -213,6 +217,23 @@ def test_fetch_json_denies_ambiguous_or_nonfinite_provider_evidence(
     )
     with pytest.raises(QualificationReadError, match=f"^{reason}$"):
         fetch_json("https://example.test/x", 1.0, 1024)
+
+
+@pytest.mark.parametrize(
+    "raw,expected",
+    [
+        (b'{"quality":0.1234567890123456789}', 0.12345678901234568),
+        (b'{"quality":1e308}', 1e308),
+        (b'{"quality":0e-9999}', 0.0),
+    ],
+)
+def test_finite_json_boundary_numbers_remain_admissible(monkeypatch, raw, expected):
+    monkeypatch.setattr(
+        qualifier, "_open_url", lambda *_args, **_kwargs: FakeResponse(raw)
+    )
+    result = fetch_json("https://example.test/x", 1.0, 1024)
+    assert type(result.value["quality"]) is float
+    assert result.value["quality"] == expected
 
 
 def test_duplicate_identity_field_stays_unknown_with_other_metadata_observed(
