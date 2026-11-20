@@ -94,6 +94,11 @@ def _finite_json_float(value: str) -> float:
     number = float(value)
     if not math.isfinite(number):
         raise QualificationReadError("NONFINITE_JSON_NUMBER")
+    # A nonzero decimal such as 1e-324 must not become a falsely
+    # measured zero through IEEE-754 underflow.
+    mantissa = value.lower().split("e", 1)[0]
+    if number == 0.0 and any(digit in "123456789" for digit in mantissa):
+        raise QualificationReadError("UNDERFLOW_JSON_NUMBER")
     return number
 
 
