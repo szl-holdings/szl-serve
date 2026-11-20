@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 import hashlib
 import json
+import math
 from typing import Any, Callable, Mapping
 from urllib.parse import urljoin, urlparse
 from urllib.request import HTTPRedirectHandler, Request, build_opener
@@ -79,6 +80,32 @@ def _open_url(request: Request, timeout_seconds: float):
     return opener.open(request, timeout=timeout_seconds)
 
 
+def _unique_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    """Do not let the last duplicated evidence field silently win."""
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise QualificationReadError("DUPLICATE_JSON_KEY")
+        result[key] = value
+    return result
+
+
+def _finite_json_float(value: str) -> float:
+    number = float(value)
+    if not math.isfinite(number):
+        raise QualificationReadError("NONFINITE_JSON_NUMBER")
+    # A nonzero decimal such as 1e-324 must not become a falsely
+    # measured zero through IEEE-754 underflow.
+    mantissa = value.lower().split("e", 1)[0]
+    if number == 0.0 and any(digit in "123456789" for digit in mantissa):
+        raise QualificationReadError("UNDERFLOW_JSON_NUMBER")
+    return number
+
+
+def _reject_json_constant(_value: str) -> None:
+    raise QualificationReadError("NONFINITE_JSON_NUMBER")
+
+
 def fetch_json(url: str, timeout_seconds: float, max_response_bytes: int) -> Readback:
     """Fetch one bounded JSON object and reject redirects across origins."""
 
@@ -109,9 +136,16 @@ def fetch_json(url: str, timeout_seconds: float, max_response_bytes: int) -> Rea
     if len(raw) > max_response_bytes:
         raise QualificationReadError("RESPONSE_TOO_LARGE")
     try:
-        value = json.loads(raw.decode("utf-8"))
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-        raise QualificationReadError("INVALID_JSON") from exc
+        value = json.loads(
+            raw.decode("utf-8"),
+            object_pairs_hook=_unique_json_object,
+            parse_constant=_reject_json_constant,
+            parse_float=_finite_json_float,
+        )
+    except QualificationReadError:
+        raise
+    except (UnicodeDecodeError, ValueError, OverflowError):
+        raise QualificationReadError("INVALID_JSON") from None
     if not isinstance(value, dict):
         raise QualificationReadError("JSON_ROOT_NOT_OBJECT")
     return Readback(value=value, final_url=final_url)
@@ -127,7 +161,13 @@ def _check(
     if observed is None and missing_unknown:
         state = "UNKNOWN"
     else:
-        state = "OBSERVED" if observed == expected else "DIVERGENT"
+        # Python considers 1 == True and 0 == False, which can turn an
+        # untyped provider field into false source-integrity evidence.
+        state = (
+            "OBSERVED"
+            if type(observed) is type(expected) and observed == expected
+            else "DIVERGENT"
+        )
     return {
         "name": name,
         "state": state,

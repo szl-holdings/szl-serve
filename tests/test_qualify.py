@@ -194,6 +194,102 @@ def test_fetch_json_rejects_non_contract_responses(monkeypatch, response, error)
         fetch_json("https://example.test/x", 1.0, 1024)
 
 
+@pytest.mark.parametrize(
+    "body,reason",
+    [
+        (b'{"source":"old","source":"pinned"}', "DUPLICATE_JSON_KEY"),
+        (b'{"source":"same","source":"same"}', "DUPLICATE_JSON_KEY"),
+        (b'{"rows":[{"source":"old","source":"new"}]}', "DUPLICATE_JSON_KEY"),
+        (b'{"identity":{"revision":"old","revision":"pinned"}}', "DUPLICATE_JSON_KEY"),
+        (b'{"quality":NaN}', "NONFINITE_JSON_NUMBER"),
+        (b'{"nested":[{"quality":NaN}]}', "NONFINITE_JSON_NUMBER"),
+        (b'{"quality":Infinity}', "NONFINITE_JSON_NUMBER"),
+        (b'{"quality":-Infinity}', "NONFINITE_JSON_NUMBER"),
+        (b'{"quality":1e9999}', "NONFINITE_JSON_NUMBER"),
+        (b'{"quality":1e-324}', "UNDERFLOW_JSON_NUMBER"),
+    ],
+)
+def test_fetch_json_denies_ambiguous_or_nonfinite_provider_evidence(
+    monkeypatch, body, reason
+):
+    monkeypatch.setattr(
+        qualifier, "_open_url", lambda *_args, **_kwargs: FakeResponse(body)
+    )
+    with pytest.raises(QualificationReadError, match=f"^{reason}$"):
+        fetch_json("https://example.test/x", 1.0, 1024)
+
+
+@pytest.mark.parametrize(
+    "raw,expected",
+    [
+        (b'{"quality":0.1234567890123456789}', 0.12345678901234568),
+        (b'{"quality":1e308}', 1e308),
+        (b'{"quality":0e-9999}', 0.0),
+    ],
+)
+def test_finite_json_boundary_numbers_remain_admissible(monkeypatch, raw, expected):
+    monkeypatch.setattr(
+        qualifier, "_open_url", lambda *_args, **_kwargs: FakeResponse(raw)
+    )
+    result = fetch_json("https://example.test/x", 1.0, 1024)
+    assert type(result.value["quality"]) is float
+    assert result.value["quality"] == expected
+
+
+def test_duplicate_identity_field_stays_unknown_with_other_metadata_observed(
+    monkeypatch,
+):
+    data = exact_payloads()
+    calls = []
+
+    def read_metadata(request, _timeout):
+        calls.append(request.full_url)
+        suffix = request.full_url.removeprefix("https://example.test/")
+        if suffix == "api/v1/identity":
+            # Conflicting signed-looking fields MUST NOT be last-wins JSON.
+            body = b'{"space":{"source_integrity":false,"source_integrity":true}}'
+        else:
+            body = json.dumps(data[suffix]).encode("utf-8")
+        return FakeResponse(body, final_url=request.full_url)
+
+    monkeypatch.setattr(qualifier, "_open_url", read_metadata)
+    result = qualify("https://example.test")
+    assert result["state"] == "UNKNOWN"
+    assert len(calls) == 4
+    failed = next(row for row in result["reads"] if row["name"] == "identity")
+    assert failed["state"] == "UNKNOWN"
+    assert failed["error"] == "DUPLICATE_JSON_KEY"
+    assert result["serving_ready"] is False
+    assert result["serving_state"] == "NOT_QUALIFIED"
+
+
+@pytest.mark.parametrize("fake_true", [1, 1.0, "true", None])
+def test_numeric_or_text_integrity_cannot_impersonate_boolean(fake_true):
+    data = exact_payloads()
+    data["api/v1/identity"]["space"]["source_integrity"] = fake_true
+    result = qualify("https://example.test", fetcher=mapping_fetcher(data))
+    check = next(
+        row for row in result["checks"] if row["name"] == "identity.source_integrity"
+    )
+    assert check["state"] == "DIVERGENT"
+    assert result["state"] == "DIVERGENT"
+    assert result["serving_ready"] is False
+
+
+def test_numeric_float_model_size_cannot_impersonate_expected_integer():
+    data = exact_payloads()
+    data["api/v1/identity"]["model"]["size"] = float(KHIPU_BYTES)
+    data[".well-known/szl-inference-contract.json"]["model"]["size"] = float(
+        KHIPU_BYTES
+    )
+    result = qualify("https://example.test", fetcher=mapping_fetcher(data))
+    changed = {
+        row["name"] for row in result["checks"] if row["state"] == "DIVERGENT"
+    }
+    assert changed == {"identity.model.size", "contract.model.size"}
+    assert result["serving_ready"] is False
+
+
 def test_fetch_json_rejects_oversized_response(monkeypatch):
     response = FakeResponse(b"{" + b" " * 1024 + b"}")
     monkeypatch.setattr(qualifier, "_open_url", lambda *_args, **_kwargs: response)
