@@ -57,8 +57,15 @@ Fetcher = Callable[[str, float, int], Readback]
 def _same_origin(expected: str, observed: str) -> bool:
     left = urlparse(expected)
     right = urlparse(observed)
-    return (left.scheme.lower(), left.hostname, left.port) == (
-        right.scheme.lower(), right.hostname, right.port
+    # Credentials in a redirected URL may leak into receipt readback or logs.
+    # A host/port match alone does not make URL userinfo admissible.
+    return (
+        left.username is None
+        and left.password is None
+        and right.username is None
+        and right.password is None
+        and (left.scheme.lower(), left.hostname, left.port)
+        == (right.scheme.lower(), right.hostname, right.port)
     )
 
 
@@ -367,6 +374,8 @@ def qualify(
     """Read all declared surfaces and emit one deterministic qualification receipt."""
 
     parsed = urlparse(base_url)
+    if parsed.username is not None or parsed.password is not None:
+        raise ValueError("base_url must not contain URL-embedded credentials")
     if (
         parsed.scheme not in {"http", "https"}
         or not parsed.netloc

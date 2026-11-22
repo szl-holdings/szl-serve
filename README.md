@@ -105,7 +105,9 @@ The command checks `/api/build-info`, `/api/v1/identity`,
 exact Forge source repository and revision, model revision, GGUF file, byte
 count, SHA-256, contract schema, and model-list identity. A timeout, partial
 JSON, HTML response, oversized response, cross-origin redirect, missing field,
-or stale value never becomes success. The current public contract may report
+or stale value never becomes success. URL-embedded credentials are refused
+before any network read or receipt output; same-origin redirects cannot add them.
+The current public contract may report
 `UNKNOWN` for source repository until `/api/build-info` exposes that field;
 the qualifier does not infer it from a URL or Space name. Historical pins are
 not updated merely to make a divergent current runtime pass.
