@@ -310,6 +310,38 @@ def test_redirect_handler_blocks_cross_origin_before_following():
         )
 
 
+@pytest.mark.parametrize("base_url", [
+    "https://synthetic-user@example.test",
+    "https://synthetic-user:synthetic-pass@example.test",
+    "https://@example.test",
+])
+def test_base_url_rejects_embedded_credentials_before_fetch(base_url):
+    calls = []
+
+    def forbidden_fetch(*_args):
+        calls.append(True)
+        raise AssertionError("user-info URL must be rejected before any GET")
+
+    with pytest.raises(ValueError, match="URL-embedded credentials") as error:
+        qualify(base_url, fetcher=forbidden_fetch)
+    assert "synthetic-pass" not in str(error.value)
+    assert not calls
+
+
+@pytest.mark.parametrize("redirect_url", [
+    "https://synthetic-user@example.test/x",
+    "https://synthetic-user:synthetic-pass@example.test/x",
+    "https://@example.test/x",
+])
+def test_same_host_redirect_rejects_embedded_credentials(redirect_url):
+    handler = _SameOriginRedirectHandler("https://example.test/x")
+    with pytest.raises(QualificationReadError, match="CROSS_ORIGIN_REDIRECT"):
+        handler.redirect_request(
+            qualifier.Request("https://example.test/x"),
+            None, 302, "Found", {}, redirect_url,
+        )
+
+
 def test_base_url_rejects_query_or_fragment():
     with pytest.raises(ValueError, match="without query or fragment"):
         qualify("https://example.test/?mutable=yes", fetcher=mapping_fetcher(exact_payloads()))
