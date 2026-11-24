@@ -1,0 +1,21 @@
+# Modelfile.kimi-estate-ops.q4_k_m
+# Estate-trained Kimi-lineage ops/governance seat model published 2026-11-24 from the device ollama rail to SZLHOLDINGS.
+# Canonical artifact: https://huggingface.co/SZLHOLDINGS/kimi-estate-ops
+#
+# Honesty (estate doctrine, no-deploy-claims):
+# - Every observable fact below is cited from the published repo card (fetched 2026-11-24): 16B parameters,
+#   Q4_K_M quantization, 131072 context, library_name gguf, ollama tag, license other, estate-trained, kimi tags.
+# - NO temperature, system prompt, template, or chat parameters are set here: none are MEASURED and none are
+#   claimed. Inheritance stays whatever the GGUF embeds (UNKNOWN from this seat, never fabricated).
+# - This template is UNQUALIFIED: it does not establish local serving readiness, hardware qualification,
+#   or artifact availability. This is the coding-back of the kimi-estate-ops run recipe per the owner
+#   directive 2026-11-24 (all models coded back into the szl-holdings org); it authorizes no serving.
+#
+# Mirrored per wave-logs receipt mesh/2026-11-24/ouroboros/hf-audit-20261124 (audit leg):
+# the model was published from the device ollama rail; the publish tooling for the rail lives in
+# ollama/Publish-Ollama.ps1. Registry note: szl-asset-registry data/intake_new_models_20261124.json (PR #34)
+# records SZLHOLDINGS/kimi-estate-ops as unmapped pending canonical adjudication; assets/ops-kit code
+# naming for the map stays with the owning tools + owner (fail-closed).
+
+FROM hf.co/SZLHOLDINGS/kimi-estate-ops
+PARAMETER num_ctx 131072
